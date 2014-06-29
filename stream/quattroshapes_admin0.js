@@ -1,32 +1,29 @@
 
 var through = require('through2');
-var geoJsonCenter = require('../util/geoJsonCenter');
-var geoJsonTypeFor = require('../util/geoJsonTypeFor');
 var esclient = require('pelias-esclient')();
+// require( '../debugstats' )( esclient.stream );
 
-var normalizer = through.obj( function( way, enc, done ) {
+var stream = through.obj( function( item, enc, done ) {
 
-  console.log( JSON.stringify( way, null, 2 ) );
+  // console.log( JSON.stringify( item, null, 2 ) );
 
-  getNodeIdsAsGeoJSON( way.refs, function( err, geoJson ){
+  // findAdmin0( item.center_point, function( err, admin0 ){
 
-    if( err ){
-      console.error( 'getNodeIdsAsGeoJSON error', err );
-      return done();
-    }
+  //   if( err ){
+  //     console.error( 'findAdmin0 error', err );
+  //     return done();
+  //   }
 
-    way.geo = geoJson;
-    way.center_point = geoJsonCenter( geoJson );
-    delete way.refs;
+  //   item.admin0 = admin0;
 
-    this.push( way, enc );
+    this.push( item, enc );
     done();
 
-  }.bind(this));
+  // }.bind(this));
 
 });
 
-function getNodeIdsAsGeoJSON( ids, cb ){  
+function findAdmin0( ids, cb ){  
 
   esclient.mget({
 
@@ -64,4 +61,4 @@ function getNodeIdsAsGeoJSON( ids, cb ){
   });
 }
 
-module.exports = normalizer;
+module.exports = stream;

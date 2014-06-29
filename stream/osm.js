@@ -1,9 +1,12 @@
 
-var parseOSM = require('osm-pbf-parser');
-var osm = parseOSM();
+// Can't use this until this issue is resolved:
+// https://github.com/substack/osm-pbf-parser/issues/5#issuecomment-47332137
 
-osm.on( 'error', function(){
-  console.log( 'OSM ERROR' );
-});
+// var parseOSM = require('osm-pbf-parser');
+// var osm = parseOSM();
 
-module.exports = osm;
+// osm.on( 'error', function(){
+//   console.log( 'OSM ERROR' );
+// });
+
+// module.exports = osm;
