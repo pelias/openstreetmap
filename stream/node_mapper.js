@@ -11,10 +11,6 @@ mappers.push( require('../mapper/node/karlsruhe_schema') );
 mappers.push( require('../mapper/node/osm_rubbish') );
 
 var stream = through.obj( function( node, enc, done ) {
-  
-  if( !node || !node.hasOwnProperty('id')
-            || !node.hasOwnProperty('lat')
-            || !node.hasOwnProperty('lon') ) return done();
 
   var record = {};
 
@@ -22,7 +18,11 @@ var stream = through.obj( function( node, enc, done ) {
     mapper( node, record );
   });
 
-  this.push( record, enc );
+  // remove nodes which don't have a valid name
+  if( 'object' == typeof record.name && Object.keys( record.name ).length ){
+    this.push( record, enc );
+  }
+
   done();
 
 });

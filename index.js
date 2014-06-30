@@ -10,19 +10,31 @@ var streams = {
   stringify:                require( './stream/stringify' ),
   devnull:                  require( './stream/devnull' ),
   // sporadic:                require( './stream/sporadic' ),
+  node_filter:              require( './stream/node_filter' ),
   node_mapper:              require( './stream/node_mapper' ),
-  quattroshapes_admin0:     require( './stream/quattroshapes_admin0' ),
+  suggest:                  require( './stream/suggest' ),
+  geonames:                 require( './stream/geonames' ),
+  // quattroshapes:            require( './stream/quattroshapes' ),
   way_mapper:               require( './stream/way_mapper' ),
   way_normalizer:           require( './stream/way_normalizer' )
 }
 
-streams.node_mapper.pipe( es_client( 'import', 'node' ) );
-streams.way_mapper.pipe( streams.way_normalizer ).pipe( es_client( 'import', 'way' ) );
-streams.stringify.pipe( process.stdout );
+streams.node_filter
+  .pipe( streams.node_mapper )
+  .pipe( streams.geonames )
+  .pipe( streams.suggest )
+  .pipe( es_client( 'pelias', 'osmnode' ) );
 
-streams.osm2( '/media/hdd/osm/mapzen-metro/auckland.osm.pbf' )
+streams.way_mapper
+  .pipe( streams.way_normalizer )
+  .pipe( es_client( 'import', 'way' ) );
+
+streams.stringify
+  .pipe( process.stdout );
+
+streams.osm2( '/media/hdd/osm/mapzen-metro/london.osm.pbf' )
   .pipe( osm_types({
-    node:     streams.node_mapper,
+    node:     streams.node_filter,
     way:      streams.devnull, //streams.way_mapper,
     relation: streams.devnull,
   }))

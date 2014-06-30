@@ -7,7 +7,7 @@ module.exports = function( streams ){
     throw new Error( 'invalid types stream constructor' );
   }
   var stream = through.obj( function( data, enc, done ) {
-    
+
     // forward the data to the appropriate stream
     var forward = function( item, enc, next ){
       if( ['node','way','relation'].indexOf( item.type ) === -1 ){

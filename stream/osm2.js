@@ -1,46 +1,33 @@
 
-var osmread = require('osm-read');
-var Transform = require('stream').Transform;
+var osmread = require('../static_modules/osm-read');
+var PassThrough = require('stream').PassThrough;
 
 module.exports = function( filepath ){
 
-  var buffer = [];
-  var stream = new Transform({ objectMode: true });
-  stream._transform = function( chunk, encoding, done ){
-    if( buffer.length < 1000 ){
-      buffer.push( chunk );
-    }
-    else {
-      this.push( buffer, encoding );
-      buffer = [];
-    }
-    done();
-  }
-
+  var stream = new PassThrough({ objectMode: true });
   console.log( 'parse', filepath );
+
   osmread.parse({
     filePath: filepath,
-    endDocument: function(){
-      console.log( 'eof' );
+    endDocument: function(){},
+    bounds: function( item, next ){
+      item.type = 'bounds';
+      stream.write( item, 'utf8', next );
     },
-    bounds: function(bounds){
-      console.log( 'bounds' );
+    node: function( item, next ){
+      item.type = 'node';
+      stream.write( item, 'utf8', next );
     },
-    node: function(node){
-      node.type = 'node';
-      // @todo: info.visible
-      stream.write( node, 'utf8' );
+    way: function( item, next ){
+      item.type = 'way';
+      stream.write( item, 'utf8', next );
     },
-    way: function(way){
-      way.type = 'way';
-      way.refs = way.nodeRefs;
-      delete way.nodeRefs;
-      // @todo: info.visible
-      stream.write( way, 'utf8' );
+    relation: function( item, next ){
+      item.type = 'relation';
+      stream.write( item, 'utf8', next );
     },
-    error: function(msg){
+    error: function( msg ){
       console.error( msg );
-      //stream.emit( 'error', msg );
     }
   });
 
