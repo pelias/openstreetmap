@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browser test suite</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/should/should.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script src="../node_modules/zlibjs/bin/zlib.min.js"></script>
+    <script src="../node_modules/protobufjs/node_modules/bytebuffer/ByteBuffer.min.js"></script>
+
+    <script src="../osm-read-pbf.js"></script>
+    <script>
+        function require(module) {
+            var fakeModules = {
+                "should": window.Should,
+                "../lib/main": {
+                    "createPbfParser": pbfParser.createParser,
+                    "parse": pbfParser.parse
+                }
+            }
+            return fakeModules[module];
+        }
+    </script>
+
+    <script src="zlibBrowserTest.js"></script>
+    <script src="manyNodesTest.js"></script>
+    <script src="pbfTest.js"></script>
+
+    <!-- path to test.pbf is relative to project root because of npm test -->
+    <base href="../">
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>

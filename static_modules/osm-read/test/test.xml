@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server">
+  <bounds minlat="51.5073601795557" minlon="-0.108157396316528" maxlat="51.5076406454029" maxlon="-0.107599496841431"/>
+  <node id="319408586" lat="51.5074089" lon="-0.1080108" version="1" changeset="440330" user="smsm1" uid="6871" visible="true" timestamp="2008-12-17T01:18:42Z"/>
+  <node id="319408587" lat="51.5074343" lon="-0.1081264" version="1" changeset="440330" user="smsm1" uid="6871" visible="true" timestamp="2008-12-17T01:18:42Z"/>
+  <node id="275452090" lat="51.5075933" lon="-0.1076186" version="3" changeset="2980587" user="nickb" uid="1697" visible="true" timestamp="2009-10-29T12:14:35Z">
+    <tag k="name" v="Jam's Sandwich Bar"/>
+    <tag k="amenity" v="cafe"/>
+  </node>
+  <node id="304994980" lat="51.5074645" lon="-0.1075735" version="2" changeset="388960" user="BiIbo" uid="3516" visible="true" timestamp="2009-02-13T00:41:47Z">
+    <tag k="barrier" v="gate"/>
+  </node>
+  <node id="304994981" lat="51.5074723" lon="-0.1075014" version="1" changeset="374143" user="Matt" uid="70" visible="true" timestamp="2008-10-16T16:35:57Z"/>
+  <node id="304994979" lat="51.507406" lon="-0.1083348" version="4" changeset="2114003" user="jamicu" uid="38244" visible="true" timestamp="2009-08-12T01:33:32Z"/>
+  <way id="27776903" visible="true" timestamp="2009-05-31T13:39:15Z" version="3" changeset="1368552" user="Matt" uid="70">
+    <nd ref="304994979"/>
+    <nd ref="319408587"/>
+    <nd ref="319408586"/>
+    <nd ref="304994980"/>
+    <nd ref="304994981"/>
+    <tag k="access" v="private"/>
+    <tag k="highway" v="service"/>
+    <tag k="name" v="üßé€"/>
+  </way>
+  <relation id="56688" user="kmvar" uid="56190" visible="true" version="28" changeset="6947637" timestamp="2011-01-12T14:23:49Z">
+    <member type="node" ref="319408586" role="" />
+    <member type="way" ref="27776903" role="" />
+    <tag k="network" v="VVW"/>
+    <tag k="ref" v="123"/>
+    <tag k="route" v="bus"/>
+    <tag k="type" v="route"/>
+  </relation>
+</osm>

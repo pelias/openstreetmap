@@ -1,0 +1,53 @@
+2014-06-16  Markus Peröbner  <markus.peroebner@gmail.com>
+
+	* change: structure for relations parsing has changed
+	The structure of the data passed to the relation callback has
+	changed. The new API implementation returns a relation object
+	like this:
+
+	{
+	  "members": [
+            {
+              "type": "node",
+              "ref": "12345678",
+              "role": ""
+            },
+            {
+              "type": "way",
+              "ref": "87654321",
+              "role": ""
+            }
+          ]
+	}
+
+	The change in the osm-read API has been made in order to
+	maintain the order of the relation members. See the following
+	github issue for more details:
+	https://github.com/marook/osm-read/issues/20
+
+	The v0.4.0 release used the following no longer used data
+	structure:
+
+        {
+          "members": {
+            "nodes": [
+              {
+                "ref": "12345678",
+                "role": ""
+              }
+            ],
+            "ways": [
+              {
+                "ref": "87654321",
+                "role": ""
+              }
+            ]
+          }
+        }
+
+	If you use relations you have to migrate your code accordingly.
+
+
+2014-05-21  Markus Peröbner  <markus.peroebner@gmail.com>
+
+	* release: released v0.4.0

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>osm-read pbf Browser</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <pre id="log"></pre>
+
+        <script src="../osm-read-pbf.js"></script>
+        <script>
+            var logEle = document.getElementById("log");
+
+            function log(msg) {
+                logEle.textContent += msg + '\n';
+            }
+
+            pbfParser.parse({
+                filePath: 'test.pbf',
+                endDocument: function(){
+                    log('document end');
+                },
+                bounds: function(bounds){
+                    log('bounds: ' + JSON.stringify(bounds));
+                },
+                node: function(node){
+                    log('node: ' + JSON.stringify(node));
+                },
+                way: function(way){
+                    log('way: ' + JSON.stringify(way));
+                },
+                relation: function(relation){
+                    log('relation: ' + JSON.stringify(relation));
+                },
+                error: function(msg){
+                    log('error: ' + msg);
+                    throw msg;
+                }
+            });
+        </script>
+    </body>
+</html>

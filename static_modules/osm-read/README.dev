@@ -1,0 +1,41 @@
+osm-read - developer guide
+
+1) Protocol Buffers
+2) Generating manyNodes.pbf test data
+3) Release NPM Module
+
+
+------------------------------------------------------------------------
+Protocol Buffers
+
+The protocol buffer definitions for reading openstreetmap pbf files have
+been taken from the osmosis source code repository:
+
+https://github.com/openstreetmap/osmosis/tree/master/osmosis-osm-binary/src/main/protobuf
+
+js modules for the proto files generated with (see scripts in package.json):
+
+$ npm run buildProto
+
+------------------------------------------------------------------------
+Generating manyNodes.pbf test data
+
+The file test/manyNodes.pbf can be generated via the script
+test/genManyNodes.sh. genManyNodes.sh requires bash and osmosis
+installed.
+
+
+------------------------------------------------------------------------
+Release NPM Module
+
+Adjust the module version in package.json. The execute the following:
+
+$ git commit -a
+$ npm install
+$ npm test
+$ npm run browserify
+$ xdg-open test/index.html
+$ npm publish
+$ git tag <released version>
+$ git push
+$ git push --tags
