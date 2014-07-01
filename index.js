@@ -1,4 +1,6 @@
 
+var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
+
 var fs = require('fs');
 var osm_types = require( './stream/osm_types' );
 var es_client = require( './stream/es_client' );
@@ -32,7 +34,7 @@ streams.way_mapper
 streams.stringify
   .pipe( process.stdout );
 
-streams.osm2( '/media/hdd/osm/mapzen-metro/london.osm.pbf' )
+streams.osm2( filename )
   .pipe( osm_types({
     node:     streams.node_filter,
     way:      streams.devnull, //streams.way_mapper,
