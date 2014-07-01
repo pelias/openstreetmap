@@ -1,3 +1,4 @@
 node_modules
 esclient.log
 *.log
+nohup.out
