@@ -6,6 +6,7 @@ module.exports = function( node, record ){
     // remove rubbish tags
     delete node.tags['created_by'];
     delete node.tags['FIXME'];
+    delete node.tags['fixme'];
 
     // remove dates
     for( var tag in node.tags ){
