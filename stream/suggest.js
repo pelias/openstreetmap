@@ -6,7 +6,8 @@ var stream = through.obj( function( record, enc, done ) {
   record.suggest = {
     input: [],
     payload: {
-      type: 'osm'
+      id: record.id,
+      type: 'osm' + record.type
     }
   }
 
@@ -30,7 +31,7 @@ var stream = through.obj( function( record, enc, done ) {
   if( record.admin0 && record.admin0.length ){
     record.suggest.payload.admin0 = record.admin0;
   }
- 
+
   this.push( record, enc );
   done();
 
