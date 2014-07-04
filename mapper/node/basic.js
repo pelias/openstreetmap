@@ -11,6 +11,7 @@ module.exports = function( node, record ){
   };
 
   record.name = {};
+  record.type = node.type;
 
   // copy all tags
   record.tags = node.tags;
