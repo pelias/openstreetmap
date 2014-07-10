@@ -58,7 +58,9 @@ var stream = through.obj( function( item, enc, done ) {
 
     if( error ) console.error( error );
 
+    // console.log( resp.took + 'ms' );
     // console.log( JSON.stringify( resp, null, 2 ) );
+    // process.exit(1);
 
     if( !error && 'object' == typeof resp && resp.hasOwnProperty('hits') && 
         Array.isArray( resp.hits.hits ) && resp.hits.hits.length ){
@@ -67,6 +69,14 @@ var stream = through.obj( function( item, enc, done ) {
       if( hit.admin0 ) item.admin0 = hit.admin0[0];
       if( hit.admin1 ) item.admin1 = hit.admin1[0];
       if( hit.admin2 ) item.admin2 = hit.admin2[0];
+
+      if( !hit.admin0 && !hit.admin1 && !hit.admin2 ){
+        console.log( 'failed lookup' );
+      }
+    }
+
+    else {
+      console.log( 'failed lookup' );
     }
    
     this.push( item, enc );

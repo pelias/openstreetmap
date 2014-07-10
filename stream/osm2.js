@@ -9,20 +9,27 @@ module.exports = function( filepath ){
 
   osmread.parse({
     filePath: filepath,
-    endDocument: function(){},
+    endDocument: function(){
+      console.log( 'endDocument' );
+      stream.close();
+    },
     bounds: function( item, next ){
+      // process.stdout.write('B');
       item.type = 'bounds';
       stream.write( item, 'utf8', next );
     },
     node: function( item, next ){
+      // process.stdout.write('N');
       item.type = 'node';
       stream.write( item, 'utf8', next );
     },
     way: function( item, next ){
+      // process.stdout.write('W');
       item.type = 'way';
       stream.write( item, 'utf8', next );
     },
     relation: function( item, next ){
+      // process.stdout.write('R');
       item.type = 'relation';
       stream.write( item, 'utf8', next );
     },

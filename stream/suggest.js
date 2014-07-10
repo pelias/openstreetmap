@@ -5,32 +5,39 @@ var stream = through.obj( function( record, enc, done ) {
 
   record.suggest = {
     input: [],
+    output: '',
     payload: {
-      id: record.id,
-      type: 'osm' + record.type
+      id: 'osm' + record.type + '/' + record.id
     }
   }
 
   // inputs
+  record.suggest.input.unshift( record.name.default );
   for( var attr in record.name ){
-    if( -1 == record.suggest.input.indexOf( record.name[ attr ] ) ){
-      record.suggest.input.unshift( record.name[ attr ] );
+    var name = record.name[ attr ];
+    if( -1 == record.suggest.input.indexOf( attr ) ){
+      record.suggest.input.push( attr );
     }
   }
 
   // payload
-  record.suggest.payload.name = record.name.default;
+  var adminParts = [];
   record.suggest.payload.geo = record.center_point.lon + ',' + record.center_point.lat;
   
   if( record.admin2 && record.admin2.length ){
-    record.suggest.payload.admin2 = record.admin2;
+    adminParts.push( record.admin2 );
   }
-  if( record.admin1 && record.admin1.length ){
-    record.suggest.payload.admin1 = record.admin1;
-  }
-  if( record.admin0 && record.admin0.length ){
-    record.suggest.payload.admin0 = record.admin0;
-  }
+
+  // add admin info to input values
+  // so they are: "name admin2 admin1 admin0"
+  // instead of simply: "name"
+  record.suggest.input = record.suggest.input.map( function( name, i ){
+    // Set output to the default name
+    if( i === 0 ){
+      record.suggest.output = [ name ].concat( adminParts ).join(', ').trim();
+    }
+    return [ name ].concat( adminParts ).join(' ').trim();
+  });
 
   this.push( record, enc );
   done();

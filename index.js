@@ -1,5 +1,8 @@
 
 var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
+//filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
+//filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf';
+//filename = '/media/hdd/osm/mapzen-metro/damascus.osm.pbf';
 
 var fs = require('fs');
 var osm_types = require( './stream/osm_types' );
@@ -34,7 +37,21 @@ streams.way_mapper
 streams.stringify
   .pipe( process.stdout );
 
-streams.osm2( filename )
+// check file exists
+try {
+  fs.statSync( filename );
+} catch( e ){
+  console.error( 'failed to load:', filename );
+  process.exit(1);
+}
+
+var reader = streams.osm2( filename );
+reader.on( 'unpipe', function(){
+  console.log( 'reader unpipe' );
+  process.exit(0);
+});
+
+reader
   .pipe( osm_types({
     node:     streams.node_filter,
     way:      streams.devnull, //streams.way_mapper,
