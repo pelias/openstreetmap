@@ -1,5 +1,7 @@
 
-var through = require('through2');
+var through = require('through2'),
+    features = require('../features');
+
 var stream = through.obj( function( node, enc, done ) {
 
   // filter nodes missing requires properties
@@ -7,22 +9,13 @@ var stream = through.obj( function( node, enc, done ) {
            && node.hasOwnProperty('lat')
            && node.hasOwnProperty('lon')
            && 'object' == typeof node.tags
+           && 'string' == typeof node.tags.name
            && !!Object.keys( node.tags ).length
-           && hasFeature( node ) ){
+           && features.getFeature( node ) ){
     this.push( node );
   }
 
   return done();
 });
-
-var features = ( 'amenity building shop office public_transport cuisine railway sport natural tourism ' +
-                 'leisure historic man_made landuse waterway aerialway aeroway craft military' ).split(' ');
-
-function hasFeature( node ){
-  for( var x=0; x<features.length; x++ ){
-    if( node.tags.hasOwnProperty( features[x] ) ) return true;
-  }
-  return false;
-}
 
 module.exports = stream;

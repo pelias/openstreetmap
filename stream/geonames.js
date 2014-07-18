@@ -5,6 +5,12 @@ var through = require('through2'),
 
 var stream = through.obj( function( item, enc, done ) {
 
+  // Skip lookup for nodes without a name
+  if( !item.name || !item.name.default ){
+    this.push( item, enc ); // Forward record down the pipe
+    return done(); // ACK and take next record from the inbound stream
+  }
+
   // Skip lookup if record already has geo info
   if( item.admin0 && item.admin1 && item.admin2 ){
     this.push( item, enc ); // Forward record down the pipe

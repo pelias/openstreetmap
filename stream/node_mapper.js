@@ -19,9 +19,11 @@ var stream = through.obj( function( node, enc, done ) {
   });
 
   // remove nodes which don't have a valid name
-  if( 'object' == typeof record.name && Object.keys( record.name ).length ){
-    this.push( record, enc );
-  }
+  // if( 'object' == typeof record.name && Object.keys( record.name ).length ){
+  //   this.push( record, enc );
+  // }
+
+  this.push( record );
 
   done();
 
