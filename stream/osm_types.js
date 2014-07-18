@@ -2,10 +2,10 @@
 var through = require('through2');
 
 module.exports = function( streams ){
-  if( !streams || !streams.hasOwnProperty( 'node' ) ||
-      !streams.hasOwnProperty( 'way' ) || !streams.hasOwnProperty( 'relation' ) ){
+  if( !streams || !streams.node || !streams.way || !streams.relation ){
     throw new Error( 'invalid types stream constructor' );
   }
+
   var stream = through.obj( function( data, enc, done ) {
 
     // forward the data to the appropriate stream
