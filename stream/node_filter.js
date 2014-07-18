@@ -1,6 +1,6 @@
 
 var through = require('through2');
-var stream = through.obj( function( data, enc, done ) {
+var stream = through.obj( function( node, enc, done ) {
 
   // filter nodes missing requires properties
   if( node && node.hasOwnProperty('id')
