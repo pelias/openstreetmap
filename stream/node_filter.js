@@ -1,21 +1,18 @@
 
 var through = require('through2');
+var stream = through.obj( function( data, enc, done ) {
 
-var stream = through.obj( function( node, enc, done ) {
-
-  // filter nodes missing mandatory properties
-  if( !node || !node.hasOwnProperty('id')
-            || !node.hasOwnProperty('lat')
-            || !node.hasOwnProperty('lon')
-            || 'object' !== typeof node.tags
-            || !Object.keys( node.tags ).length ) return done();
-  
-  // filter nodes which are not a desirable feature type
-  if( hasFeature( node ) ){
-    this.push( node, enc );
+  // filter nodes missing requires properties
+  if( node && node.hasOwnProperty('id')
+           && node.hasOwnProperty('lat')
+           && node.hasOwnProperty('lon')
+           && 'object' == typeof node.tags
+           && !!Object.keys( node.tags ).length
+           && hasFeature( node ) ){
+    this.push( node );
   }
 
-  done();
+  return done();
 });
 
 var features = ( 'amenity building shop office public_transport cuisine railway sport natural tourism ' +
