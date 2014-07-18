@@ -10,8 +10,16 @@ module.exports = function( index, type ){
     var id = item.id;
     delete item.id;
 
+    // allow override of the default type
+    // by setting ._type on the item.
+    var estype = type;
+    if( item.hasOwnProperty('_type') ) {
+      estype = item._type;
+      delete item._type;
+    }
+
     esclient.stream.write({
-      _index: index, _type: type, _id: id,
+      _index: index, _type: estype, _id: id,
       data: item
     }, done );
 
