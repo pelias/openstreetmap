@@ -10,23 +10,26 @@ mappers.push( require('../mapper/node/fhrs_schema') );
 mappers.push( require('../mapper/node/karlsruhe_schema') );
 mappers.push( require('../mapper/node/osm_rubbish') );
 
-var stream = through.obj( function( node, enc, done ) {
+module.exports = function(){
 
-  var record = {};
+  var stream = through.obj( function( node, enc, done ) {
 
-  mappers.forEach( function( mapper ){
-    mapper( node, record );
+    var record = {};
+
+    mappers.forEach( function( mapper ){
+      mapper( node, record );
+    });
+
+    // remove nodes which don't have a valid name
+    // if( 'object' == typeof record.name && Object.keys( record.name ).length ){
+    //   this.push( record, enc );
+    // }
+
+    this.push( record );
+
+    done();
+
   });
 
-  // remove nodes which don't have a valid name
-  // if( 'object' == typeof record.name && Object.keys( record.name ).length ){
-  //   this.push( record, enc );
-  // }
-
-  this.push( record );
-
-  done();
-
-});
-
-module.exports = stream;
+  return stream;
+}

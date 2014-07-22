@@ -1,39 +1,56 @@
 
 var through = require('through2');
+var osm_names = require('../mapper/node/osm_names');
+var osm_rubbish = require('../mapper/node/osm_rubbish');
 
-var mapper = through.obj( function( way, enc, done ) {
-  
-  if( !way.id || !way.refs.length ) return done();
-  if( !way.tags || !way.tags.name ) return done();
-  if( way.info && way.info.visible === 'false' ) return done();
+module.exports = function(){
 
-  var record = {
-    id: way.id,
-    refs: way.refs
-  };
+  var stream = through.obj( function( way, enc, done ) {
 
-  if( way.tags ){
-    record.tags = way.tags;
-    if( way.tags.name ){
-      record.name = way.tags.name;
+    // console.log( JSON.stringify( way, null, 2 ) );
+    // process.exit(1);
+
+    if( way && (''+way.id) == '79338918' ){ // city farm
+      console.error( 'city farm!' );
+      console.error( JSON.stringify( way, null, 2 ) );
     }
-  }
+    
+    if( !way || !way.id ){ return done(); }
+    if( !Array.isArray( way.nodeRefs ) || !way.nodeRefs.length ){ return done(); }
+    if( 'object' !== typeof way.tags ){ return done(); }
+    if( !way.tags.name ){ return done(); }
+    // if( way.info && way.info.visible === 'false' ) return done();
 
-  // remove rubbish tags
-  delete way.tags['created_by'];
-  delete way.tags['name'];
-  delete way.tags['FIXME'];
+    var record = {
+      id: way.id,
+      refs: way.nodeRefs,
+      type: 'way'
+    };
 
-  // remove dates
-  for( var tag in way.tags ){
-    if( tag.match('date') ){
-      delete way.tags[tag];
+    if( way.tags ){
+      record.tags = way.tags;
+      if( way.tags.name ){
+        record.name = {
+          default: way.tags.name
+        }
+      }
     }
-  }
 
-  this.push( record, enc );
-  done();
+    // fix names
+    osm_names( way, record );
 
-});
+    // remove rubbish tags
+    osm_rubbish( record );
 
-module.exports = mapper;
+    if( way && (''+way.id) == '79338918' ){ // city farm
+      console.error( 'city farm push' );
+      console.error( JSON.stringify( record, null, 2 ) );
+    }
+
+    this.push( record, enc );
+    done();
+
+  });
+
+  return stream;
+}

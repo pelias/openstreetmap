@@ -2,19 +2,32 @@
 var through = require('through2')
     features = require('../features');
 
-var stream = through.obj( function( node, enc, done ) {
+module.exports = function(){
 
-  // change es index '_type' property for known features
-  if( node && 'object' == typeof node.tags && !!Object.keys( node.tags ).length ){
-    var feature = features.getFeature( node );
-    if( feature ){
-      node._type = feature;
+  var stream = through.obj( function( node, enc, done ) {
+
+    // nodes with no name are not POIs in their own right
+    if( !node.name || !node.name.default ){
+      node._type = 'osmpoint';
     }
-  }
 
-  // forward down the pipeline
-  this.push( node );
-  return done();
-});
+    // nodes with no tags are not POIs in their own right
+    else if( 'object' !== typeof node.tags || !Object.keys( node.tags ).length ){
+      node._type = 'osmpoint';
+    }
 
-module.exports = stream;
+    // nodes not in our feature list are not POIs in their own right
+    else {
+      var feature = features.getFeature( node );
+      if( !feature ){
+        node._type = 'osmpoint';
+      }
+    }
+
+    // forward down the pipeline
+    this.push( node );
+    return done();
+  });
+
+  return stream;
+}

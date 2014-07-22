@@ -1,59 +1,93 @@
 
 var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
 //filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
-//filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf';
-//filename = '/media/hdd/osm/mapzen-metro/damascus.osm.pbf';
+// filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf';
+// filename = '/media/hdd/osm/mapzen-metro/damascus.osm.pbf';
+// filename = '/media/hdd/osm/geofabrik/greater-london-latest.osm.pbf';
 
 var fs = require('fs');
-var osm_types = require( './stream/osm_types' );
-var es_client = require( './stream/es_client' );
 
-var streams = {
-  // pbf:                      fs.createReadStream( '/media/hdd/osm/mapzen-metro/london.osm.pbf' ),
-  // osm:                      require( './stream/osm' ),
-  osm2:                     require( './stream/osm2' ),
-  stringify:                require( './stream/stringify' ),
-  devnull:                  require( './stream/devnull' ),
-  // sporadic:                require( './stream/sporadic' ),
-  node_filter:              require( './stream/node_filter' ),
-  node_basic_filter:        require( './stream/node_basic_filter' ),
-  node_mapper:              require( './stream/node_mapper' ),
-  node_type:                require( './stream/node_type' ),
-  suggest:                  require( './stream/suggest' ),
-  geonames:                 require( './stream/geonames' ),
-  // quattroshapes:            require( './stream/quattroshapes' ),
-  way_mapper:               require( './stream/way_mapper' ),
-  way_normalizer:           require( './stream/way_normalizer' ),
-  stats:                    require( './stream/stats' )
+// generic streams
+var stringify =                require('./stream/stringify');
+var devnull =                  require('./stream/devnull');
+var required =                 require('./stream/required');
+// var sporadic =                 require('./stream/sporadic');
+
+// sinks
+var backend = {
+  es: {
+    osmnode:                  require('./stream/es_backend')('pelias', 'osmnode'),
+    osmnodeany:               require('./stream/es_backend')('pelias', undefined),
+    osmway:                   require('./stream/es_backend')('pelias', 'osmway'),
+    geonames:                 require('./stream/es_backend')('pelias', 'geoname')
+  }
 }
 
+// taps
+var osm2 =                     require('./stream/osm2');
+
+// forkers
+var osm_types =                require('./stream/osm_types');
+
+// pelias
+var pelias = {
+  suggester:                   require('./stream/pelias/suggester')
+}
+
+// osm
+var osm = {
+  way: {
+    denormalizer:              require('./stream/osm/way/denormalizer'),
+  },
+  any: {
+    heirachyLookup:            require('./stream/osm/any/heirachyLookup')
+  }
+}
+
+var feature_filter =           require('./stream/feature_filter');
+var node_filter =              require('./stream/node_filter');
+var node_basic_filter =        require('./stream/node_basic_filter');
+var node_mapper =              require('./stream/node_mapper');
+var node_type =                require('./stream/node_type');
+
+//var quattroshapes =            require('./stream/quattroshapes');
+var way_mapper =               require('./stream/way_mapper');
+var stats =                    require('./stream/stats');
+
 // enable/disable debugging of bottlenecks in the pipeline.
-streams.stats.enabled = false;
+stats.enabled = false;
 
 // entry point for node pipeline
-streams.node_entry = streams.stats( 'osm_types -> node_basic_filter' );
+node_fork = stats( 'osm_types -> node_basic_filter' );
+node_fork
+  .pipe( node_basic_filter() )
+  .pipe( stats( 'node_basic_filter -> node_mapper' ) )
+  .pipe( node_mapper() )
+  .pipe( stats( 'node_mapper -> node_type' ) )
+  .pipe( node_type() ) // send the non-poi nodes to another index
+  .pipe( stats( 'node_type -> geonames' ) )
+  .pipe( osm.any.heirachyLookup( backend.es.geonames ) )
+  .pipe( stats( 'geonames -> suggester' ) )
+  .pipe( pelias.suggester() )
+  .pipe( stats( 'suggester -> es_backend' ) )
+  .pipe( backend.es.osmnode.createPullStream() );
 
-streams.node_entry
-  // .pipe( streams.node_filter )
-  // .pipe( streams.stats( 'node_filter -> node_mapper' ) )
-  .pipe( streams.node_basic_filter )
-  .pipe( streams.stats( 'node_basic_filter -> node_mapper' ) )
-  .pipe( streams.node_mapper )
-  // .pipe( streams.stats( 'node_mapper -> node_type' ) )
-  // .pipe( streams.node_type )
-  .pipe( streams.stats( 'node_type -> geonames' ) )
-  .pipe( streams.geonames )
-  .pipe( streams.stats( 'geonames -> suggest' ) )
-  .pipe( streams.suggest )
-  .pipe( streams.stats( 'suggest -> es_client' ) )
-  .pipe( es_client( 'pelias', 'osmnode' ) );
+// entry point for way pipeline
+way_fork = stats( 'osm_types -> way_mapper' );
+way_fork
+  .pipe( way_mapper() ) // @todo: this does too much; simplify
+  .pipe( stats( 'way_mapper -> feature_filter' ) )
+  .pipe( osm.way.denormalizer( backend.es.osmnodeany ) )
+  .pipe( stats( 'wayDenormalizer -> geonames' ) )
+  .pipe( osm.any.heirachyLookup( backend.es.geonames ) )
+  .pipe( stats( 'geonames -> suggester' ) )
+  .pipe( pelias.suggester() )
+  .pipe( stats( 'suggester -> es_backend' ) )
+  .pipe( backend.es.osmway.createPullStream() );
 
-streams.way_mapper
-  .pipe( streams.way_normalizer )
-  .pipe( es_client( 'import', 'way' ) );
-
-// pipe objects to streams.stringify for debugging
-streams.stringify.pipe( process.stdout );
+// pipe objects to stringify for debugging
+debug_fork = stringify();
+debug_fork.pipe( process.stdout );
 
 // check file exists
 try {
@@ -63,17 +97,17 @@ try {
   process.exit(1);
 }
 
-var reader = streams.osm2( filename );
+var reader = osm2( filename );
 // reader.on( 'unpipe', function(){
 //   console.log( 'reader unpipe' );
 //   process.exit(0);
 // });
 
 reader
-  .pipe( streams.stats( 'reader -> osm_types' ) )
+  .pipe( stats( 'reader -> osm_types' ) )
   .pipe( osm_types({
-    node:     streams.node_entry,
-    way:      streams.devnull, //streams.way_mapper,
-    relation: streams.devnull,
+    node:     node_fork,
+    way:      way_fork,
+    relation: devnull(),
   }))
 ;

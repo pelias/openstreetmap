@@ -1,6 +1,8 @@
 
 var through = require('through2');
 
-module.exports = through.obj( function( row, enc, next ) {
-  next();
-});
+module.exports = function(){
+  return through.obj( function( row, enc, next ) {
+    next();
+  });
+}

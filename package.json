@@ -32,6 +32,7 @@
     "geolib": "^2.0.14",
     "geojson-extent": "0.0.1",
     "gjtk": "^1.0.0-b",
-    "pelias-esclient": "0.0.20"
+    "pelias-esclient": "0.0.20",
+    "geopipes-elasticsearch-backend": "0.0.1"
   }
 }

@@ -1,14 +1,18 @@
 
 var through = require('through2');
 
-module.exports = through.obj( function( row, enc, next ) {
+module.exports = function(){
 
-  var interval = 1000 + Math.round( Math.random() * 2000 );
+  return through.obj( function( row, enc, next ) {
 
-  var cb = function(){
-    this.push( row, enc );
-    next();
-  };
+    var interval = 1000 + Math.round( Math.random() * 2000 );
 
-  setTimeout( cb.bind(this), interval );
-});
+    var cb = function(){
+      this.push( row, enc );
+      next();
+    };
+
+    setTimeout( cb.bind(this), interval );
+  });
+
+}

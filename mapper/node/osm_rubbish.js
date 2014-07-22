@@ -1,9 +1,9 @@
 
-module.exports = function( node, record ){
+module.exports = function( item, record ){
 
-  if( node.tags ){
+  if( item.tags ){
 
-    var keys = Object.keys( node.tags );
+    var keys = Object.keys( item.tags );
     var rubbish = [ 'created_by', 'fixme', 'randomjunk_bot' ];
 
     // remove rubbish tags (case insensitive)
@@ -11,15 +11,15 @@ module.exports = function( node, record ){
       for( var y=0; y<keys.length; y++ ){
         var regex = new RegExp( '^' + rubbish[x] + '$', 'i' );
         if( keys[y].match( regex ) ){
-          delete node.tags[ keys[y] ];
+          delete item.tags[ keys[y] ];
         }
       }
     }
 
     // remove dates
-    for( var tag in node.tags ){
+    for( var tag in item.tags ){
       if( tag.match('date') ){
-        delete node.tags[tag];
+        delete item.tags[tag];
       }
     }
   }
