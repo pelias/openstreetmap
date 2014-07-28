@@ -60,6 +60,9 @@ var stream = through.obj( function( item, enc, done ) {
 
   }.bind(this));
 
+  // catch stream errors
+  stream.on( 'error', console.error.bind( console, __filename ) );
+
 });
 
 module.exports = stream;

@@ -37,6 +37,9 @@ module.exports = function( client ){
 
   });
 
+  // catch stream errors
+  stream.on( 'error', console.error.bind( console, __filename ) );
+
   return stream;
 }
 

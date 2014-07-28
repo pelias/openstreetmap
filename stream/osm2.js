@@ -37,6 +37,9 @@ module.exports = function( filepath ){
       console.error( msg );
     }
   });
+  
+  // catch stream errors
+  stream.on( 'error', console.error.bind( console, __filename ) );
 
   return stream;
 }

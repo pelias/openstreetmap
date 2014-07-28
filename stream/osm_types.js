@@ -32,6 +32,9 @@ module.exports = function( streams ){
     }
 
   });
+  
+  // catch stream errors
+  stream.on( 'error', console.error.bind( console, __filename ) );
 
   return stream;
 }

@@ -15,6 +15,9 @@ module.exports = function(){
     next();
 
   });
+  
+  // catch stream errors
+  stream.on( 'error', console.error.bind( console, __filename ) );
 
   return stream;
 }

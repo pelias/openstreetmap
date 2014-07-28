@@ -105,4 +105,7 @@ var stream = through.obj( function( item, enc, done ) {
 
 });
 
+// catch stream errors
+stream.on( 'error', console.error.bind( console, __filename ) );
+
 module.exports = stream;
