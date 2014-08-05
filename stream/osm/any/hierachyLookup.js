@@ -1,7 +1,7 @@
 
 var through = require('through2')
 
-function heirachyLookup( backend ){
+function hierachyLookup( backend ){
 
   var stream = through.obj( function( item, enc, done ) {
 
@@ -29,11 +29,11 @@ function heirachyLookup( backend ){
 
       // An error occurred
       if( error ){
-        console.error( 'heirachyLookup error:', error );
+        console.error( 'hierachyLookup error:', error );
       }
 
       else if( !resp || !resp.length ){
-        console.error( 'heirachyLookup returned 0 results' );
+        console.error( 'hierachyLookup returned 0 results' );
       }
 
       // Copy admin data from the geonames record to the osm record
@@ -43,7 +43,7 @@ function heirachyLookup( backend ){
         if( fields.admin1 ){ item.admin1 = fields.admin1; }
         if( fields.admin2 ){ item.admin2 = fields.admin2; }
       }
-     
+
       this.push( item, enc ); // Forward record down the pipe
       return done(); // ACK and take next record from the inbound stream
 
@@ -57,4 +57,4 @@ function heirachyLookup( backend ){
   return stream;
 }
 
-module.exports = heirachyLookup;
+module.exports = hierachyLookup;
