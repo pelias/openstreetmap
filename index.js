@@ -1,6 +1,6 @@
 
 var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
-//filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
+filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
 // filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf';
 // filename = '/media/hdd/osm/mapzen-metro/damascus.osm.pbf';
 // filename = '/media/hdd/osm/geofabrik/greater-london-latest.osm.pbf';
@@ -40,7 +40,7 @@ var osm = {
     denormalizer:              require('./stream/osm/way/denormalizer'),
   },
   any: {
-    heirachyLookup:            require('./stream/osm/any/heirachyLookup')
+    hierachyLookup:            require('./stream/osm/any/hierachyLookup')
   }
 }
 
@@ -66,7 +66,7 @@ node_fork
   .pipe( stats( 'node_mapper -> node_type' ) )
   .pipe( node_type() ) // send the non-poi nodes to another index
   .pipe( stats( 'node_type -> geonames' ) )
-  .pipe( osm.any.heirachyLookup( backend.es.geonames ) )
+  .pipe( osm.any.hierachyLookup( backend.es.geonames ) )
   .pipe( stats( 'geonames -> suggester' ) )
   .pipe( pelias.suggester() )
   .pipe( stats( 'suggester -> es_backend' ) )
@@ -79,7 +79,7 @@ way_fork
   .pipe( stats( 'way_mapper -> feature_filter' ) )
   .pipe( osm.way.denormalizer( backend.es.osmnodeany ) )
   .pipe( stats( 'wayDenormalizer -> geonames' ) )
-  .pipe( osm.any.heirachyLookup( backend.es.geonames ) )
+  .pipe( osm.any.hierachyLookup( backend.es.geonames ) )
   .pipe( stats( 'geonames -> suggester' ) )
   .pipe( pelias.suggester() )
   .pipe( stats( 'suggester -> es_backend' ) )
