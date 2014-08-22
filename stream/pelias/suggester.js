@@ -1,4 +1,4 @@
- 
+
 var through = require('through2'),
     features = require('../../features');
 
@@ -66,7 +66,7 @@ module.exports = function(){
     // payload
     var adminParts = [];
     record.suggest.payload.geo = record.center_point.lon + ',' + record.center_point.lat;
-    
+
     if( record.admin2 && record.admin2.length ){
       adminParts.push( record.admin2 );
     }

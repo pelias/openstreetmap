@@ -7,23 +7,15 @@ module.exports = function(){
 
   var stream = through.obj( function( way, enc, done ) {
 
-    // console.log( JSON.stringify( way, null, 2 ) );
-    // process.exit(1);
-
-    if( way && (''+way.id) == '79338918' ){ // city farm
-      console.error( 'city farm!' );
-      console.error( JSON.stringify( way, null, 2 ) );
-    }
-    
     if( !way || !way.id ){ return done(); }
-    if( !Array.isArray( way.nodeRefs ) || !way.nodeRefs.length ){ return done(); }
+    if( !Array.isArray( way.refs ) || !way.refs.length ){ return done(); }
     if( 'object' !== typeof way.tags ){ return done(); }
     if( !way.tags.name ){ return done(); }
     // if( way.info && way.info.visible === 'false' ) return done();
 
     var record = {
       id: way.id,
-      refs: way.nodeRefs,
+      refs: way.refs,
       type: 'way'
     };
 
@@ -41,11 +33,6 @@ module.exports = function(){
 
     // remove rubbish tags
     osm_rubbish( record );
-
-    if( way && (''+way.id) == '79338918' ){ // city farm
-      console.error( 'city farm push' );
-      console.error( JSON.stringify( record, null, 2 ) );
-    }
 
     this.push( record, enc );
     done();
