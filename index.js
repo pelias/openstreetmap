@@ -21,8 +21,8 @@ var filename = settings.imports.openstreetmap.import[0].filename;
 var leveldbpath = settings.imports.openstreetmap.leveldbpath;
 
 // testing
-basepath = '/media/hdd/osm/mapzen-metro';
-filename = 'london.osm.pbf';
+// basepath = '/media/hdd/osm/mapzen-metro';
+// filename = 'london.osm.pbf';
 
 var pbfFilePath = basepath + '/' + filename;
 // check pbf file exists
