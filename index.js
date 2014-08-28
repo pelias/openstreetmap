@@ -4,6 +4,8 @@ var fs = require('fs'),
     multilevel = require('level-multiply'),
     parser = require('osm-pbf-parser')(),
     through = require('through2'),
+    suggester = require('pelias-suggester-pipeline'),
+    propStream = require('prop-stream'),
     settings = require('pelias-config').generate();
 
 // var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
@@ -72,11 +74,6 @@ var osm2 =                     require('./stream/osm2');
 // forkers
 var osm_types =                require('./stream/osm_types');
 
-// pelias
-var pelias = {
-  suggester:                   require('./stream/pelias/suggester')
-};
-
 // osm
 var osm = {
   way: {
@@ -122,12 +119,23 @@ node_fork
     { type: 'admin1'        , adapter: backend.es.admin1 },
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ]))
-  // .pipe( through.obj( function( chunk, enc, next ){
-  //   console.log( JSON.stringify( chunk, null, 2 ) );
-  //   process.exit(1);
-  // }))
+
+  // add correct meta info for suggester payload
+  // @todo: make this better
+  .pipe( through.obj( function( item, enc, next ){
+    if( !item.hasOwnProperty('_meta') ){ item._meta = {}; }
+    item._meta.type = 'osmnode';
+    this.push( item );
+    next();
+  }))
+
   .pipe( stats( 'geonames -> suggester' ) )
-  .pipe( pelias.suggester() )
+  .pipe( suggester.pipeline )
+
+  // remove tags
+  // @todo: make this better
+  .pipe( propStream.blacklist( 'tags' ) )
+
   .pipe( stats( 'suggester -> es_backend' ) )
   .pipe( backend.es.osmnode.createPullStream() );
 
@@ -143,8 +151,23 @@ way_fork
   .pipe( osm.way.denormalizer( backend.level.osmnodecentroids ) )
   .pipe( stats( 'way_denormalizer -> way_geonames' ) )
   .pipe( osm.any.hierachyLookup( backend.es.geonames ) )
+
+  // add correct meta info for suggester payload
+  // @todo: make this better
+  .pipe( through.obj( function( item, enc, next ){
+    if( !item.hasOwnProperty('_meta') ){ item._meta = {}; }
+    item._meta.type = 'osmway';
+    this.push( item );
+    next();
+  }))
+
   .pipe( stats( 'way_geonames -> way_suggester' ) )
-  .pipe( pelias.suggester() ) // @todo: change this to the tested suggester module
+  .pipe( suggester.pipeline )
+
+  // remove tags
+  // @todo: make this better
+  .pipe( propStream.blacklist( 'tags' ) )
+
   .pipe( stats( 'way_suggester -> way_es_backend' ) )
   .pipe( backend.es.osmway.createPullStream() );
 
