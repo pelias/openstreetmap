@@ -23,8 +23,8 @@ var filename = settings.imports.openstreetmap.import[0].filename;
 var leveldbpath = settings.imports.openstreetmap.leveldbpath;
 
 // testing
-basepath = '/media/hdd/osm/mapzen-metro';
-filename = 'london.osm.pbf';
+// basepath = '/media/hdd/osm/mapzen-metro';
+// filename = 'london.osm.pbf';
 
 var pbfFilePath = basepath + '/' + filename;
 // check pbf file exists
@@ -119,7 +119,7 @@ node_fork
     { type: 'admin2'        , adapter: backend.es.admin2 },
     { type: 'admin1'        , adapter: backend.es.admin1 },
     { type: 'admin0'        , adapter: backend.es.admin0 }
-  ]))
+  ], backend.es.geonames ))
 
   // add correct meta info for suggester payload
   // @todo: make this better
