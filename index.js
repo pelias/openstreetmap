@@ -1,5 +1,12 @@
 
-var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
+var fs = require('fs'),
+    levelup = require('levelup'),
+    multilevel = require('level-multiply'),
+    parser = require('osm-pbf-parser')(),
+    through = require('through2'),
+    settings = require('pelias-config').generate();
+
+// var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
 // filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
 //filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf'; // 1037565 nodes
 // filename = '/media/hdd/osm/mapzen-metro/wellington.osm.pbf'; // 1711906 nodes
@@ -8,10 +15,31 @@ var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
 // filename = '/media/hdd/osm/geofabrik/new-zealand-latest.osm.pbf'; // 19232000 total, 19226584 nodes, 5416 ways
 // filename = '/media/hdd/osm/mapzen-metro/munich.osm.pbf';
 
-var fs = require('fs');
-var levelup = require('levelup');
-var multilevel = require('level-multiply');
-// var config = require('pelias-config');
+// use datapath setting from your config file
+var basepath = settings.imports.openstreetmap.datapath;
+var filename = settings.imports.openstreetmap.import[0].filename;
+var leveldbpath = settings.imports.openstreetmap.leveldbpath;
+
+// testing
+basepath = '/media/hdd/osm/mapzen-metro';
+filename = 'london.osm.pbf';
+
+var pbfFilePath = basepath + '/' + filename;
+// check pbf file exists
+try {
+  fs.statSync( pbfFilePath );
+} catch( e ){
+  console.error( 'failed to load pbf file:', pbfFilePath );
+  process.exit(1);
+}
+
+// check leveldb dir exists
+try {
+  fs.statSync( leveldbpath );
+} catch( e ){
+  console.error( 'failed to open:', leveldbpath );
+  process.exit(1);
+}
 
 // generic streams
 var stringify =                require('./stream/stringify');
@@ -25,10 +53,16 @@ var backend = {
     osmnode:                  require('./stream/es_backend')('pelias', 'osmnode'),
     // osmnodeany:               require('./stream/es_backend')('pelias', undefined),
     osmway:                   require('./stream/es_backend')('pelias', 'osmway'),
-    geonames:                 require('./stream/es_backend')('pelias', 'geoname')
+    geonames:                 require('./stream/es_backend')('pelias', 'geoname'),
+    admin0:                   require('./stream/es_backend')('pelias', 'admin0'),
+    admin1:                   require('./stream/es_backend')('pelias', 'admin1'),
+    admin2:                   require('./stream/es_backend')('pelias', 'admin2'),
+    local_admin:              require('./stream/es_backend')('pelias', 'local_admin'),
+    locality:                 require('./stream/es_backend')('pelias', 'locality'),
+    neighborhood:             require('./stream/es_backend')('pelias', 'neighborhood')
   },
   level: {
-    osmnodecentroids:         multilevel( levelup( '/tmp/centroids', { valueEncoding: 'json' } ), 'm' )
+    osmnodecentroids:         multilevel( levelup( leveldbpath, { valueEncoding: 'json' } ), 'm' )
   }
 };
 
@@ -80,7 +114,18 @@ node_fork
   .pipe( stats( 'node_mapper -> node_type' ) )
   .pipe( node_type() ) // send the non-poi nodes to another index
   .pipe( stats( 'node_type -> geonames' ) )
-  .pipe( osm.any.hierachyLookup( backend.es.geonames ) )
+  .pipe( osm.any.hierachyLookup([
+    { type: 'neighborhood'  , adapter: backend.es.neighborhood },
+    { type: 'locality'      , adapter: backend.es.locality },
+    { type: 'local_admin'   , adapter: backend.es.local_admin },
+    { type: 'admin2'        , adapter: backend.es.admin2 },
+    { type: 'admin1'        , adapter: backend.es.admin1 },
+    { type: 'admin0'        , adapter: backend.es.admin0 }
+  ]))
+  // .pipe( through.obj( function( chunk, enc, next ){
+  //   console.log( JSON.stringify( chunk, null, 2 ) );
+  //   process.exit(1);
+  // }))
   .pipe( stats( 'geonames -> suggester' ) )
   .pipe( pelias.suggester() )
   .pipe( stats( 'suggester -> es_backend' ) )
@@ -107,26 +152,8 @@ way_fork
 debug_fork = stringify();
 debug_fork.pipe( process.stdout );
 
-// check file exists
-try {
-  fs.statSync( filename );
-} catch( e ){
-  console.error( 'failed to load:', filename );
-  process.exit(1);
-}
-
-var osm = require('osm-pbf-parser')();
-
-fs.createReadStream( filename )
-  .pipe(osm)
-
-// var reader = osm2( filename );
-// reader.on( 'unpipe', function(){
-//   console.log( 'reader unpipe' );
-//   process.exit(0);
-// });
-
-// reader
+fs.createReadStream( pbfFilePath )
+  .pipe( parser )
   .pipe( stats( 'reader -> osm_types' ) )
   .pipe( osm_types({
     node:     node_fork, //devnull()
