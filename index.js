@@ -23,8 +23,8 @@ var filename = settings.imports.openstreetmap.import[0].filename;
 var leveldbpath = settings.imports.openstreetmap.leveldbpath;
 
 // testing
-// basepath = '/media/hdd/osm/mapzen-metro';
-// filename = 'london.osm.pbf';
+basepath = '/media/hdd/osm/mapzen-metro';
+filename = 'london.osm.pbf';
 
 var pbfFilePath = basepath + '/' + filename;
 // check pbf file exists
@@ -90,6 +90,7 @@ var node_basic_filter =        require('./stream/node_basic_filter');
 var node_mapper =              require('./stream/node_mapper');
 var node_type =                require('./stream/node_type');
 var node_centroid_cache =      require('./stream/node_centroid_cache');
+var address_extractor =        require('./stream/address_extractor');
 
 //var quattroshapes =            require('./stream/quattroshapes');
 var way_mapper =               require('./stream/way_mapper');
@@ -129,6 +130,10 @@ node_fork
     next();
   }))
 
+  // extract addresses & create a new record for each
+  // @todo: make this better
+  .pipe( address_extractor() )
+
   .pipe( stats( 'geonames -> suggester' ) )
   .pipe( suggester.pipeline )
 
@@ -160,6 +165,8 @@ way_fork
     this.push( item );
     next();
   }))
+
+  // @todo: extract addresses from ways
 
   .pipe( stats( 'way_geonames -> way_suggester' ) )
   .pipe( suggester.pipeline )
