@@ -43,7 +43,7 @@ module.exports = function( client ){
   return stream;
 }
 
-function getNodeIdsAsGeoJSON( client, ids, cb ){  
+function getNodeIdsAsGeoJSON( client, ids, cb ){
 
   client.mget( ids, null, function( err, resp ){
 
@@ -52,17 +52,33 @@ function getNodeIdsAsGeoJSON( client, ids, cb ){
       return cb( err );
     }
 
-    else if( Array.isArray( resp ) ){
+    // leveldb
+    else if( 'object' === typeof resp ){
 
-      var points = resp.map( function( doc ){
-        return [ doc.center_point.lon, doc.center_point.lat ];
-      });
+      var points = [];
+      for( var key in resp ){
+        var doc = resp[key];
+        points.push([ doc.lon, doc.lat ]);
+      }
 
       return cb( undefined, {
         type: geoJsonTypeFor( points ),
         coordinates: points
       });
     }
+
+    // elasticsearch
+    // else if( Array.isArray( resp ) ){
+
+    //   var points = resp.map( function( doc ){
+    //     return [ doc.center_point.lon, doc.center_point.lat ];
+    //   });
+
+    //   return cb( undefined, {
+    //     type: geoJsonTypeFor( points ),
+    //     coordinates: points
+    //   });
+    // }
 
     else {
       console.log( 'getNodeIdsAsGeoJSON: mget failed' );
