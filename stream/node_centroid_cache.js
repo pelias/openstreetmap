@@ -1,5 +1,6 @@
 
-var through = require('through2');
+var through = require('through2'),
+    codec = require('../util/centroidCodec');
 
 var count = 0;
 
@@ -7,7 +8,7 @@ module.exports = function( backend ){
 
   var stream = through.obj( function( node, enc, done ) {
 
-    backend.put( node.id, { lat: node.lat, lon: node.lon }, function(err){
+    backend.put( node.id, codec.encode( node ), function(err){
       if( err ) console.error( 'leveldb latlon cache failed', err );
     });
 

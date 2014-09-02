@@ -2,6 +2,7 @@
 var through = require('through2');
 var geoJsonCenter = require('../../../util/geoJsonCenter');
 var geoJsonTypeFor = require('../../../util/geoJsonTypeFor');
+var codec = require('../../../util/centroidCodec');
 
 module.exports = function( client ){
 
@@ -57,7 +58,7 @@ function getNodeIdsAsGeoJSON( client, ids, cb ){
 
       var points = [];
       for( var key in resp ){
-        var doc = resp[key];
+        var doc = codec.decode( resp[key] );
         points.push([ doc.lon, doc.lat ]);
       }
 
