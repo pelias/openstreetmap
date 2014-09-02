@@ -64,7 +64,7 @@ var backend = {
     neighborhood:             require('./stream/es_backend')('pelias', 'neighborhood')
   },
   level: {
-    osmnodecentroids:         multilevel( levelup( leveldbpath, { valueEncoding: 'json' } ), 'm' )
+    osmnodecentroids:         multilevel( levelup( leveldbpath ), 'm' )
   }
 };
 

@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "node test/run.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "async": "^0.9.0",
+    "bun": "0.0.10",
     "geojson-extent": "0.0.1",
     "geolib": "^2.0.14",
     "geopipes-elasticsearch-backend": "^0.0.7",
@@ -41,5 +42,9 @@
     "pelias-suggester-pipeline": "0.0.4",
     "prop-stream": "0.0.0",
     "through2": "^0.5.1"
+  },
+  "devDependencies": {
+    "tape": "^2.13.4",
+    "tap-spec": "^0.2.0"
   }
 }
