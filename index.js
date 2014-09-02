@@ -77,9 +77,6 @@ var backend = {
   }
 };
 
-// taps
-var osm2 =                     require('./stream/osm2');
-
 // forkers
 var osm_types =                require('./stream/osm_types');
 
