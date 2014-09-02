@@ -8,6 +8,15 @@ var fs = require('fs'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate();
 
+var bun = require('bun');
+
+function generateSuggester(){
+  return bun([
+    suggester.streams.suggestable(),
+    suggester.streams.suggester( suggester.generators )
+  ]);
+}
+
 // var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
 // filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
 //filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf'; // 1037565 nodes
@@ -24,7 +33,7 @@ var leveldbpath = settings.imports.openstreetmap.leveldbpath;
 
 // testing
 // basepath = '/media/hdd/osm/mapzen-metro';
-// filename = 'london.osm.pbf';
+// filename = 'wellington.osm.pbf';
 
 var pbfFilePath = basepath + '/' + filename;
 // check pbf file exists
@@ -105,13 +114,13 @@ stats.enabled = true;
 node_fork = stats( 'osm_types -> node_centroid_cache' );
 node_fork
   .pipe( node_centroid_cache( backend.level.osmnodecentroids ) )
-  .pipe( stats( 'node_centroid_cache -> node_basic_filter' ) )
+  .pipe( stats( 'node_centroid_cache -> node_filter' ) )
   .pipe( node_filter() )
-  .pipe( stats( 'node_basic_filter -> node_mapper' ) )
+  .pipe( stats( 'node_filter -> node_mapper' ) )
   .pipe( node_mapper() )
   .pipe( stats( 'node_mapper -> node_type' ) )
   .pipe( node_type() ) // send the non-poi nodes to another index
-  .pipe( stats( 'node_type -> geonames' ) )
+  .pipe( stats( 'node_type -> node_hierachyLookup' ) )
   .pipe( osm.any.hierachyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
@@ -120,6 +129,8 @@ node_fork
     { type: 'admin1'        , adapter: backend.es.admin1 },
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ], backend.es.geonames ))
+
+  .pipe( stats( 'node_hierachyLookup -> node_meta.type' ) )
 
   // add correct meta info for suggester payload
   // @todo: make this better
@@ -130,18 +141,22 @@ node_fork
     next();
   }))
 
+  .pipe( stats( 'node_meta.type -> node_address_extractor' ) )
+
   // extract addresses & create a new record for each
   // @todo: make this better
   .pipe( address_extractor() )
 
-  .pipe( stats( 'geonames -> suggester' ) )
-  .pipe( suggester.pipeline )
+  .pipe( stats( 'node_address_extractor -> node_suggester' ) )
+  .pipe( generateSuggester() )
+
+  .pipe( stats( 'node_suggester -> node_blacklist' ) )
 
   // remove tags
   // @todo: make this better
-  .pipe( propStream.blacklist( 'tags' ) )
+  .pipe( propStream.blacklist(['tags']) )
 
-  .pipe( stats( 'suggester -> es_backend' ) )
+  .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
   .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
@@ -154,8 +169,17 @@ way_fork
   .pipe( way_filter() )
   .pipe( stats( 'way_filter -> way_denormalizer' ) )
   .pipe( osm.way.denormalizer( backend.level.osmnodecentroids ) )
-  .pipe( stats( 'way_denormalizer -> way_geonames' ) )
-  .pipe( osm.any.hierachyLookup( backend.es.geonames ) )
+  .pipe( stats( 'way_denormalizer -> way_hierachyLookup' ) )
+  .pipe( osm.any.hierachyLookup([
+    { type: 'neighborhood'  , adapter: backend.es.neighborhood },
+    { type: 'locality'      , adapter: backend.es.locality },
+    { type: 'local_admin'   , adapter: backend.es.local_admin },
+    { type: 'admin2'        , adapter: backend.es.admin2 },
+    { type: 'admin1'        , adapter: backend.es.admin1 },
+    { type: 'admin0'        , adapter: backend.es.admin0 }
+  ], backend.es.geonames ))
+
+  .pipe( stats( 'way_hierachyLookup -> way_meta.type' ) )
 
   // add correct meta info for suggester payload
   // @todo: make this better
@@ -168,14 +192,15 @@ way_fork
 
   // @todo: extract addresses from ways
 
-  .pipe( stats( 'way_geonames -> way_suggester' ) )
-  .pipe( suggester.pipeline )
+  .pipe( stats( 'way_meta.type -> way_suggester' ) )
+  .pipe( generateSuggester() )
 
   // remove tags
   // @todo: make this better
-  .pipe( propStream.blacklist( 'tags' ) )
+  .pipe( stats( 'way_suggester -> way_blacklist' ) )
+  .pipe( propStream.blacklist(['tags','geo']) )
 
-  .pipe( stats( 'way_suggester -> way_es_backend' ) )
+  .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
   .pipe( backend.es.osmway.createPullStream() );
 
 // pipe objects to stringify for debugging
