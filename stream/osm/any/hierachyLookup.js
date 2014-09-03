@@ -6,35 +6,33 @@ function hierachyLookup( backends, fallbackBackend ){
 
   var stream = through.obj( function( item, enc, done ) {
 
+    var reply = function(){
+      this.push( item ); // Forward record down the pipe
+      return done(); // ACK and take next record from the inbound stream
+    }.bind(this);
+
     // Skip lookup for nodes without a name
     if( !item.name || !item.name.default ){
-      this.push( item, enc ); // Forward record down the pipe
-      return done(); // ACK and take next record from the inbound stream
+      return reply();
     }
 
     // Skip lookup if record already has geo info
     if( item.admin0 && item.admin1 && item.admin2 ){
-      this.push( item, enc ); // Forward record down the pipe
-      return done(); // ACK and take next record from the inbound stream
-    }
-
-    // Skip lookups for records which will not end up in our search index
-    // @todo: refactor this
-    // @deprecated
-    if( item._type && item._type === 'osmpoint' ){
-      this.push( item, enc ); // Forward record down the pipe
-      return done(); // ACK and take next record from the inbound stream
+      return reply();
     }
 
     buildHierachy( backends, item.center_point, function( error, result ){
 
       // An error occurred
+      // @todo: this should never happen
       if( error ){
-        // console.error( 'hierachyLookup error:', error );
+        console.error( 'hierachyLookup error:', error );
+        return reply();
       }
 
       else if( !result ){
         console.error( 'hierachyLookup returned 0 results' );
+        return reply();
       }
 
       // Copy admin data to the osm record
@@ -46,11 +44,6 @@ function hierachyLookup( backends, fallbackBackend ){
         else if( result.locality ){ item.admin2 = result.locality; }
         else if( result.local_admin ){ item.admin2 = result.local_admin; }
         else if( result.admin2 ){ item.admin2 = result.admin2; }
-
-        var reply = function(){
-          this.push( item ); // Forward record down the pipe
-          return done(); // ACK and take next record from the inbound stream
-        }.bind(this);
 
         // fallback to geonames hierachy
         if( !item.admin0 || !item.admin1 || !item.admin2 ){

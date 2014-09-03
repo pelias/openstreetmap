@@ -19,7 +19,9 @@ function callback( centroid, opts, memo, backend, cb ){
     if( resp && resp.length && resp[0]['name.default'] ){
       memo[backend.type] = resp[0]['name.default'];
     }
-    cb( error, memo );
+    // @todo: error not being bubbled up!
+    // due to async.reduce failing on first error
+    cb( undefined, memo );
   });
 }
 
