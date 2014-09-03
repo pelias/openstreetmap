@@ -115,9 +115,8 @@ node_fork
   .pipe( node_filter() )
   .pipe( stats( 'node_filter -> node_mapper' ) )
   .pipe( node_mapper() )
-  .pipe( stats( 'node_mapper -> node_type' ) )
-  .pipe( node_type() ) // send the non-poi nodes to another index
-  .pipe( stats( 'node_type -> node_hierachyLookup' ) )
+
+  .pipe( stats( 'node_mapper -> node_hierachyLookup' ) )
   .pipe( osm.any.hierachyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
