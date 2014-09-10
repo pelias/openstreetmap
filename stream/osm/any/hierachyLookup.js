@@ -12,9 +12,9 @@ function hierachyLookup( backends, fallbackBackend ){
     }.bind(this);
 
     // Skip lookup for nodes without a name
-    if( !item.name || !item.name.default ){
-      return reply();
-    }
+    // if( !item.name || !item.name.default ){
+    //   return reply();
+    // }
 
     // Skip lookup if record already has geo info
     if( item.admin0 && item.admin1 && item.admin2 ){
