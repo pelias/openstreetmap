@@ -150,7 +150,7 @@ node_fork
 
   // remove tags
   // @todo: make this better
-  .pipe( propStream.blacklist(['tags']) )
+  .pipe( propStream.blacklist(['tags','_meta']) )
 
   .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
   .pipe( backend.es.osmnode.createPullStream() );
@@ -186,15 +186,19 @@ way_fork
     next();
   }))
 
-  // @todo: extract addresses from ways
+  .pipe( stats( 'way_meta.type -> way_address_extractor' ) )
 
-  .pipe( stats( 'way_meta.type -> way_suggester' ) )
+  // extract addresses & create a new record for each
+  // @todo: make this better
+  .pipe( address_extractor() )
+
+  .pipe( stats( 'way_address_extractor -> way_suggester' ) )
   .pipe( generateSuggester() )
 
   // remove tags
   // @todo: make this better
   .pipe( stats( 'way_suggester -> way_blacklist' ) )
-  .pipe( propStream.blacklist(['tags','geo']) )
+  .pipe( propStream.blacklist(['tags','geo','address','_meta']) )
 
   .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
   .pipe( backend.es.osmway.createPullStream() );

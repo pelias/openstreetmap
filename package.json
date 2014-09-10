@@ -33,6 +33,7 @@
     "geolib": "^2.0.14",
     "geopipes-elasticsearch-backend": "^0.0.7",
     "gjtk": "^1.0.0-b",
+    "is-object": "^1.0.1",
     "level-multiply": "0.0.1",
     "leveldown": "^0.10.2",
     "levelup": "^0.18.6",

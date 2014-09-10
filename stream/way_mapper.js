@@ -3,6 +3,8 @@ var through = require('through2');
 var osm_names = require('../mapper/node/osm_names');
 var osm_rubbish = require('../mapper/node/osm_rubbish');
 
+// @todo: make this stream go away and be more like node_filter
+
 module.exports = function(){
 
   var stream = through.obj( function( way, enc, done ) {
