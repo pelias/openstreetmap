@@ -43,7 +43,6 @@ var stats = function( title ){
 
   stream.log = function( store ){
     console.log( JSON.stringify( store, null, 2 ) );
-    console.log( 'pipes', pipes );
   };
 
   return stream;
