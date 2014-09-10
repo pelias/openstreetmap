@@ -30,7 +30,6 @@ module.exports = function(){
         id: type + '-' + item.type + '-' + item.id,
         name: {
           default: item.address.number + ' ' + item.address.street
-          // ,street: item.address.street
         },
         type: item.type,
         center_point: item.center_point,
