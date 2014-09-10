@@ -8,23 +8,14 @@ var fs = require('fs'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate();
 
+// @todo: extract this or refactor suggester to make it a stream factory
 var bun = require('bun');
-
 function generateSuggester(){
   return bun([
     suggester.streams.suggestable(),
     suggester.streams.suggester( suggester.generators )
   ]);
 }
-
-// var filename = '/media/hdd/osm/mapzen-metro/london.osm.pbf';
-// filename = '/media/hdd/osm/mapzen-metro/new-york.osm.pbf';
-//filename = '/media/hdd/osm/mapzen-metro/auckland.osm.pbf'; // 1037565 nodes
-// filename = '/media/hdd/osm/mapzen-metro/wellington.osm.pbf'; // 1711906 nodes
-// filename = '/media/hdd/osm/mapzen-metro/damascus.osm.pbf';
-// filename = '/media/hdd/osm/geofabrik/greater-london-latest.osm.pbf';
-// filename = '/media/hdd/osm/geofabrik/new-zealand-latest.osm.pbf'; // 19232000 total, 19226584 nodes, 5416 ways
-// filename = '/media/hdd/osm/mapzen-metro/munich.osm.pbf';
 
 // use datapath setting from your config file
 var basepath = settings.imports.openstreetmap.datapath;
@@ -62,7 +53,6 @@ var required =                 require('./stream/required');
 var backend = {
   es: {
     osmnode:                  require('./stream/es_backend')('pelias', 'osmnode'),
-    // osmnodeany:               require('./stream/es_backend')('pelias', undefined),
     osmway:                   require('./stream/es_backend')('pelias', 'osmway'),
     geonames:                 require('./stream/es_backend')('pelias', 'geoname'),
     admin0:                   require('./stream/es_backend')('pelias', 'admin0'),
@@ -158,8 +148,7 @@ node_fork
 // entry point for way pipeline
 way_fork = stats( 'osm_types -> way_mapper' );
 way_fork
-  // .pipe( exit_on_id( 79338918, 'hackney city farm' ) )
-  // .pipe( exit_on_id( 23904006, 'auckland town hall' ) )
+
   .pipe( way_mapper() ) // @todo: this does too much; simplify
   .pipe( stats( 'way_mapper -> way_filter' ) )
   .pipe( way_filter() )
@@ -204,14 +193,14 @@ way_fork
   .pipe( backend.es.osmway.createPullStream() );
 
 // pipe objects to stringify for debugging
-debug_fork = stringify();
-debug_fork.pipe( process.stdout );
+// debug_fork = stringify();
+// debug_fork.pipe( process.stdout );
 
 fs.createReadStream( pbfFilePath )
   .pipe( parser )
   .pipe( stats( 'reader -> osm_types' ) )
   .pipe( osm_types({
-    node:     node_fork, //devnull()
+    node:     node_fork,
     way:      way_fork,
     relation: devnull(),
   }))
