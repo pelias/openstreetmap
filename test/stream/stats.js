@@ -24,7 +24,7 @@ module.exports.tests.pipe = function(test, common) {
     var s = stats( 'title' );
     var mock = through.obj( function(){} );
     s.log = function(){
-      clearInterval( s.interval );
+      clearInterval( stats.interval );
       t.end();
     };
     mock.pipe(s);
@@ -68,7 +68,7 @@ module.exports.tests.enabled = function(test, common) {
     });
     s.log = function( store ){
       t.deepEqual( store, { title: 1 }, 'loggin enabled' );
-      clearInterval( s.interval );
+      clearInterval( stats.interval );
       t.end();
     };
     mock.pipe(s);
