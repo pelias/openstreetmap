@@ -20,8 +20,8 @@ var stats = function( title ){
   // start logging on first pipe
   stream.on( 'pipe', function(){
     pipes++;
-    if( !stream.interval ){
-      stream.interval = setInterval( function(){
+    if( pipes === 1 ){
+      module.exports.interval = setInterval( function(){
         if( stats.enabled ){
           stream.log( store );
         }
@@ -32,18 +32,17 @@ var stats = function( title ){
   // stop logging and clear interval when done
   stream.on( 'unpipe', function(){
     pipes--;
-    if( !pipes ){
+    if( pipes === 0 ){
       if( stats.enabled ){
         stream.log( store );
       }
-      clearInterval( stream.interval );
+      clearInterval( module.exports.interval );
       stream.emit( 'clear' );
     }
   });
 
   stream.log = function( store ){
     console.log( JSON.stringify( store, null, 2 ) );
-    console.log( 'pipes', pipes );
   };
 
   return stream;
