@@ -4,7 +4,7 @@ var common = {};
 
 var tests = [
   require('./util/centroidCodec'),
-  require('./stream/osm/any/buildHierachy'),
+  require('./stream/osm/any/buildHierarchy'),
   require('./stream/node_filter'),
   require('./stream/way_filter'),
   require('./stream/address_extractor'),

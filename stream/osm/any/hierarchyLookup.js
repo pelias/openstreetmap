@@ -1,8 +1,8 @@
 
 var through = require('through2'),
-    buildHierachy = require('./buildHierachy');
+    buildHierarchy = require('./buildHierarchy');
 
-function hierachyLookup( backends, fallbackBackend ){
+function hierarchyLookup( backends, fallbackBackend ){
 
   var stream = through.obj( function( item, enc, done ) {
 
@@ -16,29 +16,30 @@ function hierachyLookup( backends, fallbackBackend ){
       return reply();
     }
 
-    buildHierachy( backends, item.center_point, function( error, result ){
+    buildHierarchy( backends, item.center_point, function( error, result ){
 
       // An error occurred
       // @todo: this should never happen
       if( error ){
-        console.error( 'hierachyLookup error:', error );
+        console.error( 'hierarchyLookup error:', error );
         return reply();
       }
 
       else if( !result ){
-        console.error( 'hierachyLookup returned 0 results' );
+        console.error( 'hierarchyLookup returned 0 results' );
         return reply();
       }
 
       // Copy admin data to the osm record
       else {
+        if( result.alpha3 ){ item.alpha3 = result.alpha3; }
         if( result.admin0 ){ item.admin0 = result.admin0; }
         if( result.admin1 ){ item.admin1 = result.admin1; }
-
-        if( result.neighborhood ){ item.admin2 = result.neighborhood; }
-        else if( result.locality ){ item.admin2 = result.locality; }
-        else if( result.local_admin ){ item.admin2 = result.local_admin; }
-        else if( result.admin2 ){ item.admin2 = result.admin2; }
+        if( result.admin1_abbr ){ item.admin1_abbr = result.admin1_abbr; }
+        if( result.admin2 ){ item.admin2 = result.admin2; }
+        if( result.local_admin ){ item.local_admin = result.local_admin; }
+        if( result.locality ){ item.locality = result.locality; }
+        if( result.neighborhood ){ item.neighborhood = result.neighborhood; }
 
         // fallback to geonames hierachy
         if( !item.admin0 || !item.admin1 || !item.admin2 ){
@@ -65,4 +66,4 @@ function hierachyLookup( backends, fallbackBackend ){
   return stream;
 }
 
-module.exports = hierachyLookup;
+module.exports = hierarchyLookup;
