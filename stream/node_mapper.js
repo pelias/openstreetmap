@@ -30,7 +30,7 @@ module.exports = function(){
     done();
 
   });
-  
+
   // catch stream errors
   stream.on( 'error', console.error.bind( console, __filename ) );
 
