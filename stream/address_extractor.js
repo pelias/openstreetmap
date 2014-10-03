@@ -38,6 +38,7 @@ module.exports = function(){
     }
 
     // forward item downstream is it's a POI in it's own right
+    // note: this MUST be below the address push()
     if( isNamedPoi ){
       this.push( item );
     }

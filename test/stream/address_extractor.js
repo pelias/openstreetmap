@@ -124,9 +124,9 @@ module.exports.tests.createAddress = function(test, common) {
     var i = 0;
     s.pipe( through.obj( function( chunk, enc, next ){
       if( i++ === 0 ){
-        t.equal( chunk.id, item.id, 'id unchanged' );
+        t.equal( chunk.id, 'poi-address-item-1', 'new id' );
         t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-        t.equal( chunk.name.default, item.name.default, 'correct name' );
+        t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
         t.equal( chunk.type, item.type, 'type unchanged' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
@@ -135,9 +135,9 @@ module.exports.tests.createAddress = function(test, common) {
         t.deepEqual( chunk._meta, item._meta, '_meta unchanged' );
         next();
       } else {
-        t.equal( chunk.id, 'poi-address-item-1', 'new id' );
+        t.equal( chunk.id, item.id, 'id unchanged' );
         t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-        t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
+        t.equal( chunk.name.default, item.name.default, 'correct name' );
         t.equal( chunk.type, item.type, 'type unchanged' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
@@ -150,6 +150,44 @@ module.exports.tests.createAddress = function(test, common) {
     }));
     s.write( item );
   });
+
+  // the address record MUST be pushed down the pipeline before
+  // the POI record or bad things happen. see comment in test below.
+  test('create: address created before poi record', function(t) {
+
+    var item = {
+      id: 1, type: 'item', _meta: { test: '123' },
+      name: {
+        default: 'elmo\'s house'
+      },
+      address:{
+        number: '10', street: 'Sesame st'
+      },
+      center_point: { lat: 1, lon: 1 },
+      admin0: 'great sesame',
+      admin1: 'new sesame city',
+      admin2: 'sesameville'
+    };
+
+    var s = stream();
+    var i = 0;
+    s.pipe( through.obj( function( chunk, enc, next ){
+      if( i++ === 0 ){
+        t.equal( chunk.id, 'poi-address-item-1', 'new id' );
+        next();
+      } else {
+        t.equal( chunk.id, item.id, 'id unchanged' );
+        t.end(); // test should fail if not called, or called more than once.
+        next();
+      }
+    }));
+    s.write( item );
+  });
+
+  // if something bad happends and the primary record id is unset before
+  // the address record is generated; we generate a unique ordinal id.
+  // This was the case when the esclient deletes id before storing the record
+  // In an ideal world this would not need to exist, it remains to avoid errors
   test('create: from nameless record - generates unique ids', function(t) {
     t.plan(2); // should run 2 tests
     var s = stream();
