@@ -76,7 +76,7 @@ var osm = {
     denormalizer:              require('./stream/osm/way/denormalizer'),
   },
   any: {
-    hierachyLookup:            require('./stream/osm/any/hierachyLookup')
+    hierarchyLookup:            require('./stream/osm/any/hierarchyLookup')
   }
 };
 
@@ -106,8 +106,8 @@ node_fork
   .pipe( stats( 'node_filter -> node_mapper' ) )
   .pipe( node_mapper() )
 
-  .pipe( stats( 'node_mapper -> node_hierachyLookup' ) )
-  .pipe( osm.any.hierachyLookup([
+  .pipe( stats( 'node_mapper -> node_hierarchyLookup' ) )
+  .pipe( osm.any.hierarchyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
     { type: 'local_admin'   , adapter: backend.es.local_admin },
@@ -116,7 +116,7 @@ node_fork
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ], backend.es.geonames ))
 
-  .pipe( stats( 'node_hierachyLookup -> node_meta.type' ) )
+  .pipe( stats( 'node_hierarchyLookup -> node_meta.type' ) )
 
   // add correct meta info for suggester payload
   // @todo: make this better
@@ -154,8 +154,8 @@ way_fork
   .pipe( way_filter() )
   .pipe( stats( 'way_filter -> way_denormalizer' ) )
   .pipe( osm.way.denormalizer( backend.level.osmnodecentroids ) )
-  .pipe( stats( 'way_denormalizer -> way_hierachyLookup' ) )
-  .pipe( osm.any.hierachyLookup([
+  .pipe( stats( 'way_denormalizer -> way_hierarchyLookup' ) )
+  .pipe( osm.any.hierarchyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
     { type: 'local_admin'   , adapter: backend.es.local_admin },
@@ -164,7 +164,7 @@ way_fork
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ], backend.es.geonames ))
 
-  .pipe( stats( 'way_hierachyLookup -> way_meta.type' ) )
+  .pipe( stats( 'way_hierarchyLookup -> way_meta.type' ) )
 
   // add correct meta info for suggester payload
   // @todo: make this better

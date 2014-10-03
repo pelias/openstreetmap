@@ -1,8 +1,8 @@
 
 var through = require('through2'),
-    buildHierachy = require('./buildHierachy');
+    buildHierarchy = require('./buildHierarchy');
 
-function hierachyLookup( backends, fallbackBackend ){
+function hierarchyLookup( backends, fallbackBackend ){
 
   var stream = through.obj( function( item, enc, done ) {
 
@@ -16,17 +16,17 @@ function hierachyLookup( backends, fallbackBackend ){
       return reply();
     }
 
-    buildHierachy( backends, item.center_point, function( error, result ){
+    buildHierarchy( backends, item.center_point, function( error, result ){
 
       // An error occurred
       // @todo: this should never happen
       if( error ){
-        console.error( 'hierachyLookup error:', error );
+        console.error( 'hierarchyLookup error:', error );
         return reply();
       }
 
       else if( !result ){
-        console.error( 'hierachyLookup returned 0 results' );
+        console.error( 'hierarchyLookup returned 0 results' );
         return reply();
       }
 
@@ -66,4 +66,4 @@ function hierachyLookup( backends, fallbackBackend ){
   return stream;
 }
 
-module.exports = hierachyLookup;
+module.exports = hierarchyLookup;

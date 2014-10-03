@@ -3,14 +3,14 @@ var async = require('async');
 
 function build( backends, centroid, done ){
 
-  var hierachy = {};
+  var hierarchy = {};
   var opts = {
     type: 'shape-point',
     fields: [ 'name.default', 'alpha3', 'admin1_abbr' ],
     strict: false
   };
 
-  async.reduce( backends, hierachy, callback.bind( this, centroid, opts ), done );
+  async.reduce( backends, hierarchy, callback.bind( this, centroid, opts ), done );
 
 }
 
