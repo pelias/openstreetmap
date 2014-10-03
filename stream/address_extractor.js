@@ -19,11 +19,6 @@ module.exports = function(){
 
     var isNamedPoi = ( !!item.name && !!item.name.default );
 
-    // forward item downstream is it's a POI in it's own right
-    if( isNamedPoi ){
-      this.push( item );
-    }
-
     // create a new record for street addresses
     if( hasValidAddress( item ) ){
       var type = isNamedPoi ? 'poi-address' : 'address';
@@ -40,6 +35,11 @@ module.exports = function(){
         _meta: item._meta
       };
       this.push( record );
+    }
+
+    // forward item downstream is it's a POI in it's own right
+    if( isNamedPoi ){
+      this.push( item );
     }
 
     return done();
