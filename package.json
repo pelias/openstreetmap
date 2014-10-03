@@ -42,7 +42,8 @@
     "pelias-esclient": "latest",
     "pelias-suggester-pipeline": "0.0.7",
     "prop-stream": "0.0.0",
-    "through2": "^0.5.1"
+    "through2": "^0.5.1",
+    "trimmer": "^1.0.0"
   },
   "devDependencies": {
     "tape": "^2.13.4",

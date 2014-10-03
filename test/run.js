@@ -9,7 +9,8 @@ var tests = [
   require('./stream/way_filter'),
   require('./stream/address_extractor'),
   require('./stream/stats'),
-  require('./stream/osm_types')
+  require('./stream/osm_types'),
+  require('./mapper/node/osm_names')
 ];
 
 tests.map(function(t) {

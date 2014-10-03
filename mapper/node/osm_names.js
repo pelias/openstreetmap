@@ -1,5 +1,6 @@
 
-var address_mapper = require('../address_mapper');
+var address_mapper = require('../address_mapper'),
+    trimmer = require('trimmer');
 
 var OSM_NAME_SCHEMA = {
   'loc_name':         'local',
@@ -13,7 +14,7 @@ var OSM_NAME_SCHEMA = {
   'sorting_name':     'sorting'
 };
 
-var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA);
+var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA,'name');
 
 module.exports = function( node, record ){
 
@@ -34,7 +35,12 @@ module.exports = function( node, record ){
     }
 
     // map common osm name formats
-    osm_name_mapper( node, record )
+    osm_name_mapper( node, record );
+
+    // clean names of leading/trailing junk chars
+    for( var prop in record.name ){
+      record.name[prop] = trimmer( record.name[prop], '#$%^*()<>-=_{};:",./?\' ' ); // junk chars
+    }
   }
 
 };
