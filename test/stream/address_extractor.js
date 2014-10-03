@@ -150,6 +150,39 @@ module.exports.tests.createAddress = function(test, common) {
     }));
     s.write( item );
   });
+  test('create: from nameless record - generates unique ids', function(t) {
+    t.plan(2); // should run 2 tests
+    var s = stream();
+    var ordinal = 0;
+    s.pipe( through.obj( function( chunk, enc, next ){
+      if( ++ordinal === 1 ){
+        t.equal( chunk.id, 'address-item-1', 'unique id' );
+      } else {
+        t.equal( chunk.id, 'address-item-2', 'unique id' );
+      }
+      next();
+    }));
+    s.write({
+      type: 'item', _meta: { test: '123' },
+      address:{
+        number: '10', street: 'Sesame st'
+      },
+      center_point: { lat: 1, lon: 1 },
+      admin0: 'great sesame',
+      admin1: 'new sesame city',
+      admin2: 'sesameville'
+    });
+    s.write({
+      type: 'item', _meta: { test: '123' },
+      address:{
+        number: '10', street: 'Sesame st'
+      },
+      center_point: { lat: 1, lon: 1 },
+      admin0: 'great sesame',
+      admin1: 'new sesame city',
+      admin2: 'sesameville'
+    });
+  });
 };
 
 module.exports.all = function (tape, common) {

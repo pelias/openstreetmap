@@ -1,6 +1,7 @@
 
 var through = require('through2'),
-    isObject = require('is-object');
+    isObject = require('is-object'),
+    idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
 function hasValidAddress( item ){
   if( !isObject( item ) ) return false;
@@ -27,7 +28,7 @@ module.exports = function(){
     if( hasValidAddress( item ) ){
       var type = isNamedPoi ? 'poi-address' : 'address';
       var record = {
-        id: type + '-' + item.type + '-' + item.id,
+        id: type + '-' + item.type + '-' + (item.id || ++idOrdinal), // MUST BE UNIQUE!
         name: {
           default: item.address.number + ' ' + item.address.street
         },
