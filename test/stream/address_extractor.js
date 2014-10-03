@@ -87,9 +87,14 @@ module.exports.tests.createAddress = function(test, common) {
       t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
       t.equal( chunk.type, 'item', 'type unchanged' );
       t.deepEqual( chunk.center_point, { lat: 1, lon: 1 }, 'centroid unchanged' );
+      t.deepEqual( chunk.alpha3, 'SES', 'alpha3 unchanged' );
       t.deepEqual( chunk.admin0, 'great sesame', 'admin0 unchanged' );
       t.deepEqual( chunk.admin1, 'new sesame city', 'admin1 unchanged' );
+      t.deepEqual( chunk.admin1_abbr, 'SC', 'admin1_abbr unchanged' );
       t.deepEqual( chunk.admin2, 'sesameville', 'admin2 unchanged' );
+      t.deepEqual( chunk.local_admin, 'sesamilia', 'local_admin unchanged' );
+      t.deepEqual( chunk.locality, 'sesporado', 'locality unchanged' );
+      t.deepEqual( chunk.neighborhood, 'sesame', 'neighborhood unchanged' );
       t.end(); // test should fail if not called.
       next();
     }));
@@ -99,9 +104,14 @@ module.exports.tests.createAddress = function(test, common) {
         number: '10', street: 'Sesame st'
       },
       center_point: { lat: 1, lon: 1 },
+      alpha3: 'SES',
       admin0: 'great sesame',
       admin1: 'new sesame city',
-      admin2: 'sesameville'
+      admin1_abbr: 'SC',
+      admin2: 'sesameville',
+      local_admin: 'sesamilia',
+      locality: 'sesporado',
+      neighborhood: 'sesame'
     });
   });
   test('create: from named record', function(t) {
@@ -129,9 +139,14 @@ module.exports.tests.createAddress = function(test, common) {
         t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
         t.equal( chunk.type, item.type, 'type unchanged' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
+        t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
         t.deepEqual( chunk.admin1, item.admin1, 'admin1 unchanged' );
+        t.deepEqual( chunk.admin1_abbr, item.admin1_abbr, 'admin1_abbr unchanged' );
         t.deepEqual( chunk.admin2, item.admin2, 'admin2 unchanged' );
+        t.deepEqual( chunk.local_admin, item.local_admin, 'local_admin unchanged' );
+        t.deepEqual( chunk.locality, item.locality, 'locality unchanged' );
+        t.deepEqual( chunk.neighborhood, item.neighborhood, 'neighborhood unchanged' );
         t.deepEqual( chunk._meta, item._meta, '_meta unchanged' );
         next();
       } else {
@@ -140,9 +155,14 @@ module.exports.tests.createAddress = function(test, common) {
         t.equal( chunk.name.default, item.name.default, 'correct name' );
         t.equal( chunk.type, item.type, 'type unchanged' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
+        t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
         t.deepEqual( chunk.admin1, item.admin1, 'admin1 unchanged' );
+        t.deepEqual( chunk.admin1_abbr, item.admin1_abbr, 'admin1_abbr unchanged' );
         t.deepEqual( chunk.admin2, item.admin2, 'admin2 unchanged' );
+        t.deepEqual( chunk.local_admin, item.local_admin, 'local_admin unchanged' );
+        t.deepEqual( chunk.locality, item.locality, 'locality unchanged' );
+        t.deepEqual( chunk.neighborhood, item.neighborhood, 'neighborhood unchanged' );
         t.deepEqual( chunk._meta, item._meta, '_meta unchanged' );
         t.end(); // test should fail if not called, or called more than once.
         next();

@@ -29,9 +29,14 @@ module.exports = function(){
         },
         type: item.type,
         center_point: item.center_point,
+        alpha3: item.alpha3,
         admin0: item.admin0,
         admin1: item.admin1,
+        admin1_abbr: item.admin1_abbr,
         admin2: item.admin2,
+        local_admin: item.local_admin,
+        locality: item.locality,
+        neighborhood: item.neighborhood,
         _meta: item._meta
       };
       this.push( record );
