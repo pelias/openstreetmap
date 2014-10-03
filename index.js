@@ -140,7 +140,7 @@ node_fork
 
   // remove tags not in schema (or throws StrictDynamicMappingException)
   // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['id','name','address','type','admin0','admin1','admin2','center_point','suggest']) )
+  .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
   .pipe( backend.es.osmnode.createPullStream() );
@@ -188,7 +188,7 @@ way_fork
 
   // remove tags not in schema (or throws StrictDynamicMappingException)
   // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['id','name','address','type','admin0','admin1','admin2','center_point','suggest']) )
+  .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
   .pipe( backend.es.osmway.createPullStream() );
