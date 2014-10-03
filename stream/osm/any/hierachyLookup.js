@@ -32,13 +32,14 @@ function hierachyLookup( backends, fallbackBackend ){
 
       // Copy admin data to the osm record
       else {
+        if( result.alpha3 ){ item.alpha3 = result.alpha3; }
         if( result.admin0 ){ item.admin0 = result.admin0; }
         if( result.admin1 ){ item.admin1 = result.admin1; }
-
-        if( result.neighborhood ){ item.admin2 = result.neighborhood; }
-        else if( result.locality ){ item.admin2 = result.locality; }
-        else if( result.local_admin ){ item.admin2 = result.local_admin; }
-        else if( result.admin2 ){ item.admin2 = result.admin2; }
+        if( result.admin1_abbr ){ item.admin1_abbr = result.admin1_abbr; }
+        if( result.admin2 ){ item.admin2 = result.admin2; }
+        if( result.local_admin ){ item.local_admin = result.local_admin; }
+        if( result.locality ){ item.locality = result.locality; }
+        if( result.neighborhood ){ item.neighborhood = result.neighborhood; }
 
         // fallback to geonames hierachy
         if( !item.admin0 || !item.admin1 || !item.admin2 ){
