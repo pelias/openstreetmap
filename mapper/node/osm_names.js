@@ -34,7 +34,7 @@ module.exports = function( node, record ){
     }
 
     // map common osm name formats
-    osm_name_mapper( node, record )
+    osm_name_mapper( node, record );
   }
 
 };
