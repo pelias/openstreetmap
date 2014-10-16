@@ -81,17 +81,15 @@ var osm = {
 };
 
 var feature_filter =           require('./stream/feature_filter');
-var node_filter =              require('./stream/node_filter');
+var osm_filter =               require('./stream/osm_filter');
 var node_basic_filter =        require('./stream/node_basic_filter');
-var node_mapper =              require('./stream/node_mapper');
+var osm_mapper =               require('./stream/osm_mapper');
 var node_type =                require('./stream/node_type');
 var node_centroid_cache =      require('./stream/node_centroid_cache');
 var address_extractor =        require('./stream/address_extractor');
 
 //var quattroshapes =            require('./stream/quattroshapes');
-var way_mapper =               require('./stream/way_mapper');
 var exit_on_id =               require('./stream/exit_on_id');
-var way_filter =               require('./stream/way_filter');
 var stats =                    require('./stream/stats');
 
 // enable/disable debugging of bottlenecks in the pipeline.
@@ -100,13 +98,18 @@ stats.enabled = true;
 // entry point for node pipeline
 node_fork = stats( 'osm_types -> node_centroid_cache' );
 node_fork
+
+  // store centroids in cache
   .pipe( node_centroid_cache( backend.level.osmnodecentroids ) )
   .pipe( stats( 'node_centroid_cache -> node_filter' ) )
-  .pipe( node_filter() )
-  .pipe( stats( 'node_filter -> node_mapper' ) )
-  .pipe( node_mapper() )
 
+  // map and filter records
+  .pipe( osm_filter() )
+  .pipe( stats( 'node_filter -> node_mapper' ) )
+  .pipe( osm_mapper() )
   .pipe( stats( 'node_mapper -> node_hierarchyLookup' ) )
+
+  // hierarchy lookup
   .pipe( osm.any.hierarchyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
@@ -115,7 +118,6 @@ node_fork
     { type: 'admin1'        , adapter: backend.es.admin1 },
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ], backend.es.geonames ))
-
   .pipe( stats( 'node_hierarchyLookup -> node_meta.type' ) )
 
   // add correct meta info for suggester payload
@@ -146,15 +148,20 @@ node_fork
   .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
-way_fork = stats( 'osm_types -> way_mapper' );
+way_fork = stats( 'osm_types -> way_filter' );
 way_fork
 
-  .pipe( way_mapper() ) // @todo: this does too much; simplify
-  .pipe( stats( 'way_mapper -> way_filter' ) )
-  .pipe( way_filter() )
-  .pipe( stats( 'way_filter -> way_denormalizer' ) )
+  // map and filter records
+  .pipe( osm_filter() )
+  .pipe( stats( 'way_filter -> way_mapper' ) )
+  .pipe( osm_mapper() )
+  .pipe( stats( 'way_mapper -> way_denormalizer' ) )
+
+  // lookup centroids from cache
   .pipe( osm.way.denormalizer( backend.level.osmnodecentroids ) )
   .pipe( stats( 'way_denormalizer -> way_hierarchyLookup' ) )
+
+  // hierarchy lookup
   .pipe( osm.any.hierarchyLookup([
     { type: 'neighborhood'  , adapter: backend.es.neighborhood },
     { type: 'locality'      , adapter: backend.es.locality },
@@ -163,7 +170,6 @@ way_fork
     { type: 'admin1'        , adapter: backend.es.admin1 },
     { type: 'admin0'        , adapter: backend.es.admin0 }
   ], backend.es.geonames ))
-
   .pipe( stats( 'way_hierarchyLookup -> way_meta.type' ) )
 
   // add correct meta info for suggester payload
