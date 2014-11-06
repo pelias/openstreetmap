@@ -94,7 +94,7 @@ var exit_on_id =               require('./stream/exit_on_id');
 var stats =                    require('./stream/stats');
 
 // enable/disable debugging of bottlenecks in the pipeline.
-stats.enabled = false;
+stats.enabled = true;
 
 // entry point for node pipeline
 node_fork = stats( 'osm_types -> node_centroid_cache' );
@@ -228,144 +228,14 @@ way_fork
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-// fs.createReadStream( pbfFilePath )
-//   .pipe( parser )
-//   .pipe( stats( 'reader -> osm_types' ) )
-//   .pipe( osm_types({
-  //     node:     node_fork,
-//     way:      way_fork,
-//     relation: devnull(),
-//   }))
-// ;
+var OsmiumStream = require('./stream/OsmiumStream');
 
-// osmium test
-
-var osmium = require('osmium');
-var file = new osmium.File( pbfFilePath );
-var reader = new osmium.Reader( file, { node: true, way: true } );
-
-
-function extractDataz( object ){
-  if( object instanceof osmium.Node ){
-    var mapped = {
-      type: 'node',
-      id: object.id,
-      lat: object.lat,
-      lon: object.lon,
-      tags: object.tags(),
-      info: {}
-    };
-    node_fork.write( mapped );
-  }
-
-  if( object instanceof osmium.Way ){
-    var mapped = {
-      type: 'way',
-      id: object.id,
-      refs: object.node_refs(),
-      tags: object.tags(),
-      info: {}
-    };
-  
-    way_fork.write( mapped );
-  }
-}
-
-function readBuffer( buffer, done ){
-  object = buffer.next();
-  if( !object ) return done(); //done
-  else extractDataz( object );
-  
-  // recurse
-  setImmediate( readBuffer.bind( this, buffer, done ) );
-}
-
-
-var buffer;
-function read(){
-  buffer = reader.read();
-  if( !buffer ) return; //done
-
-  readBuffer( buffer, function(){
-    setImmediate( read );
-  });
-
-    // console.log( 'next', typeof object, object );
-    // console.log( JSON.stringify( object, null, 2 ) );
-
-}
-
-read();
-// while (buffer = reader.read()) {
-
-//     var object = buffer.next();
-//     if( object instanceof osmium.Node ){
-//       var mapped = {
-//         type: 'node',
-//         id: object.id,
-//         lat: object.lat,
-//         lon: object.lon,
-//         tags: object.tags(),
-//         info: {}
-//       };
-//       // node_fork.write( mapped );
-//       console.log( JSON.stringify( mapped, null, 2 ) );
-//     }
-
-//     // assert.ok(object instanceof osmium.Node);
-//     // assert.equal(object.id, 50031066);
-
-//     // object = buffer.next();
-//     // assert.ok(object instanceof osmium.Node);
-//     // assert.equal(object.id, 50031085);
-
-//     // var count=0, ways=0;
-//     // while (object = buffer.next()) {
-//     //     if (ways == 0 && object instanceof osmium.Way) {
-//     //         ++ways;
-//     //         assert.equal(object.id, 6091729);
-//     //     }
-//     //     ++count;
-//     // }
-//     // assert.equal(count, 1525 /*nodes*/ + 98 /*ways*/ + 2 /*relations*/ - 2 /*already read*/);
-// }
-
-// var header = reader.header();
-// console.log( 'header', header );
-
-// setInterval( function(){
-//   console.log( 'hi' );
-// }, 100);
-
-// var handler = new osmium.Handler();
-// handler.options({ 'tagged_nodes_only': true });
-
-// handler.on('node', function(node) {
-//   var mapped = {
-//     type: 'node',
-//     id: node.id,
-//     lat: node.lat,
-//     lon: node.lon,
-//     tags: node.tags(),
-//     info: {}
-//   };
-//   node_fork.write( mapped );
-//   // console.log( mapped.tags );
-//   // console.log( JSON.stringify( mapped, null, 2 ) );
-//   // console.log( node.tags() );
-// });
-// handler.on('way', function(way) {
-//   var mapped = {
-//     type: 'way',
-//     id: way.id,
-//     refs: way.node_refs(),
-//     tags: way.tags(),
-//     info: {}
-//   };
-  
-//   way_fork.write( mapped );
-//   // console.log( JSON.stringify( mapped, null, 2 ) );
-//   // console.log( node.tags() );
-// });
-
-// osmium.apply(reader, handler);
+new OsmiumStream( pbfFilePath, { node: true, way: true } )
+  // .pipe( parser )
+  .pipe( stats( 'reader -> osm_types' ) )
+  .pipe( osm_types({
+      node:     node_fork,
+    way:      way_fork,
+    relation: devnull(),
+  }))
+;
