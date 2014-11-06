@@ -36,11 +36,11 @@
     "is-object": "^1.0.1",
     "level-multiply": "0.0.1",
     "leveldown": "^0.10.2",
-    "levelup": "^0.18.6",
+    "levelup": "^0.19.0",
     "osm-pbf-parser": "^2.0.2",
     "pelias-config": "latest",
     "pelias-esclient": "latest",
-    "pelias-suggester-pipeline": "0.0.9",
+    "pelias-suggester-pipeline": "^1.0.0",
     "prop-stream": "0.0.0",
     "through2": "^0.5.1",
     "trimmer": "^1.0.0"
