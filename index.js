@@ -6,7 +6,8 @@ var fs = require('fs'),
     through = require('through2'),
     suggester = require('pelias-suggester-pipeline'),
     propStream = require('prop-stream'),
-    settings = require('pelias-config').generate();
+    settings = require('pelias-config').generate(),
+    dbclient = require('pelias-dbclient')();
 
 // @todo: extract this or refactor suggester to make it a stream factory
 var bun = require('bun');
@@ -145,7 +146,19 @@ node_fork
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
-  .pipe( backend.es.osmnode.createPullStream() );
+  // .pipe( backend.es.osmnode.createPullStream() );
+  .pipe( through.obj( function( item, enc, next ){
+    var id = item.id;
+    delete item.id;
+    this.push({
+      _index: 'pelias',
+      _type: 'osmnode',
+      _id: id,
+      data: item
+    });
+    next();
+  }))
+  .pipe( dbclient );
 
 // entry point for way pipeline
 way_fork = stats( 'osm_types -> way_filter' );
@@ -197,7 +210,19 @@ way_fork
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
-  .pipe( backend.es.osmway.createPullStream() );
+  // .pipe( backend.es.osmway.createPullStream() );
+  .pipe( through.obj( function( item, enc, next ){
+    var id = item.id;
+    delete item.id;
+    this.push({
+      _index: 'pelias',
+      _type: 'osmway',
+      _id: id,
+      data: item
+    });
+    next();
+  }))
+  .pipe( dbclient );
 
 // pipe objects to stringify for debugging
 // debug_fork = stringify();
