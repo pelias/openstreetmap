@@ -7,7 +7,16 @@ var fs = require('fs'),
     suggester = require('pelias-suggester-pipeline'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate(),
-    dbclient = require('pelias-dbclient')();
+    dbclient = require('pelias-dbclient')(),
+    OsmiumStream = require('osmium-stream');
+
+var Backend = require('geopipes-elasticsearch-backend');
+
+// esclient.livestats();
+
+var backend = function( index, type ){
+  return new Backend( dbclient.client, index, type );
+};
 
 // @todo: extract this or refactor suggester to make it a stream factory
 var bun = require('bun');
@@ -53,15 +62,15 @@ var required =                 require('./stream/required');
 // sinks
 var backend = {
   es: {
-    osmnode:                  require('./stream/es_backend')('pelias', 'osmnode'),
-    osmway:                   require('./stream/es_backend')('pelias', 'osmway'),
-    geonames:                 require('./stream/es_backend')('pelias', 'geoname'),
-    admin0:                   require('./stream/es_backend')('pelias', 'admin0'),
-    admin1:                   require('./stream/es_backend')('pelias', 'admin1'),
-    admin2:                   require('./stream/es_backend')('pelias', 'admin2'),
-    local_admin:              require('./stream/es_backend')('pelias', 'local_admin'),
-    locality:                 require('./stream/es_backend')('pelias', 'locality'),
-    neighborhood:             require('./stream/es_backend')('pelias', 'neighborhood')
+    osmnode:                  backend('pelias', 'osmnode'),
+    osmway:                   backend('pelias', 'osmway'),
+    geonames:                 backend('pelias', 'geoname'),
+    admin0:                   backend('pelias', 'admin0'),
+    admin1:                   backend('pelias', 'admin1'),
+    admin2:                   backend('pelias', 'admin2'),
+    local_admin:              backend('pelias', 'local_admin'),
+    locality:                 backend('pelias', 'locality'),
+    neighborhood:             backend('pelias', 'neighborhood')
   },
   level: {
     osmnodecentroids:         multilevel( levelup( leveldbpath ), 'm' )
@@ -145,8 +154,7 @@ node_fork
   // note: 'tags' are being stripped to reduce db size
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
-  .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
-  // .pipe( backend.es.osmnode.createPullStream() );
+  .pipe( stats( 'node_blacklist -> es_node_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
     var id = item.id;
     delete item.id;
@@ -158,7 +166,9 @@ node_fork
     });
     next();
   }))
+  .pipe( stats( 'es_node_dbclient_mapper -> node_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
 way_fork = stats( 'osm_types -> way_filter' );
@@ -209,8 +219,7 @@ way_fork
   // note: 'tags' are being stripped to reduce db size
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
-  .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
-  // .pipe( backend.es.osmway.createPullStream() );
+  .pipe( stats( 'way_blacklist -> es_way_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
     var id = item.id;
     delete item.id;
@@ -222,15 +231,20 @@ way_fork
     });
     next();
   }))
+  .pipe( stats( 'es_way_dbclient_mapper -> way_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( backend.es.osmway.createPullStream() );
 
 // pipe objects to stringify for debugging
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-fs.createReadStream( pbfFilePath )
-  .pipe( parser )
-  .pipe( stats( 'reader -> osm_types' ) )
+var file = new OsmiumStream.osmium.File( pbfFilePath );
+var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
+var parser = new OsmiumStream( reader );
+
+parser
+  .pipe( stats( 'osmium_mapper -> osm_types' ) )
   .pipe( osm_types({
     node:     node_fork,
     way:      way_fork,

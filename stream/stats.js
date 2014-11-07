@@ -26,6 +26,7 @@ var stats = function( title ){
           stream.log( store );
         }
       }, 500 );
+      // module.exports.interval.unref();
     }
   });
 
@@ -42,7 +43,7 @@ var stats = function( title ){
   });
 
   stream.log = function( store ){
-    console.log( JSON.stringify( store, null, 2 ) );
+    console.error( JSON.stringify( store, null, 2 ) );
   };
 
   return stream;
