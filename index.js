@@ -7,7 +7,8 @@ var fs = require('fs'),
     suggester = require('pelias-suggester-pipeline'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate(),
-    dbclient = require('pelias-dbclient')();
+    dbclient = require('pelias-dbclient')(),
+    OsmiumStream = require('osmium-stream');
 
 // @todo: extract this or refactor suggester to make it a stream factory
 var bun = require('bun');
@@ -145,8 +146,7 @@ node_fork
   // note: 'tags' are being stripped to reduce db size
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
-  .pipe( stats( 'node_blacklist -> es_osmnode_backend' ) )
-  // .pipe( backend.es.osmnode.createPullStream() );
+  .pipe( stats( 'node_blacklist -> es_node_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
     var id = item.id;
     delete item.id;
@@ -158,7 +158,9 @@ node_fork
     });
     next();
   }))
+  .pipe( stats( 'es_node_dbclient_mapper -> node_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
 way_fork = stats( 'osm_types -> way_filter' );
@@ -209,8 +211,7 @@ way_fork
   // note: 'tags' are being stripped to reduce db size
   .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
-  .pipe( stats( 'way_blacklist -> es_osmway_backend' ) )
-  // .pipe( backend.es.osmway.createPullStream() );
+  .pipe( stats( 'way_blacklist -> es_way_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
     var id = item.id;
     delete item.id;
@@ -222,19 +223,22 @@ way_fork
     });
     next();
   }))
+  .pipe( stats( 'es_way_dbclient_mapper -> way_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( backend.es.osmway.createPullStream() );
 
 // pipe objects to stringify for debugging
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-var OsmiumStream = require('./stream/OsmiumStream');
+var file = new OsmiumStream.osmium.File( pbfFilePath );
+var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
+var parser = new OsmiumStream( reader );
 
-new OsmiumStream( pbfFilePath, { node: true, way: true } )
-  // .pipe( parser )
-  .pipe( stats( 'reader -> osm_types' ) )
+parser
+  .pipe( stats( 'osmium_mapper -> osm_types' ) )
   .pipe( osm_types({
-      node:     node_fork,
+    node:     node_fork,
     way:      way_fork,
     relation: devnull(),
   }))

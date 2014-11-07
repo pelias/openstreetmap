@@ -38,7 +38,7 @@
     "leveldown": "^0.10.2",
     "levelup": "^0.19.0",
     "osm-pbf-parser": "^2.0.2",
-    "osmium": "^0.3.0",
+    "osmium-stream": "^1.0.1",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.0",
     "pelias-esclient": "latest",

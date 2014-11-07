@@ -26,6 +26,7 @@ var stats = function( title ){
           stream.log( store );
         }
       }, 500 );
+      // module.exports.interval.unref();
     }
   });
 
