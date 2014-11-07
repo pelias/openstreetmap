@@ -10,6 +10,14 @@ var fs = require('fs'),
     dbclient = require('pelias-dbclient')(),
     OsmiumStream = require('osmium-stream');
 
+var Backend = require('geopipes-elasticsearch-backend');
+
+// esclient.livestats();
+
+var backend = function( index, type ){
+  return new Backend( dbclient.client, index, type );
+};
+
 // @todo: extract this or refactor suggester to make it a stream factory
 var bun = require('bun');
 function generateSuggester(){
@@ -54,15 +62,15 @@ var required =                 require('./stream/required');
 // sinks
 var backend = {
   es: {
-    osmnode:                  require('./stream/es_backend')('pelias', 'osmnode'),
-    osmway:                   require('./stream/es_backend')('pelias', 'osmway'),
-    geonames:                 require('./stream/es_backend')('pelias', 'geoname'),
-    admin0:                   require('./stream/es_backend')('pelias', 'admin0'),
-    admin1:                   require('./stream/es_backend')('pelias', 'admin1'),
-    admin2:                   require('./stream/es_backend')('pelias', 'admin2'),
-    local_admin:              require('./stream/es_backend')('pelias', 'local_admin'),
-    locality:                 require('./stream/es_backend')('pelias', 'locality'),
-    neighborhood:             require('./stream/es_backend')('pelias', 'neighborhood')
+    osmnode:                  backend('pelias', 'osmnode'),
+    osmway:                   backend('pelias', 'osmway'),
+    geonames:                 backend('pelias', 'geoname'),
+    admin0:                   backend('pelias', 'admin0'),
+    admin1:                   backend('pelias', 'admin1'),
+    admin2:                   backend('pelias', 'admin2'),
+    local_admin:              backend('pelias', 'local_admin'),
+    locality:                 backend('pelias', 'locality'),
+    neighborhood:             backend('pelias', 'neighborhood')
   },
   level: {
     osmnodecentroids:         multilevel( levelup( leveldbpath ), 'm' )
