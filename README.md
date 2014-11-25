@@ -21,4 +21,4 @@ $ npm test
 
 Travis tests every release against node version `0.10`
 
-[![Build Status](https://travis-ci.org/mapzen/pelias-openstreetmap.png?branch=master)](https://travis-ci.org/mapzen/pelias-openstreetmap)
+[![Build Status](https://travis-ci.org/pelias/openstreetmap.png?branch=master)](https://travis-ci.org/pelias/openstreetmap)
