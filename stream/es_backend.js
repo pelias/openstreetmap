@@ -1,6 +1,6 @@
 
-var Backend = require('geopipes-elasticsearch-backend'),
-    esclient = require('pelias-esclient')({ throttle: 20 });
+// var Backend = require('geopipes-elasticsearch-backend'),
+//     esclient = require('pelias-esclient')({ throttle: 20 });
 
 // esclient.livestats();
 

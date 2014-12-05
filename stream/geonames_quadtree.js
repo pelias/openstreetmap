@@ -1,6 +1,6 @@
 
 var through = require('through2');
-var esclient = require('pelias-esclient')();
+// var esclient = require('pelias-esclient')();
 
 // @see: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-geohash-cell-filter.html
 

@@ -10,6 +10,14 @@ var fs = require('fs'),
     dbclient = require('pelias-dbclient')(),
     OsmiumStream = require('osmium-stream');
 
+// nullclient
+// !!!!! DELETE ME, TESTING ONLY
+var nullclient = through.obj( function( o, e, n ){
+  n();
+}, function(){
+  dbclient.end();
+});
+
 var Backend = require('geopipes-elasticsearch-backend');
 
 // esclient.livestats();
@@ -17,15 +25,6 @@ var Backend = require('geopipes-elasticsearch-backend');
 var backend = function( index, type ){
   return new Backend( dbclient.client, index, type );
 };
-
-// @todo: extract this or refactor suggester to make it a stream factory
-var bun = require('bun');
-function generateSuggester(){
-  return bun([
-    suggester.streams.suggestable(),
-    suggester.streams.suggester( suggester.generators )
-  ]);
-}
 
 // use datapath setting from your config file
 var basepath = settings.imports.openstreetmap.datapath;
@@ -146,7 +145,10 @@ node_fork
   .pipe( address_extractor() )
 
   .pipe( stats( 'node_address_extractor -> node_suggester' ) )
-  .pipe( generateSuggester() )
+
+  // .pipe( suggester.pipeline )
+  .pipe( suggester.streams.suggestable() )
+  .pipe( suggester.streams.suggester( suggester.generators ) )
 
   .pipe( stats( 'node_suggester -> node_whitelist' ) )
 
@@ -168,6 +170,7 @@ node_fork
   }))
   .pipe( stats( 'es_node_dbclient_mapper -> node_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( nullclient );
   // .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
@@ -211,7 +214,10 @@ way_fork
   .pipe( address_extractor() )
 
   .pipe( stats( 'way_address_extractor -> way_suggester' ) )
-  .pipe( generateSuggester() )
+
+  // .pipe( suggester.pipeline )
+  .pipe( suggester.streams.suggestable() )
+  .pipe( suggester.streams.suggester( suggester.generators ) )
 
   .pipe( stats( 'way_suggester -> way_blacklist' ) )
 
@@ -233,17 +239,32 @@ way_fork
   }))
   .pipe( stats( 'es_way_dbclient_mapper -> way_dbclient' ) )
   .pipe( dbclient );
+  // .pipe( nullclient );
   // .pipe( backend.es.osmway.createPullStream() );
 
 // pipe objects to stringify for debugging
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-var file = new OsmiumStream.osmium.File( pbfFilePath );
-var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
-var parser = new OsmiumStream( reader );
+process.stdin
+  .pipe( require('split')() )
+  .pipe( through.obj( function( chunk, enc, next ){
+    try {
+      var o = JSON.parse( chunk );
+      this.push( o );
+    }
+    catch( e ){
+      console.log( 'stream end' );
+      this.end();
+    }
+    next();
+  }))
 
-parser
+// var file = new OsmiumStream.osmium.File( pbfFilePath );
+// var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
+// var parser = new OsmiumStream( reader );
+// parser
+
   .pipe( stats( 'osmium_mapper -> osm_types' ) )
   .pipe( osm_types({
     node:     node_fork,
@@ -251,3 +272,54 @@ parser
     relation: devnull(),
   }))
 ;
+
+// fs.createReadStream( pbfFilePath ).pipe(parser);
+
+
+// var osmium = require('osmium');
+// var file = new osmium.File( pbfFilePath );
+// var reader = new osmium.Reader(file, { node: true, way: true });
+
+// function extract( object ){
+//   if( object instanceof osmium.Node ){
+//     return {
+//       type: 'node',
+//       id: object.id,
+//       lat: object.lat,
+//       lon: object.lon,
+//       tags: object.tags()
+//     };
+//   } else if( object instanceof osmium.Way ){
+//     return {
+//       type: 'way',
+//       id: object.id,
+//       refs: object.node_refs(),
+//       tags: object.tags()
+//     };
+//   } else if( object instanceof osmium.Relation ){
+//     return {
+//       type: 'relation',
+//       id: object.id
+//     };
+//   } else {
+//     console.log( 'unkown type', object.constructor.name );
+//     return null;
+//   }
+// }
+
+// var mapper = stats( 'osmium_mapper -> osm_types' );
+// mapper.pipe( osm_types({
+//   node:     node_fork,
+//   way:      way_fork,
+//   relation: devnull(),
+// }));
+
+// var handler = new osmium.Handler();
+// handler.on('node', function(node) {
+//   mapper.write( extract( node ) );
+// });
+// handler.on('way', function(way) {
+//   mapper.write( extract( way ) );
+// });
+
+// osmium.apply(reader, handler);

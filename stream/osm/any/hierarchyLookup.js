@@ -45,6 +45,7 @@ function hierarchyLookup( backends, fallbackBackend ){
         if( !item.admin0 || !item.admin1 || !item.admin2 ){
           fallbackBackend.findAdminHeirachy( item.center_point, null, function ( error, resp ) {
             if( Array.isArray( resp ) && resp.length ){
+              if( !item.alpha3 && resp[0].alpha3 ){ item.alpha3 = resp[0].alpha3; }
               if( !item.admin0 && resp[0].admin0 ){ item.admin0 = resp[0].admin0; }
               if( !item.admin1 && resp[0].admin1 ){ item.admin1 = resp[0].admin1; }
               if( !item.admin2 && resp[0].admin2 ){ item.admin2 = resp[0].admin2; }
