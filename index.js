@@ -10,13 +10,16 @@ var fs = require('fs'),
     dbclient = require('pelias-dbclient')(),
     OsmiumStream = require('osmium-stream');
 
+var geoJsonCenter = require('./util/geoJsonCenter');
+var geoJsonTypeFor = require('./util/geoJsonTypeFor');
+
 // nullclient
 // !!!!! DELETE ME, TESTING ONLY
-var nullclient = through.obj( function( o, e, n ){
-  n();
-}, function(){
-  dbclient.end();
-});
+// var nullclient = through.obj( function( o, e, n ){
+//   n();
+// }, function(){
+//   dbclient.end();
+// });
 
 var Backend = require('geopipes-elasticsearch-backend');
 
@@ -70,9 +73,6 @@ var backend = {
     local_admin:              backend('pelias', 'local_admin'),
     locality:                 backend('pelias', 'locality'),
     neighborhood:             backend('pelias', 'neighborhood')
-  },
-  level: {
-    osmnodecentroids:         multilevel( levelup( leveldbpath ), 'm' )
   }
 };
 
@@ -94,7 +94,6 @@ var osm_filter =               require('./stream/osm_filter');
 var node_basic_filter =        require('./stream/node_basic_filter');
 var osm_mapper =               require('./stream/osm_mapper');
 var node_type =                require('./stream/node_type');
-var node_centroid_cache =      require('./stream/node_centroid_cache');
 var address_extractor =        require('./stream/address_extractor');
 
 //var quattroshapes =            require('./stream/quattroshapes');
@@ -105,16 +104,12 @@ var stats =                    require('./stream/stats');
 stats.enabled = true;
 
 // entry point for node pipeline
-node_fork = stats( 'osm_types -> node_centroid_cache' );
+node_fork = stats( 'osm_types -> node_mapper' );
 node_fork
 
-  // store centroids in cache
-  .pipe( node_centroid_cache( backend.level.osmnodecentroids ) )
-  .pipe( stats( 'node_centroid_cache -> node_filter' ) )
-
   // map and filter records
-  .pipe( osm_filter() )
-  .pipe( stats( 'node_filter -> node_mapper' ) )
+  // .pipe( osm_filter() )
+  // .pipe( stats( 'node_filter -> node_mapper' ) )
   .pipe( osm_mapper() )
   .pipe( stats( 'node_mapper -> node_hierarchyLookup' ) )
 
@@ -174,17 +169,47 @@ node_fork
   // .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
-way_fork = stats( 'osm_types -> way_filter' );
+way_fork = stats( 'osm_types -> way_mapper' );
 way_fork
 
   // map and filter records
-  .pipe( osm_filter() )
-  .pipe( stats( 'way_filter -> way_mapper' ) )
+  // .pipe( osm_filter() )
+  // .pipe( stats( 'way_filter -> way_mapper' ) )
   .pipe( osm_mapper() )
   .pipe( stats( 'way_mapper -> way_denormalizer' ) )
 
-  // lookup centroids from cache
-  .pipe( osm.way.denormalizer( backend.level.osmnodecentroids ) )
+  .pipe( through.obj( function( item, enc, next ){
+
+    // console.log( 'way', item.nodes );
+    // console.log( 'way', item );
+    // process.exit(1);
+    try {
+
+      if( !item.nodes ){
+        return next();
+      }
+
+      var points = item.nodes.map( function( doc ){
+        return [ doc.lon, doc.lat ];
+      });
+
+      item.geo = {
+        type: geoJsonTypeFor( points ),
+        coordinates: points
+      };
+
+      item.center_point = geoJsonCenter( item.geo );
+      delete item.nodes;
+
+      this.push( item );
+
+      next();
+
+    } catch( e ){
+      console.log(e);
+      process.exit();
+    }
+  }))
   .pipe( stats( 'way_denormalizer -> way_hierarchyLookup' ) )
 
   // hierarchy lookup
@@ -246,18 +271,29 @@ way_fork
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
+process.stdin.on('end',function(){
+  console.log( 'stdin end' );
+  // process.exit(1);
+});
+
 process.stdin
   .pipe( require('split')() )
   .pipe( through.obj( function( chunk, enc, next ){
     try {
-      var o = JSON.parse( chunk );
-      this.push( o );
+      var o = JSON.parse( chunk.toString('utf8') );
+      if( o ) this.push( o );
     }
     catch( e ){
       console.log( 'stream end' );
-      this.end();
+      // console.log( chunk, e, o );
+      // console.log(e, e.stack);
+      // console.log(e, o, typeof o, chunk.toString('utf8'));
+      // process.exit(1);
+      // this.end();
     }
-    next();
+    finally {
+      next();
+    }
   }))
 
 // var file = new OsmiumStream.osmium.File( pbfFilePath );

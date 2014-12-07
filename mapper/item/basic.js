@@ -22,4 +22,8 @@ module.exports = function( item, record ){
   // copy all tags
   record.tags = item.tags;
 
+  if( item.nodes ){
+    record.nodes = item.nodes;
+  }
+
 };
