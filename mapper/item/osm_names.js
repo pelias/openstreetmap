@@ -13,7 +13,7 @@ var OSM_NAME_SCHEMA = {
   'sorting_name':     'sorting'
 };
 
-var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA);
+var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA,'name');
 
 module.exports = function( item, record ){
 
