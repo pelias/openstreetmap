@@ -1,5 +1,5 @@
 
-var through = require('through2'),
+var through = require('../../parallel'),
     buildHierarchy = require('./buildHierarchy');
 
 function hierarchyLookup( backends, fallbackBackend ){
