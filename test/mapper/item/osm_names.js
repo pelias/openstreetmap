@@ -1,5 +1,5 @@
 
-var osm_names = require('../../../mapper/node/osm_names');
+var osm_names = require('../../../mapper/item/osm_names');
 
 module.exports.tests = {};
 
@@ -46,7 +46,7 @@ module.exports.tests.osm_name_mapper = function(test, common) {
 module.exports.tests.trim_junk = function(test, common) {
   var record = { name: {} };
   var node = { tags: { name: " 'Round Midnight Jazz and Blues Bar " } };
-  test('maps - osm naming schema', function(t) {
+  test('maps - trim junk', function(t) {
     osm_names(node, record); // run mapper
     t.equal(record.name.default, 'Round Midnight Jazz and Blues Bar', 'correctly mapped');
     t.end();
