@@ -1,9 +1,7 @@
 
 var fs = require('fs'),
-    levelup = require('levelup'),
-    multilevel = require('level-multiply'),
-    parser = require('osm-pbf-parser')(),
     through = require('through2'),
+    pbf2json = require('pbf2json'),
     suggester = require('pelias-suggester-pipeline'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate(),
@@ -89,7 +87,7 @@ var osm = {
   }
 };
 
-var feature_filter =           require('./stream/feature_filter');
+// var feature_filter =           require('./stream/feature_filter');
 var osm_filter =               require('./stream/osm_filter');
 var node_basic_filter =        require('./stream/node_basic_filter');
 var osm_mapper =               require('./stream/osm_mapper');
@@ -271,91 +269,24 @@ way_fork
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-process.stdin.on('end',function(){
-  console.log( 'stdin end' );
-  // process.exit(1);
+
+// -- parser --
+
+var tags = ['addr:housenumber+addr:street']; // streets
+require('./features').features.forEach( function( feature ){
+  tags.push( feature + '+name' ); // has feature and valid name
 });
 
-process.stdin
-  .pipe( require('split')() )
-  .pipe( through.obj( function( chunk, enc, next ){
-    try {
-      var o = JSON.parse( chunk.toString('utf8') );
-      if( o ) this.push( o );
-    }
-    catch( e ){
-      console.log( 'stream end' );
-      // console.log( chunk, e, o );
-      // console.log(e, e.stack);
-      // console.log(e, o, typeof o, chunk.toString('utf8'));
-      // process.exit(1);
-      // this.end();
-    }
-    finally {
-      next();
-    }
-  }))
+var config = {
+  file: pbfFilePath,
+  tags: tags,
+  leveldb: leveldbpath
+};
 
-// var file = new OsmiumStream.osmium.File( pbfFilePath );
-// var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
-// var parser = new OsmiumStream( reader );
-// parser
-
+pbf2json.createReadStream( config )
   .pipe( stats( 'osmium_mapper -> osm_types' ) )
   .pipe( osm_types({
     node:     node_fork,
     way:      way_fork,
     relation: devnull(),
-  }))
-;
-
-// fs.createReadStream( pbfFilePath ).pipe(parser);
-
-
-// var osmium = require('osmium');
-// var file = new osmium.File( pbfFilePath );
-// var reader = new osmium.Reader(file, { node: true, way: true });
-
-// function extract( object ){
-//   if( object instanceof osmium.Node ){
-//     return {
-//       type: 'node',
-//       id: object.id,
-//       lat: object.lat,
-//       lon: object.lon,
-//       tags: object.tags()
-//     };
-//   } else if( object instanceof osmium.Way ){
-//     return {
-//       type: 'way',
-//       id: object.id,
-//       refs: object.node_refs(),
-//       tags: object.tags()
-//     };
-//   } else if( object instanceof osmium.Relation ){
-//     return {
-//       type: 'relation',
-//       id: object.id
-//     };
-//   } else {
-//     console.log( 'unkown type', object.constructor.name );
-//     return null;
-//   }
-// }
-
-// var mapper = stats( 'osmium_mapper -> osm_types' );
-// mapper.pipe( osm_types({
-//   node:     node_fork,
-//   way:      way_fork,
-//   relation: devnull(),
-// }));
-
-// var handler = new osmium.Handler();
-// handler.on('node', function(node) {
-//   mapper.write( extract( node ) );
-// });
-// handler.on('way', function(way) {
-//   mapper.write( extract( way ) );
-// });
-
-// osmium.apply(reader, handler);
+  }));
