@@ -91,15 +91,20 @@ node_fork
 
   // remove tags not in schema (or throws StrictDynamicMappingException)
   // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
+  .pipe( propStream.whitelist(['_meta','id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'node_blacklist -> es_node_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
+
     var id = item.id;
     delete item.id;
+
+    var type = item._meta.type;
+    delete item._meta;
+
     this.push({
       _index: 'pelias',
-      _type: item._meta.type,
+      _type: type,
       _id: id,
       data: item
     });
@@ -182,15 +187,20 @@ way_fork
 
   // remove tags not in schema (or throws StrictDynamicMappingException)
   // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
+  .pipe( propStream.whitelist(['_meta','id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'way_blacklist -> es_way_dbclient_mapper' ) )
   .pipe( through.obj( function( item, enc, next ){
+
     var id = item.id;
     delete item.id;
+
+    var type = item._meta.type;
+    delete item._meta;
+
     this.push({
       _index: 'pelias',
-      _type: item._meta.type,
+      _type: type,
       _id: id,
       data: item
     });
