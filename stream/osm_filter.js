@@ -10,24 +10,9 @@ function isPOIFromFeatureList( item ){
   return( 'string' === typeof item.tags.name && !!features.getFeature( item ) );
 }
 
-var lastCommit = new Date().getTime();
-var c = 0;
-
-function inc( type, record ){
-  c++;
-  var now = new Date().getTime();
-  if( now >= lastCommit +1000 ){
-    lastCommit = now;
-    console.log( c );
-    c = 0;
-  }
-}
-
 module.exports = function(){
 
   var stream = through.obj( function( item, enc, done ) {
-
-    inc( 'a', item );
 
     // filter items missing requires properties
     if( !!item &&
