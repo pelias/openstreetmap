@@ -67,7 +67,7 @@ module.exports.tests.enabled = function(test, common) {
       next();
     });
     s.log = function( store ){
-      t.deepEqual( store, { title: 1 }, 'loggin enabled' );
+      t.deepEqual( store, { pipes: 1, title: 1 }, 'logging enabled' );
       clearInterval( stats.interval );
       t.end();
     };
