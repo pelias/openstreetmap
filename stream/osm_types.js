@@ -37,15 +37,6 @@ module.exports = function( streams ){
   var way_stream = filterTypeStream( 'way' );
   way_stream.pipe( streams.way );
 
-  // var seenWays = false;
-  // way_stream.pipe( through.obj( function( i, e, n ){
-  //   if( !seenWays ){
-  //     streams.node.end();
-  //     seenWays = true;
-  //   }
-  //   n();
-  // }));
-
   var relation_stream = filterTypeStream( 'relation' );
   relation_stream.pipe( streams.relation );
 
