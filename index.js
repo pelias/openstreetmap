@@ -5,25 +5,15 @@ var fs = require('fs'),
     suggester = require('pelias-suggester-pipeline'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate(),
-    dbclient = require('pelias-dbclient')(),
-    OsmiumStream = require('osmium-stream');
+    dbclient = require('pelias-dbclient')();
 
+// geojson functions
 var geoJsonCenter = require('./util/geoJsonCenter');
 var geoJsonTypeFor = require('./util/geoJsonTypeFor');
 
-// nullclient
-// !!!!! DELETE ME, TESTING ONLY
-// var nullclient = through.obj( function( o, e, n ){
-//   n();
-// }, function(){
-//   dbclient.end();
-// });
-
+// backend
 var Backend = require('geopipes-elasticsearch-backend');
-
-// esclient.livestats();
-
-var backend = function( index, type ){
+var createBackend = function( index, type ){
   return new Backend( dbclient.client, index, type );
 };
 
@@ -31,95 +21,49 @@ var backend = function( index, type ){
 var basepath = settings.imports.openstreetmap.datapath;
 var filename = settings.imports.openstreetmap.import[0].filename;
 var leveldbpath = settings.imports.openstreetmap.leveldbpath;
-
-// testing
-// basepath = '/media/hdd/osm/mapzen-metro';
-// filename = 'wellington.osm.pbf';
-
 var pbfFilePath = basepath + '/' + filename;
-// check pbf file exists
-try {
-  fs.statSync( pbfFilePath );
-} catch( e ){
-  console.error( 'failed to load pbf file:', pbfFilePath );
-  process.exit(1);
-}
 
-// check leveldb dir exists
-try {
-  fs.statSync( leveldbpath );
-} catch( e ){
-  console.error( 'failed to open:', leveldbpath );
-  process.exit(1);
-}
-
-// generic streams
-var stringify =                require('./stream/stringify');
+// streams
 var devnull =                  require('./stream/devnull');
-var required =                 require('./stream/required');
-// var sporadic =                 require('./stream/sporadic');
+var osm_mapper =               require('./stream/osm_mapper');
+var address_extractor =        require('./stream/address_extractor');
+var osm_types =                require('./stream/osm_types');
+var hierarchyLookup =          require('./stream/osm/any/hierarchyLookup');
+
+// enable/disable debugging of bottlenecks in the pipeline.
+var stats =                    require('./stream/stats');
+stats.enabled = true;
 
 // sinks
 var backend = {
-  es: {
-    osmnode:                  backend('pelias', 'osmnode'),
-    osmway:                   backend('pelias', 'osmway'),
-    geonames:                 backend('pelias', 'geoname'),
-    admin0:                   backend('pelias', 'admin0'),
-    admin1:                   backend('pelias', 'admin1'),
-    admin2:                   backend('pelias', 'admin2'),
-    local_admin:              backend('pelias', 'local_admin'),
-    locality:                 backend('pelias', 'locality'),
-    neighborhood:             backend('pelias', 'neighborhood')
-  }
+  osmnode:                  createBackend('pelias', 'osmnode'),
+  osmway:                   createBackend('pelias', 'osmway'),
+  geonames:                 createBackend('pelias', 'geoname'),
+  admin0:                   createBackend('pelias', 'admin0'),
+  admin1:                   createBackend('pelias', 'admin1'),
+  admin2:                   createBackend('pelias', 'admin2'),
+  local_admin:              createBackend('pelias', 'local_admin'),
+  locality:                 createBackend('pelias', 'locality'),
+  neighborhood:             createBackend('pelias', 'neighborhood')
 };
-
-// forkers
-var osm_types =                require('./stream/osm_types');
-
-// osm
-var osm = {
-  way: {
-    denormalizer:              require('./stream/osm/way/denormalizer'),
-  },
-  any: {
-    hierarchyLookup:            require('./stream/osm/any/hierarchyLookup')
-  }
-};
-
-// var feature_filter =           require('./stream/feature_filter');
-var osm_filter =               require('./stream/osm_filter');
-var node_basic_filter =        require('./stream/node_basic_filter');
-var osm_mapper =               require('./stream/osm_mapper');
-var node_type =                require('./stream/node_type');
-var address_extractor =        require('./stream/address_extractor');
-
-//var quattroshapes =            require('./stream/quattroshapes');
-var exit_on_id =               require('./stream/exit_on_id');
-var stats =                    require('./stream/stats');
-
-// enable/disable debugging of bottlenecks in the pipeline.
-stats.enabled = true;
 
 // entry point for node pipeline
 node_fork = stats( 'osm_types -> node_mapper' );
 node_fork
 
   // map and filter records
-  // .pipe( osm_filter() )
-  // .pipe( stats( 'node_filter -> node_mapper' ) )
   .pipe( osm_mapper() )
   .pipe( stats( 'node_mapper -> node_hierarchyLookup' ) )
 
   // hierarchy lookup
-  .pipe( osm.any.hierarchyLookup([
-    { type: 'neighborhood'  , adapter: backend.es.neighborhood },
-    { type: 'locality'      , adapter: backend.es.locality },
-    { type: 'local_admin'   , adapter: backend.es.local_admin },
-    { type: 'admin2'        , adapter: backend.es.admin2 },
-    { type: 'admin1'        , adapter: backend.es.admin1 },
-    { type: 'admin0'        , adapter: backend.es.admin0 }
-  ], backend.es.geonames ))
+  .pipe( hierarchyLookup([
+    { type: 'neighborhood'  , adapter: backend.neighborhood },
+    { type: 'locality'      , adapter: backend.locality },
+    { type: 'local_admin'   , adapter: backend.local_admin },
+    { type: 'admin2'        , adapter: backend.admin2 },
+    { type: 'admin1'        , adapter: backend.admin1 },
+    { type: 'admin0'        , adapter: backend.admin0 }
+  ], backend.geonames ))
   .pipe( stats( 'node_hierarchyLookup -> node_meta.type' ) )
 
   // add correct meta info for suggester payload
@@ -155,7 +99,7 @@ node_fork
     delete item.id;
     this.push({
       _index: 'pelias',
-      _type: 'osmnode',
+      _type: item._meta.type,
       _id: id,
       data: item
     });
@@ -163,24 +107,17 @@ node_fork
   }))
   .pipe( stats( 'es_node_dbclient_mapper -> node_dbclient' ) )
   .pipe( dbclient );
-  // .pipe( nullclient );
-  // .pipe( backend.es.osmnode.createPullStream() );
 
 // entry point for way pipeline
 way_fork = stats( 'osm_types -> way_mapper' );
 way_fork
 
   // map and filter records
-  // .pipe( osm_filter() )
-  // .pipe( stats( 'way_filter -> way_mapper' ) )
   .pipe( osm_mapper() )
   .pipe( stats( 'way_mapper -> way_denormalizer' ) )
 
+  // convert de-normalized ways to geojson
   .pipe( through.obj( function( item, enc, next ){
-
-    // console.log( 'way', item.nodes );
-    // console.log( 'way', item );
-    // process.exit(1);
     try {
 
       if( !item.nodes ){
@@ -191,34 +128,33 @@ way_fork
         return [ doc.lon, doc.lat ];
       });
 
-      item.geo = {
+      var geo = {
         type: geoJsonTypeFor( points ),
         coordinates: points
       };
 
-      item.center_point = geoJsonCenter( item.geo );
+      item.center_point = geoJsonCenter( geo );
       delete item.nodes;
 
       this.push( item );
-
       next();
 
     } catch( e ){
-      console.log(e);
-      process.exit();
+      console.log( 'failed to denormalize way', e );
+      process.exit( 1 );
     }
   }))
   .pipe( stats( 'way_denormalizer -> way_hierarchyLookup' ) )
 
   // hierarchy lookup
-  .pipe( osm.any.hierarchyLookup([
-    { type: 'neighborhood'  , adapter: backend.es.neighborhood },
-    { type: 'locality'      , adapter: backend.es.locality },
-    { type: 'local_admin'   , adapter: backend.es.local_admin },
-    { type: 'admin2'        , adapter: backend.es.admin2 },
-    { type: 'admin1'        , adapter: backend.es.admin1 },
-    { type: 'admin0'        , adapter: backend.es.admin0 }
-  ], backend.es.geonames ))
+  .pipe( hierarchyLookup([
+    { type: 'neighborhood'  , adapter: backend.neighborhood },
+    { type: 'locality'      , adapter: backend.locality },
+    { type: 'local_admin'   , adapter: backend.local_admin },
+    { type: 'admin2'        , adapter: backend.admin2 },
+    { type: 'admin1'        , adapter: backend.admin1 },
+    { type: 'admin0'        , adapter: backend.admin0 }
+  ], backend.geonames ))
   .pipe( stats( 'way_hierarchyLookup -> way_meta.type' ) )
 
   // add correct meta info for suggester payload
@@ -254,7 +190,7 @@ way_fork
     delete item.id;
     this.push({
       _index: 'pelias',
-      _type: 'osmway',
+      _type: item._meta.type,
       _id: id,
       data: item
     });
@@ -262,15 +198,24 @@ way_fork
   }))
   .pipe( stats( 'es_way_dbclient_mapper -> way_dbclient' ) )
   .pipe( dbclient );
-  // .pipe( nullclient );
-  // .pipe( backend.es.osmway.createPullStream() );
-
-// pipe objects to stringify for debugging
-// debug_fork = stringify();
-// debug_fork.pipe( process.stdout );
-
 
 // -- parser --
+
+// check pbf file exists
+try {
+  fs.statSync( pbfFilePath );
+} catch( e ){
+  console.error( 'failed to load pbf file:', pbfFilePath );
+  process.exit(1);
+}
+
+// check leveldb dir exists
+try {
+  fs.statSync( leveldbpath );
+} catch( e ){
+  console.error( 'failed to open:', leveldbpath );
+  process.exit(1);
+}
 
 var tags = ['addr:housenumber+addr:street']; // streets
 require('./features').features.forEach( function( feature ){
