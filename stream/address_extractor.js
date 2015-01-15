@@ -22,12 +22,12 @@ module.exports = function(){
     // create a new record for street addresses
     if( hasValidAddress( item ) ){
       var type = isNamedPoi ? 'poi-address' : 'address';
+
       var record = {
-        id: type + '-' + item.type + '-' + (item.id || ++idOrdinal), // MUST BE UNIQUE!
+        id: type + '-' + item._meta.type + '-' + (item.id || ++idOrdinal), // MUST BE UNIQUE!
         name: {
           default: item.address.number + ' ' + item.address.street
         },
-        type: item.type,
         center_point: item.center_point,
         alpha3: item.alpha3,
         admin0: item.admin0,
@@ -39,6 +39,9 @@ module.exports = function(){
         neighborhood: item.neighborhood,
         _meta: item._meta
       };
+
+      record._meta.type = 'osmaddress';
+
       this.push( record );
     }
 
