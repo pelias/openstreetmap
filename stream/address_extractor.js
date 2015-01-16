@@ -1,6 +1,7 @@
 
 var through = require('through2'),
     isObject = require('is-object'),
+    extend = require('extend'),
     idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
 function hasValidAddress( item ){
@@ -37,10 +38,8 @@ module.exports = function(){
         local_admin: item.local_admin,
         locality: item.locality,
         neighborhood: item.neighborhood,
-        _meta: item._meta
+        _meta: extend( true, {}, item._meta, { type: 'osmaddress' } )
       };
-
-      record._meta.type = 'osmaddress';
 
       this.push( record );
     }

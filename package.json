@@ -29,6 +29,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "bun": "0.0.10",
+    "extend": "^2.0.0",
     "geojson-extent": "0.0.1",
     "geolib": "^2.0.14",
     "geopipes-elasticsearch-backend": "0.0.8",

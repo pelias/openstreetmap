@@ -59,13 +59,11 @@ module.exports.tests.passthrough = function(test, common) {
   test('passthrough: regular POI', function(t) {
     var s = stream();
     s.pipe( through.obj( function( chunk, enc, next ){
-      t.equal( chunk.type, 'item', 'item not changed' );
+      t.equal( chunk._meta.type, 'item', 'item not changed' );
       t.end(); // test should fail if not called.
       next();
     }));
-    s.write({ id: 1, type: 'item', name: {
-      default: 'poi1'
-    }});
+    s.write({ id: 1, name: { default: 'poi1' }, _meta: { type: 'item' }});
   });
   test('filter: invalid POI', function(t) {
     var s = stream();
@@ -85,7 +83,7 @@ module.exports.tests.createAddress = function(test, common) {
       t.equal( chunk.id, 'address-item-1', 'new id' );
       t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
       t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
-      t.equal( chunk.type, 'item', 'type unchanged' );
+      t.equal( chunk._meta.type, 'osmaddress', 'type changed' );
       t.deepEqual( chunk.center_point, { lat: 1, lon: 1 }, 'centroid unchanged' );
       t.deepEqual( chunk.alpha3, 'SES', 'alpha3 unchanged' );
       t.deepEqual( chunk.admin0, 'great sesame', 'admin0 unchanged' );
@@ -99,7 +97,7 @@ module.exports.tests.createAddress = function(test, common) {
       next();
     }));
     s.write({
-      id: 1, type: 'item', _meta: { test: '123' },
+      id: 1, _meta: { test: '123', type: 'item' },
       address:{
         number: '10', street: 'Sesame st'
       },
@@ -117,7 +115,7 @@ module.exports.tests.createAddress = function(test, common) {
   test('create: from named record', function(t) {
 
     var item = {
-      id: 1, type: 'item', _meta: { test: '123' },
+      id: 1, _meta: { test: '123', type: 'item' },
       name: {
         default: 'elmo\'s house'
       },
@@ -137,7 +135,7 @@ module.exports.tests.createAddress = function(test, common) {
         t.equal( chunk.id, 'poi-address-item-1', 'new id' );
         t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
         t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
-        t.equal( chunk.type, item.type, 'type unchanged' );
+        t.equal( chunk._meta.type, 'osmaddress', 'type changed' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
         t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
@@ -147,13 +145,13 @@ module.exports.tests.createAddress = function(test, common) {
         t.deepEqual( chunk.local_admin, item.local_admin, 'local_admin unchanged' );
         t.deepEqual( chunk.locality, item.locality, 'locality unchanged' );
         t.deepEqual( chunk.neighborhood, item.neighborhood, 'neighborhood unchanged' );
-        t.deepEqual( chunk._meta, item._meta, '_meta unchanged' );
+        t.deepEqual( chunk._meta.test, item._meta.test, '_meta properties copied' );
         next();
       } else {
         t.equal( chunk.id, item.id, 'id unchanged' );
         t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-        t.equal( chunk.name.default, item.name.default, 'correct name' );
-        t.equal( chunk.type, item.type, 'type unchanged' );
+        t.equal( chunk.name.default, 'elmo\'s house', 'correct name' );
+        t.equal( chunk._meta.type, 'item', 'type unchanged' );
         t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
         t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
         t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
@@ -176,7 +174,7 @@ module.exports.tests.createAddress = function(test, common) {
   test('create: address created before poi record', function(t) {
 
     var item = {
-      id: 1, type: 'item', _meta: { test: '123' },
+      id: 1, _meta: { test: '123', type: 'item' },
       name: {
         default: 'elmo\'s house'
       },
@@ -221,7 +219,7 @@ module.exports.tests.createAddress = function(test, common) {
       next();
     }));
     s.write({
-      type: 'item', _meta: { test: '123' },
+      _meta: { test: '123', type: 'item' },
       address:{
         number: '10', street: 'Sesame st'
       },
@@ -231,7 +229,7 @@ module.exports.tests.createAddress = function(test, common) {
       admin2: 'sesameville'
     });
     s.write({
-      type: 'item', _meta: { test: '123' },
+      _meta: { test: '123', type: 'item' },
       address:{
         number: '10', street: 'Sesame st'
       },
