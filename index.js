@@ -8,7 +8,7 @@ var fs = require('fs'),
     propStream = require('prop-stream'),
     settings = require('pelias-config').generate(),
     dbclient = require('pelias-dbclient')(),
-    OsmiumStream = require('osmium-stream');
+    osmPbfParser = require( 'osm-pbf-parser' );
 
 var Backend = require('geopipes-elasticsearch-backend');
 
@@ -239,15 +239,11 @@ way_fork
 // debug_fork = stringify();
 // debug_fork.pipe( process.stdout );
 
-var file = new OsmiumStream.osmium.File( pbfFilePath );
-var reader = new OsmiumStream.osmium.Reader( file, { node: true, way: true } );
-var parser = new OsmiumStream( reader );
-
-parser
+fs.createReadStream( pbfFilePath )
+  .pipe( osmPbfParser() )
   .pipe( stats( 'osmium_mapper -> osm_types' ) )
   .pipe( osm_types({
     node:     node_fork,
     way:      way_fork,
     relation: devnull(),
-  }))
-;
+  }));
