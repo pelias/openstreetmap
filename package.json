@@ -34,7 +34,7 @@
     "geopipes-elasticsearch-backend": "0.0.8",
     "gjtk": "^1.0.0-b",
     "is-object": "^1.0.1",
-    "pbf2json": "0.0.1",
+    "pbf2json": "0.0.2",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.3",
     "pelias-suggester-pipeline": "^1.0.1",
