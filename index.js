@@ -47,6 +47,18 @@ var backend = {
   neighborhood:             createBackend('pelias', 'neighborhood')
 };
 
+var dbmapper = function(){
+  return through.obj( function( item, enc, next ){
+    this.push({
+      _index: 'pelias',
+      _type: item.getType(),
+      _id: item.getId(),
+      data: item
+    });
+    next();
+  });
+}
+
 // entry point for node pipeline
 node_fork = stats( 'osm_types -> node_mapper' );
 node_fork
@@ -64,18 +76,7 @@ node_fork
     { type: 'admin1'        , adapter: backend.admin1 },
     { type: 'admin0'        , adapter: backend.admin0 }
   ], backend.geonames ))
-  .pipe( stats( 'node_hierarchyLookup -> node_meta.type' ) )
-
-  // add correct meta info for suggester payload
-  // @todo: make this better
-  .pipe( through.obj( function( item, enc, next ){
-    if( !item.hasOwnProperty('_meta') ){ item._meta = {}; }
-    item._meta.type = 'osmnode';
-    this.push( item );
-    next();
-  }))
-
-  .pipe( stats( 'node_meta.type -> node_address_extractor' ) )
+  .pipe( stats( 'node_hierarchyLookup -> node_address_extractor' ) )
 
   // extract addresses & create a new record for each
   // @todo: make this better
@@ -87,29 +88,9 @@ node_fork
   .pipe( suggester.streams.suggestable() )
   .pipe( suggester.streams.suggester( suggester.generators ) )
 
-  .pipe( stats( 'node_suggester -> node_whitelist' ) )
+  .pipe( stats( 'node_suggester -> es_node_dbclient_mapper' ) )
 
-  // remove tags not in schema (or throws StrictDynamicMappingException)
-  // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['_meta','id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
-
-  .pipe( stats( 'node_blacklist -> es_node_dbclient_mapper' ) )
-  .pipe( through.obj( function( item, enc, next ){
-
-    var id = item.id;
-    delete item.id;
-
-    var type = item._meta.type;
-    delete item._meta;
-
-    this.push({
-      _index: 'pelias',
-      _type: type,
-      _id: id,
-      data: item
-    });
-    next();
-  }))
+  .pipe( dbmapper() )
   .pipe( stats( 'es_node_dbclient_mapper -> node_dbclient' ) )
   .pipe( dbclient );
 
@@ -125,11 +106,13 @@ way_fork
   .pipe( through.obj( function( item, enc, next ){
     try {
 
-      if( !item.nodes ){
+      if( !item.hasMeta('nodes') ){
         return next();
       }
 
-      var points = item.nodes.map( function( doc ){
+      var nodes = item.getMeta('nodes');
+
+      var points = nodes.map( function( doc ){
         return [ doc.lon, doc.lat ];
       });
 
@@ -138,8 +121,7 @@ way_fork
         coordinates: points
       };
 
-      item.center_point = geoJsonCenter( geo );
-      delete item.nodes;
+      item.setCentroid( geoJsonCenter( geo ) );
 
       this.push( item );
       next();
@@ -160,18 +142,7 @@ way_fork
     { type: 'admin1'        , adapter: backend.admin1 },
     { type: 'admin0'        , adapter: backend.admin0 }
   ], backend.geonames ))
-  .pipe( stats( 'way_hierarchyLookup -> way_meta.type' ) )
-
-  // add correct meta info for suggester payload
-  // @todo: make this better
-  .pipe( through.obj( function( item, enc, next ){
-    if( !item.hasOwnProperty('_meta') ){ item._meta = {}; }
-    item._meta.type = 'osmway';
-    this.push( item );
-    next();
-  }))
-
-  .pipe( stats( 'way_meta.type -> way_address_extractor' ) )
+  .pipe( stats( 'way_hierarchyLookup -> way_address_extractor' ) )
 
   // extract addresses & create a new record for each
   // @todo: make this better
@@ -183,29 +154,14 @@ way_fork
   .pipe( suggester.streams.suggestable() )
   .pipe( suggester.streams.suggester( suggester.generators ) )
 
-  .pipe( stats( 'way_suggester -> way_blacklist' ) )
+  // .pipe( stats( 'way_suggester -> way_blacklist' ) )
 
-  // remove tags not in schema (or throws StrictDynamicMappingException)
-  // note: 'tags' are being stripped to reduce db size
-  .pipe( propStream.whitelist(['_meta','id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
+  // // remove tags not in schema (or throws StrictDynamicMappingException)
+  // // note: 'tags' are being stripped to reduce db size
+  // .pipe( propStream.whitelist(['_meta','id','name','address','type','alpha3','admin0','admin1','admin1_abbr','admin2','local_admin','locality','neighborhood','center_point','suggest']) )
 
   .pipe( stats( 'way_blacklist -> es_way_dbclient_mapper' ) )
-  .pipe( through.obj( function( item, enc, next ){
-
-    var id = item.id;
-    delete item.id;
-
-    var type = item._meta.type;
-    delete item._meta;
-
-    this.push({
-      _index: 'pelias',
-      _type: type,
-      _id: id,
-      data: item
-    });
-    next();
-  }))
+  .pipe( dbmapper() )
   .pipe( stats( 'es_way_dbclient_mapper -> way_dbclient' ) )
   .pipe( dbclient );
 

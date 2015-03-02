@@ -2,13 +2,13 @@
 module.exports = function( schema, field ){
   if( !field ){ field = 'address'; }
   return function( item, record ){
-    if( item.tags ){
+    if( record.hasMeta('tags') ){
+      var tags = record.getMeta('tags');
       for( var tag in schema ){
         var addressProp = schema[ tag ];
-        if( item.tags.hasOwnProperty( tag ) ){
+        if( tags.hasOwnProperty( tag ) ){
           if( !record[field] ){ record[field] = {}; }
-          record[field][ addressProp ] = item.tags[ tag ];
-          delete item.tags[ tag ];
+          record[field][ addressProp ] = tags[ tag ];
         }
       }
     }

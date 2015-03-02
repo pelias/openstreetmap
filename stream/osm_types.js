@@ -4,20 +4,8 @@ var through = require('through2');
 function filterTypeStream( type ){
   var stream = through.obj( function( data, enc, next ) {
 
-    // data is an array of items
-    if( Array.isArray( data ) ){
-      data.forEach( function( item ){
-        if( item.type === type ){
-          this.push( item );
-        }
-      }, this);
-    }
-
-    // data is a single item
-    else {
-      if( data.type === type ){
-        this.push( data );
-      }
+    if( data.type === type ){
+      this.push( data );
     }
 
     next();

@@ -2,6 +2,7 @@
 var through = require('through2'),
     isObject = require('is-object'),
     extend = require('extend'),
+    Document = require('pelias-model').Document,
     idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
 function hasValidAddress( item ){
@@ -18,28 +19,28 @@ module.exports = function(){
 
   var stream = through.obj( function( item, enc, done ) {
 
-    var isNamedPoi = ( !!item.name && !!item.name.default );
+    var isNamedPoi = !!item.getName('default');
 
     // create a new record for street addresses
     if( hasValidAddress( item ) ){
       var type = isNamedPoi ? 'poi-address' : 'address';
 
-      var record = {
-        id: type + '-' + item._meta.type + '-' + (item.id || ++idOrdinal), // MUST BE UNIQUE!
-        name: {
-          default: item.address.number + ' ' + item.address.street
-        },
-        center_point: item.center_point,
-        alpha3: item.alpha3,
-        admin0: item.admin0,
-        admin1: item.admin1,
-        admin1_abbr: item.admin1_abbr,
-        admin2: item.admin2,
-        local_admin: item.local_admin,
-        locality: item.locality,
-        neighborhood: item.neighborhood,
-        _meta: extend( true, {}, item._meta, { type: 'osmaddress' } )
-      };
+      // copy data to new document
+      var record = new Document( 'osmaddress', type + '-' + item.getType() + '-' + (item.getId() || ++idOrdinal) );
+
+      record
+        .setName( 'default', item.address.number + ' ' + item.address.street )
+        .setCentroid( item.getCentroid() );
+
+      if( item.alpha3 ){ record.setAdmin( 'alpha3', item.alpha3 ); }
+      if( item.admin0 ){ record.setAdmin( 'admin0', item.admin0 ); }
+      if( item.admin1 ){ record.setAdmin( 'admin1', item.admin1 ); }
+      if( item.admin1_abbr ){ record.setAdmin( 'admin1_abbr', item.admin1_abbr ); }
+      if( item.admin2 ){ record.setAdmin( 'admin2', item.admin2 ); }
+      if( item.local_admin ){ record.setAdmin( 'local_admin', item.local_admin ); }
+      if( item.locality ){ record.setAdmin( 'locality', item.locality ); }
+      if( item.neighborhood ){ record.setAdmin( 'neighborhood', item.neighborhood ); }
+      record._meta = extend( true, {}, item._meta );
 
       this.push( record );
     }

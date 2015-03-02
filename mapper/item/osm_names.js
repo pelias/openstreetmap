@@ -18,19 +18,19 @@ var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA,'name');
 
 module.exports = function( item, record ){
 
-  if( item.tags ){
+  if( record.hasMeta('tags') ){
+
+    var tags = record.getMeta('tags');
 
     // default name
-    if( item.tags.name ){
-      record.name.default = item.tags.name;
-      delete item.tags['name'];
+    if( tags.hasOwnProperty( 'name' ) ){
+      record.setName( 'default', tags.name );
     }
 
     // localized names
-    for( var tag in item.tags ){
+    for( var tag in tags ){
       if( tag.match('name:') ){
-        record.name[ tag.replace('name:','') ] = item.tags[tag];
-        delete item.tags[tag];
+        record.setName( tag.replace('name:',''), tags[tag] );
       }
     }
 

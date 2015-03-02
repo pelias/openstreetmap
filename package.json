@@ -37,6 +37,7 @@
     "pbf2json": "0.0.2",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.3",
+    "pelias-model": "0.0.2",
     "pelias-suggester-pipeline": "^1.0.1",
     "prop-stream": "0.0.0",
     "readable-stream": "^1.0.33",

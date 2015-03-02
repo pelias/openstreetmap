@@ -1,29 +1,22 @@
 
 module.exports = function( item, record ){
-
-  // osm id
-  record.id = item.id;
   
   // set lat/lon
   if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
-    record.center_point = {
+    record.setCentroid({
       lat: item.lat,
       lon: item.lon
-    };
+    });
   }
 
-  if( item.hasOwnProperty('refs') ){
-    record.refs = item.refs;
+  // if( item.hasOwnProperty('refs') ){
+  //   record.setMeta( 'refs', item.refs );
+  // }
+
+  if( item.hasOwnProperty('nodes') ){
+    record.setMeta( 'nodes', item.nodes );
   }
 
-  record.name = {};
-  record.type = item.type;
-
-  // copy all tags
-  record.tags = item.tags;
-
-  if( item.nodes ){
-    record.nodes = item.nodes;
-  }
+  record.setMeta( 'tags', item.tags );
 
 };
