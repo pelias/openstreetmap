@@ -1,14 +1,13 @@
 
 module.exports = function( schema, field ){
   if( !field ){ field = 'address'; }
-  return function( item, record ){
-    if( record.hasMeta('tags') ){
-      var tags = record.getMeta('tags');
+  return function( doc ){
+    if( doc.hasMeta('tags') ){
+      var tags = doc.getMeta('tags');
       for( var tag in schema ){
         var addressProp = schema[ tag ];
         if( tags.hasOwnProperty( tag ) ){
-          if( !record[field] ){ record[field] = {}; }
-          record[field][ addressProp ] = tags[ tag ];
+          doc[field][ addressProp ] = tags[ tag ];
         }
       }
     }

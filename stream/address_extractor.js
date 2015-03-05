@@ -32,7 +32,11 @@ module.exports = function(){
         .setName( 'default', item.address.number + ' ' + item.address.street )
         .setCentroid( item.getCentroid() );
 
-      if( item.alpha3 ){ record.setAdmin( 'alpha3', item.alpha3 ); }
+      // copy address info
+      record.address = item.address;
+
+      // copy admin data
+      if( item.alpha3 ){ record.setAlpha3( item.alpha3 ); }
       if( item.admin0 ){ record.setAdmin( 'admin0', item.admin0 ); }
       if( item.admin1 ){ record.setAdmin( 'admin1', item.admin1 ); }
       if( item.admin1_abbr ){ record.setAdmin( 'admin1_abbr', item.admin1_abbr ); }
@@ -40,7 +44,9 @@ module.exports = function(){
       if( item.local_admin ){ record.setAdmin( 'local_admin', item.local_admin ); }
       if( item.locality ){ record.setAdmin( 'locality', item.locality ); }
       if( item.neighborhood ){ record.setAdmin( 'neighborhood', item.neighborhood ); }
-      record._meta = extend( true, {}, item._meta );
+      
+      // copy meta data (but maintain the id & type assigned above)
+      record._meta = extend( true, {}, item._meta, { id: record.getId(), type: record.getType() } );
 
       this.push( record );
     }
@@ -54,11 +60,11 @@ module.exports = function(){
     return done();
   });
 
-  // export for testing
-  stream.hasValidAddress = hasValidAddress;
-
   // catch stream errors
   stream.on( 'error', console.error.bind( console, __filename ) );
 
   return stream;
 };
+
+// export for testing
+module.exports.hasValidAddress = hasValidAddress;

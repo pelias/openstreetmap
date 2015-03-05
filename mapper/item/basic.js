@@ -1,22 +1,25 @@
 
-module.exports = function( item, record ){
+module.exports = function( doc, item ){
   
   // set lat/lon
   if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
-    record.setCentroid({
+    doc.setCentroid({
       lat: item.lat,
       lon: item.lon
     });
   }
 
   // if( item.hasOwnProperty('refs') ){
-  //   record.setMeta( 'refs', item.refs );
+  //   doc.setMeta( 'refs', item.refs );
   // }
 
+  // store address data
+  doc.address = {};
+
   if( item.hasOwnProperty('nodes') ){
-    record.setMeta( 'nodes', item.nodes );
+    doc.setMeta( 'nodes', item.nodes );
   }
 
-  record.setMeta( 'tags', item.tags );
+  doc.setMeta( 'tags', item.tags );
 
 };

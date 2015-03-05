@@ -1,245 +1,216 @@
 
-var stream = require('../../stream/address_extractor'),
+var extractor = require('../../stream/address_extractor'),
+    fixtures = require('../fixtures/docs'),
     through = require('through2');
 
 module.exports.tests = {};
 
+// test exports
 module.exports.tests.interface = function(test, common) {
   test('interface: factory', function(t) {
-    t.equal(typeof stream, 'function', 'stream factory');
+    t.equal(typeof extractor, 'function', 'stream factory');
     t.end();
   });
   test('interface: stream', function(t) {
-    var s = stream();
-    t.equal(typeof s, 'object', 'valid stream');
-    t.equal(typeof s._read, 'function', 'valid readable');
-    t.equal(typeof s._write, 'function', 'valid writeable');
+    var stream = extractor();
+    t.equal(typeof stream, 'object', 'valid stream');
+    t.equal(typeof stream._read, 'function', 'valid readable');
+    t.equal(typeof stream._write, 'function', 'valid writeable');
     t.end();
   });
   test('interface: hasValidAddress', function(t) {
-    var s = stream();
-    t.equal(typeof s.hasValidAddress, 'function', 'function exposed for testing');
+    t.equal(typeof extractor.hasValidAddress, 'function', 'function exposed for testing');
     t.end();
   });
 };
 
+// test the logic which decides if the document contains valid
+// address data or not.
 module.exports.tests.hasValidAddress = function(test, common) {
-  var s = stream();
   test('hasValidAddress: invalid item', function(t) {
-    t.false(s.hasValidAddress(null));
+    t.false(extractor.hasValidAddress(null));
     t.end();
   });
   test('hasValidAddress: invalid address object', function(t) {
-    t.false(s.hasValidAddress({}));
+    t.false(extractor.hasValidAddress({}));
     t.end();
   });
   test('hasValidAddress: invalid address number', function(t) {
-    t.false(s.hasValidAddress({address:{street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address:{street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address number length', function(t) {
-    t.false(s.hasValidAddress({address:{number:'',street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address:{number:'',street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street', function(t) {
-    t.false(s.hasValidAddress({address:{number:'10'}}));
+    t.false(extractor.hasValidAddress({address:{number:'10'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street length', function(t) {
-    t.false(s.hasValidAddress({address:{number:'10',street:''}}));
+    t.false(extractor.hasValidAddress({address:{number:'10',street:''}}));
     t.end();
   });
   test('hasValidAddress: valid address', function(t) {
-    t.true(s.hasValidAddress({address:{number:'10',street:'sesame st'}}));
+    t.true(extractor.hasValidAddress({address:{number:'10',street:'sesame st'}}));
     t.end();
   });
 };
 
+// a named document with invalid address data should pass
+// through the stream without being modified.
 module.exports.tests.passthrough = function(test, common) {
   test('passthrough: regular POI', function(t) {
-    var s = stream();
-    s.pipe( through.obj( function( chunk, enc, next ){
-      t.equal( chunk._meta.type, 'item', 'item not changed' );
-      t.end(); // test should fail if not called.
+    var stream = extractor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal( doc.getType(), 'item1', 'type not changed' );
+      t.end(); // test will fail if not called (or called twice).
       next();
     }));
-    s.write({ id: 1, name: { default: 'poi1' }, _meta: { type: 'item' }});
+    stream.write(fixtures.named);
   });
+};
+
+// a document missing a name property & missing a valid address
+// should be filtered and removed from the pipeline completely.
+module.exports.tests.filter = function(test, common) {
   test('filter: invalid POI', function(t) {
-    var s = stream();
-    s.pipe( through.obj( function( chunk, enc, next ){
-      t.end(); // test should fail if called.
+    var stream = extractor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.end(); // test will fail if doc is not filtered.
       next();
     }));
-    s.write( { id: 1, type: 'item' } ); // invalid name
+    stream.write(fixtures.unnamed);
     t.end();
   });
 };
 
-module.exports.tests.createAddress = function(test, common) {
+// test to ensure that when a document contains no valid name but
+// does contains valid address data, we create a new record for the
+// address and discard the original as it has no valid name.
+module.exports.tests.createFromNameless = function(test, common) {
   test('create: from nameless record', function(t) {
-    var s = stream();
-    s.pipe( through.obj( function( chunk, enc, next ){
-      t.equal( chunk.id, 'address-item-1', 'new id' );
-      t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-      t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
-      t.equal( chunk._meta.type, 'osmaddress', 'type changed' );
-      t.deepEqual( chunk.center_point, { lat: 1, lon: 1 }, 'centroid unchanged' );
-      t.deepEqual( chunk.alpha3, 'SES', 'alpha3 unchanged' );
-      t.deepEqual( chunk.admin0, 'great sesame', 'admin0 unchanged' );
-      t.deepEqual( chunk.admin1, 'new sesame city', 'admin1 unchanged' );
-      t.deepEqual( chunk.admin1_abbr, 'SC', 'admin1_abbr unchanged' );
-      t.deepEqual( chunk.admin2, 'sesameville', 'admin2 unchanged' );
-      t.deepEqual( chunk.local_admin, 'sesamilia', 'local_admin unchanged' );
-      t.deepEqual( chunk.locality, 'sesporado', 'locality unchanged' );
-      t.deepEqual( chunk.neighborhood, 'sesame', 'neighborhood unchanged' );
-      t.end(); // test should fail if not called.
+    var stream = extractor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal( doc.getId(), 'address-item3-3', 'address only id schema' );
+      t.deepEqual( Object.keys(doc.name), ['default'], 'only default name set' );
+      t.equal( doc.getName('default'), '10 Mapzen pl', 'correct name' );
+      t.equal( doc.getType(), 'osmaddress', 'type changed' );
+      t.end(); // test will fail if not called (or called twice).
       next();
     }));
-    s.write({
-      id: 1, _meta: { test: '123', type: 'item' },
-      address:{
-        number: '10', street: 'Sesame st'
-      },
-      center_point: { lat: 1, lon: 1 },
-      alpha3: 'SES',
-      admin0: 'great sesame',
-      admin1: 'new sesame city',
-      admin1_abbr: 'SC',
-      admin2: 'sesameville',
-      local_admin: 'sesamilia',
-      locality: 'sesporado',
-      neighborhood: 'sesame'
-    });
+    stream.write(fixtures.unnamedWithAddress);
   });
+}
+
+// test to ensure that when a document contains a valid name &
+// ALSO contains valid address data, we create a new record for the
+// address and forward the original down the pipeline unaltered.
+// The address record MUST be pushed down the pipeline before
+// the POI record or errors can occur. see comment in test below.
+module.exports.tests.duplicateFromPOIAddress = function(test, common) {
   test('create: from named record', function(t) {
-
-    var item = {
-      id: 1, _meta: { test: '123', type: 'item' },
-      name: {
-        default: 'elmo\'s house'
-      },
-      address:{
-        number: '10', street: 'Sesame st'
-      },
-      center_point: { lat: 1, lon: 1 },
-      admin0: 'great sesame',
-      admin1: 'new sesame city',
-      admin2: 'sesameville'
-    };
-
-    var s = stream();
-    var i = 0;
-    s.pipe( through.obj( function( chunk, enc, next ){
+    t.plan(6);
+    var stream = extractor();
+    var i = 0; // count total records coming out of the stream
+    stream.pipe( through.obj( function( doc, enc, next ){
+      // first doc
       if( i++ === 0 ){
-        t.equal( chunk.id, 'poi-address-item-1', 'new id' );
-        t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-        t.equal( chunk.name.default, '10 Sesame st', 'correct name' );
-        t.equal( chunk._meta.type, 'osmaddress', 'type changed' );
-        t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
-        t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
-        t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
-        t.deepEqual( chunk.admin1, item.admin1, 'admin1 unchanged' );
-        t.deepEqual( chunk.admin1_abbr, item.admin1_abbr, 'admin1_abbr unchanged' );
-        t.deepEqual( chunk.admin2, item.admin2, 'admin2 unchanged' );
-        t.deepEqual( chunk.local_admin, item.local_admin, 'local_admin unchanged' );
-        t.deepEqual( chunk.locality, item.locality, 'locality unchanged' );
-        t.deepEqual( chunk.neighborhood, item.neighborhood, 'neighborhood unchanged' );
-        t.deepEqual( chunk._meta.test, item._meta.test, '_meta properties copied' );
+        t.equal( doc.getId(), 'poi-address-item4-4', 'poi address id schema' );
+        t.equal( doc.getName('default'), '11 Sesame st', 'correct name' );
+        t.equal( doc.getType(), 'osmaddress', 'type changed' );
         next();
+      // second doc
       } else {
-        t.equal( chunk.id, item.id, 'id unchanged' );
-        t.deepEqual( Object.keys(chunk.name), ['default'], 'only default name set' );
-        t.equal( chunk.name.default, 'elmo\'s house', 'correct name' );
-        t.equal( chunk._meta.type, 'item', 'type unchanged' );
-        t.deepEqual( chunk.center_point, item.center_point, 'centroid unchanged' );
-        t.deepEqual( chunk.alpha3, item.alpha3, 'alpha3 unchanged' );
-        t.deepEqual( chunk.admin0, item.admin0, 'admin0 unchanged' );
-        t.deepEqual( chunk.admin1, item.admin1, 'admin1 unchanged' );
-        t.deepEqual( chunk.admin1_abbr, item.admin1_abbr, 'admin1_abbr unchanged' );
-        t.deepEqual( chunk.admin2, item.admin2, 'admin2 unchanged' );
-        t.deepEqual( chunk.local_admin, item.local_admin, 'local_admin unchanged' );
-        t.deepEqual( chunk.locality, item.locality, 'locality unchanged' );
-        t.deepEqual( chunk.neighborhood, item.neighborhood, 'neighborhood unchanged' );
-        t.deepEqual( chunk._meta, item._meta, '_meta unchanged' );
+        t.equal( doc.getId(), '4', 'id unchanged' );
+        t.equal( doc.getName('default'), 'poi4', 'correct name' );
+        t.equal( doc.getType(), 'item4', 'type unchanged' );
         t.end(); // test should fail if not called, or called more than once.
         next();
       }
     }));
-    s.write( item );
+    stream.write(fixtures.namedWithAddress);
   });
+}
 
-  // the address record MUST be pushed down the pipeline before
-  // the POI record or bad things happen. see comment in test below.
-  test('create: address created before poi record', function(t) {
-
-    var item = {
-      id: 1, _meta: { test: '123', type: 'item' },
-      name: {
-        default: 'elmo\'s house'
-      },
-      address:{
-        number: '10', street: 'Sesame st'
-      },
-      center_point: { lat: 1, lon: 1 },
-      admin0: 'great sesame',
-      admin1: 'new sesame city',
-      admin2: 'sesameville'
-    };
-
-    var s = stream();
-    var i = 0;
-    s.pipe( through.obj( function( chunk, enc, next ){
-      if( i++ === 0 ){
-        t.equal( chunk.id, 'poi-address-item-1', 'new id' );
-        next();
-      } else {
-        t.equal( chunk.id, item.id, 'id unchanged' );
-        t.end(); // test should fail if not called, or called more than once.
-        next();
-      }
-    }));
-    s.write( item );
-  });
-
-  // if something bad happends and the primary record id is unset before
-  // the address record is generated; we generate a unique ordinal id.
-  // This was the case when the esclient deletes id before storing the record
-  // In an ideal world this would not need to exist, it remains to avoid errors
+// If for some reason the id from the original record is unset before we
+// get a chance to copy it to the new address record then we need to
+// generate a globally-unique-id instead.
+// This is the reason we generate the address records BEFORE sending the
+// original document downstream where the id may be unset.
+module.exports.tests.generateUniqueIds = function(test, common) {
   test('create: from nameless record - generates unique ids', function(t) {
     t.plan(2); // should run 2 tests
-    var s = stream();
-    var ordinal = 0;
-    s.pipe( through.obj( function( chunk, enc, next ){
-      if( ++ordinal === 1 ){
-        t.equal( chunk.id, 'address-item-1', 'unique id' );
+    var stream = extractor();
+    var i = 0;
+    stream.pipe( through.obj( function( doc, enc, next ){
+      // first doc
+      if( i++ === 0 ){
+        t.equal( doc.getId(), 'address-item5-1', 'unique id' );
+      // second doc
       } else {
-        t.equal( chunk.id, 'address-item-2', 'unique id' );
+        t.equal( doc.getId(), 'address-item5-2', 'unique id' );
+        t.end(); // test should fail if not called, or called more than once.
       }
       next();
     }));
-    s.write({
-      _meta: { test: '123', type: 'item' },
-      address:{
-        number: '10', street: 'Sesame st'
-      },
-      center_point: { lat: 1, lon: 1 },
-      admin0: 'great sesame',
-      admin1: 'new sesame city',
-      admin2: 'sesameville'
-    });
-    s.write({
-      _meta: { test: '123', type: 'item' },
-      address:{
-        number: '10', street: 'Sesame st'
-      },
-      center_point: { lat: 1, lon: 1 },
-      admin0: 'great sesame',
-      admin1: 'new sesame city',
-      admin2: 'sesameville'
-    });
+    stream.write(fixtures.invalidId);
+    stream.write(fixtures.invalidId);
   });
 };
+
+// When duplicating the origin record to create an address record
+// we must ensure that no properties are unintentially missed.
+// Also we need to ensure that the original document is not mutated.
+module.exports.tests.duplicateAllFields = function(test, common) {
+  test('create: duplicate records correctly', function(t) {
+    t.plan(32);
+    var stream = extractor();
+    var i = 0;
+    stream.pipe( through.obj( function( doc, enc, next ){
+      // first doc
+      if( i++ === 0 ){
+        t.equal( doc.getId(), 'poi-address-item6-6', 'changed' );
+        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.deepEqual( Object.keys(doc.name).length, 1, 'changed' );
+        t.equal( doc.getName('default'), '13 Goldsmiths row', 'changed' );
+        t.false( doc.getName('alt'), 'unset' );
+        t.deepEqual( doc.getCentroid(), { lat: 6, lon: 6 }, 'not changed' );
+        t.deepEqual( doc.getAlpha3(), 'FOO', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin0'), 'country', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin1'), 'state', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin1_abbr'), 'STA', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin2'), 'city', 'not changed' );
+        t.deepEqual( doc.getAdmin('local_admin'), 'borough', 'not changed' );
+        t.deepEqual( doc.getAdmin('locality'), 'town', 'not changed' );
+        t.deepEqual( doc.getAdmin('neighborhood'), 'hood', 'not changed' );
+        t.deepEqual( doc.getMeta('foo'), 'bar', 'not changed' );
+        t.deepEqual( doc.getMeta('bing'), 'bang', 'not changed' );
+      // second doc
+      } else {
+        t.equal( doc.getId(), '6', 'not changed' );
+        t.equal( doc.getType(), 'item6', 'not changed' );
+        t.deepEqual( Object.keys(doc.name).length, 2, 'not changed' );
+        t.equal( doc.getName('default'), 'item6', 'not changed' );
+        t.equal( doc.getName('alt'), 'item six', 'not changed' );
+        t.deepEqual( doc.getCentroid(), { lat: 6, lon: 6 }, 'not changed' );
+        t.deepEqual( doc.getAlpha3(), 'FOO', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin0'), 'country', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin1'), 'state', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin1_abbr'), 'STA', 'not changed' );
+        t.deepEqual( doc.getAdmin('admin2'), 'city', 'not changed' );
+        t.deepEqual( doc.getAdmin('local_admin'), 'borough', 'not changed' );
+        t.deepEqual( doc.getAdmin('locality'), 'town', 'not changed' );
+        t.deepEqual( doc.getAdmin('neighborhood'), 'hood', 'not changed' );
+        t.deepEqual( doc.getMeta('foo'), 'bar', 'not changed' );
+        t.deepEqual( doc.getMeta('bing'), 'bang', 'not changed' );
+        t.end(); // test should fail if not called, or called more than twice.
+      }
+      next();
+    }));
+    stream.write(fixtures.completeDoc);
+  });
+}
 
 module.exports.all = function (tape, common) {
 

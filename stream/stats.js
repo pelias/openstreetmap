@@ -1,75 +1,28 @@
 
 var through = require('through2');
-var store, active;
 
-var stats = function( title ){
+function Stats(){
+  this.reset();
+}
 
-  var stream = through.obj( function( item, enc, done ) {
+Stats.prototype.reset = function(){
+  this.metrics = {};
+}
 
-    if( !store.hasOwnProperty( title ) ){ store[ title ] = 0; }
-    store[ title ]++;
+Stats.prototype.proxy = function( title ){
+  if( !this.metrics.hasOwnProperty( title ) ){
+    this.metrics[ title ] = 0;
+  }
 
-    this.push( item, enc );
-    return done();
+  var self = this;
 
-  });
-  
-  // catch stream errors
-  stream.on( 'error', console.error.bind( console, __filename ) );
-
-  // start logging on first pipe
-  stream.on( 'pipe', function( s ){
-    s.uid = Math.round( Math.random() * 100000000 );
-    active[ s.uid ] = s;
-    // console.log( 'pipe', stream.uid );
-    // process.exit(1);
-    store.pipes++;
-    if( store.pipes === 1 ){
-      module.exports.interval = setInterval( function(){
-        if( stats.enabled ){
-          stream.log( store );
-        }
-      }, 500 );
-      // module.exports.interval.unref();
-    }
+  var proxy = through.obj( function( item, enc, next ) {
+    self.metrics[ title ]++;
+    this.push( item );
+    return next();
   });
 
-  // stop logging and clear interval when done
-  stream.on( 'unpipe', function( s ){
-    delete active[ s.uid ];
-    store.pipes--;
-    if( store.pipes === 0 ){
-      if( stats.enabled ){
-        stream.log( store );
-      }
-      clearInterval( module.exports.interval );
-      stream.emit( 'clear' );
-    }
-  });
-
-  stream.log = function( store ){
-    console.error( JSON.stringify( store, null, 2 ) );
-    if( store.pipes < 5 ){
-      for( var uid in active ){
-        if( active[uid].hasOwnProperty('_transform') ){
-          console.log( active[uid]._transform.toString() );
-        } else {
-          console.log( 'no transform' );
-        }
-      }
-    }
-    // console.error( active. );
-  };
-
-  return stream;
+  return proxy;
 };
 
-// export a reset function for unit testing
-stats._reset = function(){
-  store = { pipes: 0 };
-  active = {};
-  stats.enabled = true;
-};
-stats._reset();
-
-module.exports = stats;
+module.exports = new Stats();

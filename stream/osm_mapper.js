@@ -11,12 +11,12 @@ mappers.push( require('../mapper/item/karlsruhe_schema') );
 
 module.exports = function(){
 
-  var stream = through.obj( function( item, enc, done ) {
+  var stream = through.obj( function( data, enc, done ) {
 
-    var record = new Document( 'osm' + item.type, item.id );
+    var record = new Document( 'osm' + data.type, data.id );
 
     mappers.forEach( function( mapper ){
-      mapper( item, record );
+      mapper( record, data );
     });
 
     this.push( record );

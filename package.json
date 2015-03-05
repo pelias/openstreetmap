@@ -27,26 +27,22 @@
     "elasticsearch": ">=1.1.1"
   },
   "dependencies": {
-    "async": "^0.9.0",
     "extend": "^2.0.0",
     "geojson-extent": "0.0.1",
     "geolib": "^2.0.14",
-    "geopipes-elasticsearch-backend": "0.0.8",
     "gjtk": "^1.0.0-b",
     "is-object": "^1.0.1",
-    "pbf2json": "0.0.2",
+    "pbf2json": "0.0.3",
+    "pelias-admin-lookup": "^2.0.0",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.3",
     "pelias-model": "0.0.2",
-    "pelias-suggester-pipeline": "^1.0.1",
-    "prop-stream": "0.0.0",
-    "readable-stream": "^1.0.33",
+    "pelias-suggester-pipeline": "^2.0.3",
     "through2": "^0.5.1",
-    "trimmer": "^1.0.0",
-    "writable-stream-parallel": "^0.1.0"
+    "trimmer": "^1.0.0"
   },
   "devDependencies": {
-    "tape": "^2.13.4",
-    "tap-spec": "^0.2.0"
+    "tap-spec": "^2.2.2",
+    "tape": "^3.5.0"
   }
 }

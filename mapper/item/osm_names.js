@@ -16,30 +16,30 @@ var OSM_NAME_SCHEMA = {
 
 var osm_name_mapper = address_mapper(OSM_NAME_SCHEMA,'name');
 
-module.exports = function( item, record ){
+module.exports = function( doc ){
 
-  if( record.hasMeta('tags') ){
+  if( doc.hasMeta('tags') ){
 
-    var tags = record.getMeta('tags');
+    var tags = doc.getMeta('tags');
 
     // default name
     if( tags.hasOwnProperty( 'name' ) ){
-      record.setName( 'default', tags.name );
+      doc.setName( 'default', tags.name );
     }
 
     // localized names
     for( var tag in tags ){
       if( tag.match('name:') ){
-        record.setName( tag.replace('name:',''), tags[tag] );
+        doc.setName( tag.replace('name:',''), tags[tag] );
       }
     }
 
     // map common osm name formats
-    osm_name_mapper( item, record );
+    osm_name_mapper( doc );
 
     // clean names of leading/trailing junk chars
-    for( var prop in record.name ){
-      record.name[prop] = trimmer( record.name[prop], '#$%^*()<>-=_{};:",./?\' ' ); // junk chars
+    for( var prop in doc.name ){
+      doc.name[prop] = trimmer( doc.name[prop], '#$%^*()<>-=_{};:",./?\' ' ); // junk chars
     }
   }
 
