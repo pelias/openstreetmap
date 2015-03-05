@@ -19,6 +19,6 @@ $ npm test
 
 ### Continuous Integration
 
-Travis tests every release against node version `0.10`
+Travis tests every release against node version `0.10` & `0.12`.
 
 [![Build Status](https://travis-ci.org/pelias/openstreetmap.png?branch=master)](https://travis-ci.org/pelias/openstreetmap)
