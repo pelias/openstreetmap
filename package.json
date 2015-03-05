@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test/run.js | tap-spec"
+    "test": "node test/run.js | tap-spec",
+    "pretest": "test/pretest.sh"
   },
   "repository": {
     "type": "git",

@@ -3,3 +3,4 @@ node_js:
   - "0.10"
 notifications:
   flowdock: f0bbceadacc5c97e7f3a657941b5a5eb
+before_script: node ./test/travis-config.js
