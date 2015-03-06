@@ -97,6 +97,11 @@ This will start the import process, it will take around 30 seconds to prime it's
 $ node index.js
 ```
 
+You should now be able to retrieve the OSM data directly from `elasticsearch`:
+- http://localhost:9200/pelias/osmnode/_search
+- http://localhost:9200/pelias/osmway/_search
+- http://localhost:9200/pelias/osmaddress/_search
+
 ## Issues
 
 If you have any issues getting set up or the documentation is missing something, please open an issue here: https://github.com/pelias/openstreetmap/issues
