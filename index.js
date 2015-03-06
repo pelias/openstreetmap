@@ -7,6 +7,7 @@ var osm = { doc: {}, address: {}, util: {} };
 exports = module.exports = osm;
 
 osm.pbf = require('./stream/pbf');
+osm.doc.constructor = require('./stream/document_constructor');
 osm.doc.mapper = require('./stream/osm_mapper');
 osm.doc.denormalizer = require('./stream/denormalizer');
 osm.address.extractor = require('./stream/address_extractor');
@@ -16,9 +17,10 @@ osm.util.stats = require('./stream/stats');
 // default import pipeline
 osm.import = function(opts){
   osm.pbf.parser(opts)
+    .pipe( osm.doc.constructor() )
     .pipe( osm.doc.mapper() )
     .pipe( osm.doc.denormalizer() )
-    .pipe( adminLookup.stream() )
+    // .pipe( adminLookup.stream() )
     .pipe( osm.address.extractor() )
     .pipe( suggester.pipeline )
     .pipe( osm.util.dbmapper() )

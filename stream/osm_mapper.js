@@ -3,7 +3,6 @@ var through = require('through2');
 var Document = require('pelias-model').Document;
 
 var mappers = [];
-mappers.push( require('../mapper/item/basic') );
 mappers.push( require('../mapper/item/osm_names') );
 mappers.push( require('../mapper/item/osm_schema') );
 mappers.push( require('../mapper/item/naptan_schema') );
@@ -11,15 +10,13 @@ mappers.push( require('../mapper/item/karlsruhe_schema') );
 
 module.exports = function(){
 
-  var stream = through.obj( function( data, enc, done ) {
-
-    var record = new Document( 'osm' + data.type, data.id );
+  var stream = through.obj( function( doc, enc, done ) {
 
     mappers.forEach( function( mapper ){
-      mapper( record, data );
+      mapper( doc );
     });
 
-    this.push( record );
+    this.push( doc );
 
     done();
 
