@@ -106,6 +106,8 @@ You should now be able to retrieve the OSM data directly from `elasticsearch`:
 
 Ingestion time varies from machine-to-machine but as a general guide it takes about 7 minutes to import 125,000 points-of-interest & 140,000 street addresses covering the city of London on a quad-core 2.x GHZ machine with an SSD.
 
+These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
+
 If you are looking to run a planet-wide cluster like the one we provide at https://pelias.mapzen.com/ please get in contact for more information from our ops team.
 
 ## Querying the data and running a service
