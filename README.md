@@ -87,7 +87,7 @@ $ npm install
 $ node scripts/create_index.js
 ```
 
-In order to confirm that the mapping have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/_mapping
+In order to confirm that the mappings have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/_mapping
 
 ## Running an import
 
