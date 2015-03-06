@@ -102,6 +102,10 @@ You should now be able to retrieve the OSM data directly from `elasticsearch`:
 - http://localhost:9200/pelias/osmway/_search
 - http://localhost:9200/pelias/osmaddress/_search
 
+## Querying the data and running a service
+
+Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
+
 ## Issues
 
 If you have any issues getting set up or the documentation is missing something, please open an issue here: https://github.com/pelias/openstreetmap/issues
