@@ -9,8 +9,8 @@ module.exports.tests.interface = function(test, common) {
     t.equal(typeof osm.pbf.parser, 'function', 'stream factory');
     t.end();
   });
-  test('interface: osm.doc.mapper', function(t) {
-    t.equal(typeof osm.doc.mapper, 'function', 'stream factory');
+  test('interface: osm.tag.mapper', function(t) {
+    t.equal(typeof osm.tag.mapper, 'function', 'stream factory');
     t.end();
   });
   test('interface: osm.doc.denormalizer', function(t) {

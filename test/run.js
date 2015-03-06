@@ -11,7 +11,7 @@ var tests = [
   require('./stream/denormalizer'),
   require('./stream/pbf'),
   require('./stream/stats'),
-  require('./mapper/item/osm_names')
+  require('./stream/tag_mapper')
 ];
 
 tests.map(function(t) {
