@@ -37,7 +37,7 @@
     "pelias-admin-lookup": "^2.0.0",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.9",
-    "pelias-model": "0.0.2",
+    "pelias-model": "^0.1.0",
     "pelias-suggester-pipeline": "^2.0.3",
     "through2": "^0.6.3",
     "trimmer": "^1.0.0"
