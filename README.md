@@ -34,7 +34,7 @@ The importer will accept any valid `pbf` extract you have, this can be a full pl
 
 In order to tell the importer the location of your downloads, temp space and enviromental settings you will first need to create a `~/pelias.json` file.
 
-As a minumum, it should contain the following:
+As a minumum, it should be valid json and contain the following:
 
 ```javascript
 {
