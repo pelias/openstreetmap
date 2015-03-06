@@ -11,7 +11,6 @@ var tests = [
   require('./stream/pbf'),
   require('./stream/stats'),
   require('./mapper/item/osm_names')
-  // require('./stream/deprecated/any/buildHierarchy'),
 ];
 
 tests.map(function(t) {
