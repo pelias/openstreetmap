@@ -1,4 +1,9 @@
 
+/**
+  The pbf parser is responsible for configuring and executing a pbf parser and
+  returning a valid readable stream.
+**/
+
 var fs = require('fs'),
     pbf2json = require('pbf2json'),
     settings = require('pelias-config').generate(),

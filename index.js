@@ -1,4 +1,9 @@
 
+/**
+  The openstreetmap importer provides a way of parsing, mapping and
+  augmenting OSM data in to elasticsearch.
+**/
+
 var elasticsearch = require('pelias-dbclient'),
     adminLookup = require('pelias-admin-lookup'),
     suggester = require('pelias-suggester-pipeline');

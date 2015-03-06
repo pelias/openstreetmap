@@ -1,4 +1,22 @@
 
+/**
+  The stats module is useful for recording stats while developing new streams.
+
+  @usage:
+
+    tap.pipe( stream1 )
+      .pipe( stats.proxy('stream1 -> stream2') )
+      .pipe( stream2 )
+      .pipe( stats.proxy('stream2 -> stream3') )
+      .pipe( stream3 )
+      .pipe( stats.proxy('stream3 -> sink') )
+      .pipe( sink )
+
+  you can then get throughput statistics in your terminal to identify bottlenecks:
+
+    setInterval( console.log.bind( console, stats.metrics ), 1000 );
+**/
+
 var through = require('through2');
 
 function Stats(){

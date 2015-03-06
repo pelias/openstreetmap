@@ -1,4 +1,8 @@
 
+/**
+ this module is used to find the centroid of a geojson geometry.
+**/
+
 var extent = require('geojson-extent'),
     geolib = require('geolib');
 

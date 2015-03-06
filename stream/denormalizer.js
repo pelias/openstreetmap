@@ -1,4 +1,12 @@
 
+/**
+  The denormalizer is responsible taking information about the nodes which are
+  part of an OSM way record; assembling the polygon and computing it's centroid.
+
+  Much of the heavy lifting here is performed by the parser directly, meaning we
+  no longer need to manage a leveldb cache and perform lookups in this module.
+**/
+
 var through = require('through2'),
     geoJsonCenter = require('../util/geoJsonCenter'),
     geoJsonTypeFor = require('../util/geoJsonTypeFor');

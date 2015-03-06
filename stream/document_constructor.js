@@ -1,4 +1,9 @@
 
+/**
+  The document constructor is responsible for mapping input data from the parser
+  in to model.Document() objects which the rest of the pipeline expect to consume.
+**/
+
 var through = require('through2'),
     Document = require('pelias-model').Document;
 

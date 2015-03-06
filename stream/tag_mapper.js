@@ -1,4 +1,9 @@
 
+/**
+  The tag mapper is responsible for mapping OSM tag information in to the
+  document model, using a variety of different schemas found in /schema/*.
+**/
+
 var through = require('through2'),
     trimmer = require('trimmer'),
     merge = require('merge');

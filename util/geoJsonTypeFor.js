@@ -1,4 +1,8 @@
 
+/**
+ this module is used to find the geojson type of a set of points
+**/
+
 var gktk = require('gjtk');
 
 var mapping = {

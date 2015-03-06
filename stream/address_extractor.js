@@ -1,4 +1,28 @@
 
+/**
+  The address extractor is responsible for cloning documents where a valid address
+  data exists.
+
+  The hasValidAddress() function examines the address property which was populated
+  earier in the pipeline by the osm.tag.mapper stream and therefore MUST come after
+  that stream in the pipeline or it will fail to find any address information.
+
+  There are a few different outcomes for this stream depending on the data contained
+  in each individual document, the result can be, 0, 1 or 2 documents being emitted.
+
+  In the case of the document missing a valid doc.name.default string then it is not
+  considered to be a point-of-interest in it's own right, it will be discarded.
+
+  In the case where the document contains BOTH a valid house number & street name we
+  consider this record to be an address in it's own right and we clone that record,
+  duplicating the data across to the new doc instance while adjusting it's id and type.
+
+  In a rare case it is possible that the record contains neither a valid name nor a valid
+  address. If this case in encountered then the parser should be modified so these records
+  are no longer passed down the pipeline; as they will simply be discarded because they are
+  not searchable.
+**/
+
 var through = require('through2'),
     isObject = require('is-object'),
     extend = require('extend'),
