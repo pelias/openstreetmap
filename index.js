@@ -1,29 +1,31 @@
 
-var pbf = require('./stream/pbf')
-    suggester = require('pelias-suggester-pipeline'),
-    adminLookup = require('pelias-admin-lookup');
-    stats = require('./stream/stats'),
-    document_mapper = require('./stream/osm_mapper'),
-    denormalizer = require('./stream/denormalizer'),
-    address_extractor = require('./stream/address_extractor'),
-    dbmapper = require('./stream/dbmapper'),
-    elasticsearch = require('pelias-dbclient');
+var elasticsearch = require('pelias-dbclient'),
+    adminLookup = require('pelias-admin-lookup'),
+    suggester = require('pelias-suggester-pipeline');
 
-// uncomment for stream statistics
-// setInterval( console.log.bind(console,stats.metrics), 1000 );
+var osm = { doc: {}, address: {}, util: {} };
+exports = module.exports = osm;
 
-pbf.parser()
-  .pipe( stats.proxy('pbf -> doc_mapper') )
-  .pipe( document_mapper() )
-  .pipe( stats.proxy('doc_mapper -> denormalizer') )
-  .pipe( denormalizer() )
-  .pipe( stats.proxy('denormalizer -> adminLookup') )
-  .pipe( adminLookup.stream() )
-  .pipe( stats.proxy('adminLookup -> address_extractor') )
-  .pipe( address_extractor() )
-  .pipe( stats.proxy('address_extractor -> suggester') )
-  .pipe( suggester.pipeline )
-  .pipe( stats.proxy('suggester -> dbmapper') )
-  .pipe( dbmapper() )
-  .pipe( stats.proxy('dbmapper -> elasticsearch') )
-  .pipe( elasticsearch() );
+osm.pbf = require('./stream/pbf');
+osm.doc.mapper = require('./stream/osm_mapper');
+osm.doc.denormalizer = require('./stream/denormalizer');
+osm.address.extractor = require('./stream/address_extractor');
+osm.util.dbmapper = require('./stream/dbmapper');
+osm.util.stats = require('./stream/stats');
+
+// default import pipeline
+osm.import = function(opts){
+  osm.pbf.parser(opts)
+    .pipe( osm.doc.mapper() )
+    .pipe( osm.doc.denormalizer() )
+    .pipe( adminLookup.stream() )
+    .pipe( osm.address.extractor() )
+    .pipe( suggester.pipeline )
+    .pipe( osm.util.dbmapper() )
+    .pipe( elasticsearch() );
+};
+
+// run import if executed directly; but not if imported via require()
+if( require.main === module ){
+  osm.import();
+}
