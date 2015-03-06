@@ -29,17 +29,26 @@ module.exports = function(){
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
         if( tag.match('name:') ){
-          doc.setName( tag.replace('name:',''), trim( tags[tag] ) );
+          var val = trim( tags[tag] );
+          if( val ){
+            doc.setName( tag.replace('name:',''), val );
+          }
         }
 
         // Map name data from our name mapping schema
         else if( tag in NAME_SCHEMA ){
-          doc.setName( NAME_SCHEMA[tag], trim( tags[tag] ) );
+          var val = trim( tags[tag] );
+          if( val ){
+            doc.setName( NAME_SCHEMA[tag], val );
+          }
         }
 
         // Map address data from our address mapping schema
         else if( tag in ADDRESS_SCHEMA ){
-          doc.setAddress( ADDRESS_SCHEMA[tag], trim( tags[tag] ) );
+          var val = trim( tags[tag] );
+          if( val ){
+            doc.setAddress( ADDRESS_SCHEMA[tag], val );
+          }
         }
       }
     }

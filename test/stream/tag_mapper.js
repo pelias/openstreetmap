@@ -140,6 +140,20 @@ module.exports.tests.trim_junk = function(test, common) {
   });
 };
 
+module.exports.tests.empty_tags = function(test, common) {
+  test('clean - ignore empty tags', function(t) {
+    var doc = new Document('a',1);
+    doc.setMeta('tags', { name: '' });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), undefined, 'ignore empty tags');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.all = function (tape, common) {
 
   function test(name, testFunction) {
