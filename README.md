@@ -1,5 +1,6 @@
 
-The openstreetmap importer provides a way of parsing, mapping and augmenting OSM data in to elasticsearch.
+| ![osm](http://wiki.openstreetmap.org/w/images/archive/c/c8/20110430164439%21Public-images-osm_logo.png) | The openstreetmap importer provides a way of parsing, mapping and augmenting OSM data in to elasticsearch.         |
+| ------------- |:-------------|
 
 ## Prerequisites
 
