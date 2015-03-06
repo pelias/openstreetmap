@@ -17,7 +17,7 @@ module.exports.tests.default_name = function(test, common) {
   doc.setMeta('tags', { name: 'test name 1' });
   test('maps - default name', function(t) {
     osm_names(doc); // run mapper
-    t.equal(doc.name.default, 'test name 1', 'correctly mapped');
+    t.equal(doc.getName('default'), 'test name 1', 'correctly mapped');
     t.end();
   });
 };
@@ -27,8 +27,8 @@ module.exports.tests.localised_names = function(test, common) {
   doc.setMeta('tags', { 'name:en': 'test', 'name:es': 'prueba' });
   test('maps - localised names', function(t) {
     osm_names(doc); // run mapper
-    t.equal(doc.name.en, 'test', 'correctly mapped');
-    t.equal(doc.name.es, 'prueba', 'correctly mapped');
+    t.equal(doc.getName('en'), 'test', 'correctly mapped');
+    t.equal(doc.getName('es'), 'prueba', 'correctly mapped');
     t.end();
   });
 };
@@ -38,8 +38,8 @@ module.exports.tests.osm_name_mapper = function(test, common) {
   doc.setMeta('tags', { loc_name: 'test1', nat_name: 'test2' });
   test('maps - osm naming schema', function(t) {
     osm_names(doc); // run mapper
-    t.equal(doc.name.local, 'test1', 'correctly mapped');
-    t.equal(doc.name.national, 'test2', 'correctly mapped');
+    t.equal(doc.getName('local'), 'test1', 'correctly mapped');
+    t.equal(doc.getName('national'), 'test2', 'correctly mapped');
     t.end();
   });
 };
@@ -49,7 +49,7 @@ module.exports.tests.trim_junk = function(test, common) {
   doc.setMeta('tags', { name: ' \'Round Midnight Jazz and Blues Bar ' });
   test('maps - trim junk', function(t) {
     osm_names(doc); // run mapper
-    t.equal(doc.name.default, 'Round Midnight Jazz and Blues Bar', 'correctly mapped');
+    t.equal(doc.getName('default'), 'Round Midnight Jazz and Blues Bar', 'correctly mapped');
     t.end();
   });
 };
