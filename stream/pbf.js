@@ -2,7 +2,7 @@
 var fs = require('fs'),
     pbf2json = require('pbf2json'),
     settings = require('pelias-config').generate(),
-    features = require('../config/features').features;
+    features = require('../config/features');
 
 // Create a new pbf parser stream
 function createPbfStream( opts ){
@@ -37,7 +37,7 @@ function config( opts ){
 
   // Use default parser tags
   if( !opts.hasOwnProperty('tags') ){
-    opts.tags = defaultTags();
+    opts.tags = features;
   }
 
   return opts;
@@ -57,20 +57,6 @@ function validateTags( tags ){
   if( !Array.isArray(tags) || !tags.length ) {
     throw new Error( 'invalid tags' );
   }
-}
-
-// Build a list of osm tags we want the parser to target
-function defaultTags(){
-
-  // Extract streets
-  var tags = ['addr:housenumber+addr:street'];
-
-  // Records with tags in the feature list and also a valid name
-  features.forEach( function( feature ){
-    tags.push( feature + '+name' );
-  });
-
-  return tags;
 }
 
 module.exports.config = config;

@@ -1,37 +1,30 @@
-var features = [
-  "amenity",
-  "building",
-  "shop",
-  "office",
-  "public_transport",
-  "cuisine",
-  "railway",
-  "sport",
-  "natural",
-  "tourism",
-  "leisure",
-  "historic",
-  "man_made",
-  "landuse",
-  "waterway",
-  "aerialway",
-  "aeroway",
-  "craft",
-  "military"
+
+/**
+ default list of tags to extract from the pbf file when running
+ imports. @see: https://github.com/pelias/pbf2json for more info.
+**/
+
+var tags = [
+  'addr:housenumber+addr:street',
+  'amenity+name',
+  'building+name',
+  'shop+name',
+  'office+name',
+  'public_transport+name',
+  'cuisine+name',
+  'railway+name',
+  'sport+name',
+  'natural+name',
+  'tourism+name',
+  'leisure+name',
+  'historic+name',
+  'man_made+name',
+  'landuse+name',
+  'waterway+name',
+  'aerialway+name',
+  'aeroway+name',
+  'craft+name',
+  'military+name'
 ];
 
-function getFeature( item ){
-  if( 'object' == typeof item && 'object' == typeof item.tags ){
-    for( var x=0; x<features.length; x++ ){
-      if( item.tags.hasOwnProperty( features[x] ) ){
-        return features[x];
-      }
-    }
-  }
-  return false;
-}
-
-module.exports = {
-  features: features,
-  getFeature: getFeature
-}
+module.exports = tags;

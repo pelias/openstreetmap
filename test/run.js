@@ -4,6 +4,7 @@ var common = {};
 
 var tests = [
   require('./index'),
+  require('./config/features'),
   require('./stream/address_extractor'),
   require('./stream/dbmapper'),
   require('./stream/denormalizer'),
