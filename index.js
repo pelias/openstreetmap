@@ -20,7 +20,7 @@ osm.import = function(opts){
     .pipe( osm.doc.constructor() )
     .pipe( osm.tag.mapper() )
     .pipe( osm.doc.denormalizer() )
-    // .pipe( adminLookup.stream() )
+    .pipe( adminLookup.stream() )
     .pipe( osm.address.extractor() )
     .pipe( suggester.pipeline )
     .pipe( osm.util.dbmapper() )
