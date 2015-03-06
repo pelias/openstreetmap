@@ -102,9 +102,20 @@ You should now be able to retrieve the OSM data directly from `elasticsearch`:
 - http://localhost:9200/pelias/osmway/_search
 - http://localhost:9200/pelias/osmaddress/_search
 
+## How long does it take?
+
+Ingestion time varies from machine-to-machine but as a general guide it takes about 7 minutes to import 125,000 points-of-interest & 140,000 street addresses covering the city of London on a quad-core 2.x GHZ machine with an SSD.
+
+If you are looking to run a planet-wide cluster like the one we provide at https://pelias.mapzen.com/ please get in contact for more information from our ops team.
+
 ## Querying the data and running a service
 
 Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
+
+## More open-data sets
+
+- https://github.com/pelias/geonames
+- https://github.com/pelias/openaddresses
 
 ## Issues
 
