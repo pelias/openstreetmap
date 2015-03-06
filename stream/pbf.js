@@ -7,20 +7,20 @@ var fs = require('fs'),
 // Create a new pbf parser stream
 function createPbfStream( opts ){
 
-  var opts = config( opts );
+  var conf = config( opts );
 
-  validatePath( opts.file, 'failed to stat pbf file: ' + opts.file );
-  validatePath( opts.leveldb, 'failed to stat leveldb path: ' + opts.leveldb );
-  validateTags( opts.tags );
+  validatePath( conf.file, 'failed to stat pbf file: ' + conf.file );
+  validatePath( conf.leveldb, 'failed to stat leveldb path: ' + conf.leveldb );
+  validateTags( conf.tags );
 
-  return pbf2json.createReadStream(opts);
+  return pbf2json.createReadStream(conf);
 }
 
 // Generate configuration options for pbf2json, apply default
 // configurations where not explicitly specified.
 function config( opts ){
 
-  opts = opts || {};
+  if( !opts ){ opts = {}; }
   
   // Use datapath setting from your config file
   // @see: github://pelias/config for more info.

@@ -1,7 +1,8 @@
 
-var pbf = require('../../stream/pbf'),
-    through = require('through2'),
-    settings = require('pelias-config').generate();
+var through = require('through2'),
+    settings = require('pelias-config').generate(),
+    pbf = require('../../stream/pbf'),
+    features = require('../../config/features');
 
 module.exports.tests = {};
 
@@ -25,8 +26,8 @@ module.exports.tests.config = function(test, common) {
     var expected = {
       file: settings.imports.openstreetmap.datapath + '/' + settings.imports.openstreetmap.import[0].filename,
       leveldb: settings.imports.openstreetmap.leveldbpath,
-      tags: [ 'addr:housenumber+addr:street', 'amenity+name', 'building+name', 'shop+name', 'office+name', 'public_transport+name', 'cuisine+name', 'railway+name', 'sport+name', 'natural+name', 'tourism+name', 'leisure+name', 'historic+name', 'man_made+name', 'landuse+name', 'waterway+name', 'aerialway+name', 'aeroway+name', 'craft+name', 'military+name' ]
-    }
+      tags: features
+    };
     t.equal(defaults.file, expected.file, 'load from settings');
     t.equal(defaults.leveldb, expected.leveldb, 'load from settings');
     t.deepEqual(defaults.tags, expected.tags, 'load from settings');

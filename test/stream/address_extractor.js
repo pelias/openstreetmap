@@ -101,7 +101,7 @@ module.exports.tests.createFromNameless = function(test, common) {
     }));
     stream.write(fixtures.unnamedWithAddress);
   });
-}
+};
 
 // test to ensure that when a document contains a valid name &
 // ALSO contains valid address data, we create a new record for the
@@ -131,7 +131,7 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
     }));
     stream.write(fixtures.namedWithAddress);
   });
-}
+};
 
 // If for some reason the id from the original record is unset before we
 // get a chance to copy it to the new address record then we need to
@@ -210,7 +210,7 @@ module.exports.tests.duplicateAllFields = function(test, common) {
     }));
     stream.write(fixtures.completeDoc);
   });
-}
+};
 
 module.exports.all = function (tape, common) {
 

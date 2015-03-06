@@ -46,7 +46,7 @@ module.exports.tests.osm_name_mapper = function(test, common) {
 
 module.exports.tests.trim_junk = function(test, common) {
   var doc = new Document('a',1);
-  doc.setMeta('tags', { name: " 'Round Midnight Jazz and Blues Bar " });
+  doc.setMeta('tags', { name: ' \'Round Midnight Jazz and Blues Bar ' });
   test('maps - trim junk', function(t) {
     osm_names(doc); // run mapper
     t.equal(doc.name.default, 'Round Midnight Jazz and Blues Bar', 'correctly mapped');

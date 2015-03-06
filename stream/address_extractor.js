@@ -6,12 +6,12 @@ var through = require('through2'),
     idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
 function hasValidAddress( item ){
-  if( !isObject( item ) ) return false;
-  if( !isObject( item.address ) ) return false;
-  if( 'string' !== typeof item.address.number ) return false;
-  if( 'string' !== typeof item.address.street ) return false;
-  if( !item.address.number.length ) return false;
-  if( !item.address.street.length ) return false;
+  if( !isObject( item ) ){ return false; }
+  if( !isObject( item.address ) ){ return false; }
+  if( 'string' !== typeof item.address.number ){ return false; }
+  if( 'string' !== typeof item.address.street ){ return false; }
+  if( !item.address.number.length ){ return false; }
+  if( !item.address.street.length ){ return false; }
   return true;
 }
 

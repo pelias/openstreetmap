@@ -43,6 +43,8 @@
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
+    "jshint": "^2.6.3",
+    "precommit-hook": "^1.0.7",
     "tap-spec": "^2.2.2",
     "tape": "^3.5.0"
   }

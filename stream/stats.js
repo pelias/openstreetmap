@@ -7,7 +7,7 @@ function Stats(){
 
 Stats.prototype.reset = function(){
   this.metrics = {};
-}
+};
 
 Stats.prototype.proxy = function( title ){
   if( !this.metrics.hasOwnProperty( title ) ){
