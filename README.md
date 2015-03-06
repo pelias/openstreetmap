@@ -91,13 +91,15 @@ In order to confirm that the mapping have been correctly inserted in to elastics
 
 ## Running an import
 
-This will start the import process, it will take around 30 seconds to prime it's in-memory data and then you should see regular debuggin output in the terminal.
+This will start the import process, it will take around 30 seconds to prime it's in-memory data and then you should see regular debugging output in the terminal.
 
 ```bash
 $ node index.js
 ```
 
-When the import is complete you should be able to view your documents in elasticsearch here: http://localhost:9200/pelias/osmnode/_search
+## Issues
+
+If you have any issues getting set up or the documentation is missing something, please open an issue here: https://github.com/pelias/openstreetmap/issues
 
 ## Contributing
 
