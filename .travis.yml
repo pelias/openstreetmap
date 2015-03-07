@@ -5,3 +5,4 @@ node_js:
 notifications:
   flowdock: f0bbceadacc5c97e7f3a657941b5a5eb
 before_script: node ./test/travis-config.js
+after_script: node ./test/end-to-end.js
