@@ -115,6 +115,9 @@ If you are looking to run a planet-wide cluster like the one we provide at https
 
 Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
 
+To perform a very basic URI search you can execute a query such as:
+- http://localhost:9200/pelias/osmway/_search?df=name.default&q=hackney%20city%20farm
+
 ## More open-data sets
 
 - https://github.com/pelias/geonames
