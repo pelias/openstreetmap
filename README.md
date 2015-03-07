@@ -27,7 +27,7 @@ $ npm install
 
 ## Download data
 
-You will need to download quattroshapes in order to build an admin hierarchy for each record, you can pull-down a tarball from http://data.mapzen.com/quattroshapes/quattroshapes-simplified.tar.gz which you will need to extract, preferably to an SSD if you have one. 
+You will need to download quattroshapes in order to build an admin hierarchy for each record, you can pull-down a tarball from http://data.mapzen.com/quattroshapes/quattroshapes-simplified.tar.gz (537MB) which you will need to extract, preferably to an SSD if you have one. 
 
 The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
 
