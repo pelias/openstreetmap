@@ -57,7 +57,7 @@ function validatePath( path, message ){
   }
 }
 
-// Check leveldb dir exists
+// Validate the tag list
 function validateTags( tags ){  
   if( !Array.isArray(tags) || !tags.length ) {
     throw new Error( 'invalid tags' );
