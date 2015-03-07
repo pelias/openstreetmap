@@ -6,18 +6,17 @@
 
 var elasticsearch = require('pelias-dbclient'),
     adminLookup = require('pelias-admin-lookup'),
-    suggester = require('pelias-suggester-pipeline');
+    suggester = require('pelias-suggester-pipeline'),
+    dbmapper = require('./stream/dbmapper');
 
-var osm = { doc: {}, address: {}, tag: {}, util: {} };
+var osm = { pbf: {}, doc: {}, address: {}, tag: {} };
 exports = module.exports = osm;
 
-osm.pbf = require('./stream/pbf');
+osm.pbf.parser = require('./stream/pbf').parser;
 osm.doc.constructor = require('./stream/document_constructor');
 osm.doc.denormalizer = require('./stream/denormalizer');
 osm.tag.mapper = require('./stream/tag_mapper');
 osm.address.extractor = require('./stream/address_extractor');
-osm.util.dbmapper = require('./stream/dbmapper');
-osm.util.stats = require('./stream/stats');
 
 // default import pipeline
 osm.import = function(opts){
@@ -28,7 +27,7 @@ osm.import = function(opts){
     .pipe( adminLookup.stream() )
     .pipe( osm.address.extractor() )
     .pipe( suggester.pipeline )
-    .pipe( osm.util.dbmapper() )
+    .pipe( dbmapper() )
     .pipe( elasticsearch() );
 };
 

@@ -21,14 +21,6 @@ module.exports.tests.interface = function(test, common) {
     t.equal(typeof osm.address.extractor, 'function', 'stream factory');
     t.end();
   });
-  test('interface: osm.util.dbmapper', function(t) {
-    t.equal(typeof osm.util.dbmapper, 'function', 'stream factory');
-    t.end();
-  });
-  test('interface: osm.util.stats', function(t) {
-    t.equal(typeof osm.util.stats, 'object', 'stats singleton');
-    t.end();
-  });
 };
 
 module.exports.all = function (tape, common) {

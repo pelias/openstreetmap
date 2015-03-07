@@ -12,7 +12,8 @@ var fs = require('fs'),
     deep = require('deep-diff'),
     naivedb = require('naivedb'),
     suggester = require('pelias-suggester-pipeline'),
-    osm = require('../');
+    osm = require('../'),
+    dbmapper = require('../stream/dbmapper');
 
 var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
     pbfPath = path.resolve(__dirname) + '/somes.osm.pbf',
@@ -27,7 +28,7 @@ osm.pbf.parser({ file: pbfPath })
   .pipe( osm.doc.denormalizer() )
   .pipe( osm.address.extractor() )
   .pipe( suggester.pipeline )
-  .pipe( osm.util.dbmapper() )
+  .pipe( dbmapper() )
   .pipe( db.createWriteStream('_id') )
   .on('finish', function assert(){
 
