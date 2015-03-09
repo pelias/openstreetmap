@@ -10,7 +10,6 @@ var elasticsearch = require('pelias-dbclient'),
     dbmapper = require('./stream/dbmapper');
 
 var osm = { pbf: {}, doc: {}, address: {}, tag: {} };
-exports = module.exports = osm;
 
 osm.pbf.parser = require('./stream/pbf').parser;
 osm.doc.constructor = require('./stream/document_constructor');
@@ -35,3 +34,5 @@ osm.import = function(opts){
 if( require.main === module ){
   osm.import();
 }
+
+module.exports = osm;
