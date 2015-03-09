@@ -53,7 +53,7 @@ function validatePath( path, message ){
   try {
     fs.statSync( path );
   } catch( e ){
-    throw new Error( 'failed to stat pbf file: ' + path );
+    throw new Error( message );
   }
 }
 
