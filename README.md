@@ -18,6 +18,12 @@ In order to perform more complex analysis of text we have a custom elasticsearch
 
 You can find more information about the plugin here: https://github.com/pelias/elasticsearch-plugin
 
+## Elasticsearch scripts
+
+In order to perform better document ranking we provide custom elasticsearch groovy scripts which must be installed.
+
+You can find more information about installing the scripts here: https://github.com/pelias/scripts
+
 ## Clone and Install dependencies
 
 ```bash
