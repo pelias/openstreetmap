@@ -1,7 +1,7 @@
 {
   "name": "pelias-openstreetmap",
   "author": "mapzen",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Pelias openstreetmap utilities",
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
   "license": "MIT",
