@@ -19,5 +19,5 @@ module.exports = function( geometry ){
     return { lat: center.latitude, lon: center.longitude };
   }
 
-  return;
+  return null;
 };

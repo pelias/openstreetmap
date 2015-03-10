@@ -8,6 +8,7 @@
 **/
 
 var through = require('through2'),
+    isObject = require('is-object'),
     geoJsonCenter = require('../util/geoJsonCenter'),
     geoJsonTypeFor = require('../util/geoJsonTypeFor');
 
@@ -35,7 +36,10 @@ function denormalizer(){
         coordinates: points
       };
 
-      doc.setCentroid( geoJsonCenter( geo ) );
+      var center = geoJsonCenter( geo );
+      if( isObject( center ) ){
+        doc.setCentroid( center );
+      }
 
       this.push( doc );
       next();
