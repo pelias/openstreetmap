@@ -1,4 +1,8 @@
 
+/**
+ this module is used to find the geojson type of a set of points
+**/
+
 var gktk = require('gjtk');
 
 var mapping = {
@@ -9,7 +13,7 @@ var mapping = {
   'LineString'      : gktk.isLineStringCoordinates,
   'MultiPoint'      : gktk.isMultiPointCoordinates,
   'Point'           : gktk.isPointCoordinates
-}
+};
 
 module.exports = function( points ){
   for( var type in mapping ){
@@ -18,4 +22,4 @@ module.exports = function( points ){
     }
   }
   return 'LineString';
-}
+};

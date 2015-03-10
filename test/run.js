@@ -3,13 +3,15 @@ var tape = require('tape');
 var common = {};
 
 var tests = [
-  require('./util/centroidCodec'),
-  require('./stream/osm/any/buildHierarchy'),
-  require('./stream/osm_filter'),
+  require('./index'),
+  require('./config/features'),
   require('./stream/address_extractor'),
+  require('./stream/document_constructor'),
+  require('./stream/dbmapper'),
+  require('./stream/denormalizer'),
+  require('./stream/pbf'),
   require('./stream/stats'),
-  require('./stream/osm_types'),
-  require('./mapper/node/osm_names')
+  require('./stream/tag_mapper')
 ];
 
 tests.map(function(t) {

@@ -1,60 +1,46 @@
 
+/**
+  The stats module is useful for recording stats while developing new streams.
+
+  @usage:
+
+    tap.pipe( stream1 )
+      .pipe( stats.proxy('stream1 -> stream2') )
+      .pipe( stream2 )
+      .pipe( stats.proxy('stream2 -> stream3') )
+      .pipe( stream3 )
+      .pipe( stats.proxy('stream3 -> sink') )
+      .pipe( sink )
+
+  you can then get throughput statistics in your terminal to identify bottlenecks:
+
+    setInterval( console.log.bind( console, stats.metrics ), 1000 );
+**/
+
 var through = require('through2');
-var store, pipes;
 
-var stats = function( title ){
+function Stats(){
+  this.reset();
+}
 
-  var stream = through.obj( function( item, enc, done ) {
-
-    if( !store[ title ] ){ store[ title ] = 0; }
-    store[ title ]++;
-
-    this.push( item, enc );
-    return done();
-
-  });
-  
-  // catch stream errors
-  stream.on( 'error', console.error.bind( console, __filename ) );
-
-  // start logging on first pipe
-  stream.on( 'pipe', function(){
-    pipes++;
-    if( pipes === 1 ){
-      module.exports.interval = setInterval( function(){
-        if( stats.enabled ){
-          stream.log( store );
-        }
-      }, 500 );
-      // module.exports.interval.unref();
-    }
-  });
-
-  // stop logging and clear interval when done
-  stream.on( 'unpipe', function(){
-    pipes--;
-    if( pipes === 0 ){
-      if( stats.enabled ){
-        stream.log( store );
-      }
-      clearInterval( module.exports.interval );
-      stream.emit( 'clear' );
-    }
-  });
-
-  stream.log = function( store ){
-    console.error( JSON.stringify( store, null, 2 ) );
-  };
-
-  return stream;
+Stats.prototype.reset = function(){
+  this.metrics = {};
 };
 
-// export a reset function for unit testing
-stats._reset = function(){
-  store = {};
-  pipes = 0;
-  stats.enabled = true;
-};
-stats._reset();
+Stats.prototype.proxy = function( title ){
+  if( !this.metrics.hasOwnProperty( title ) ){
+    this.metrics[ title ] = 0;
+  }
 
-module.exports = stats;
+  var self = this;
+
+  var proxy = through.obj( function( item, enc, next ) {
+    self.metrics[ title ]++;
+    this.push( item );
+    return next();
+  });
+
+  return proxy;
+};
+
+module.exports = new Stats();
