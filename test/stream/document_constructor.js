@@ -40,7 +40,7 @@ module.exports.tests.model_errors = function(test, common) {
   test('model errors: avoid fatal errors', function(t) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.end(); // test will if document is piped downstream
+      t.end(); // test will fail if document is piped downstream
       next();
     }));
     t.doesNotThrow( function emptyDocument(){
