@@ -32,10 +32,19 @@ module.exports.tests.instantiate = function(test, common) {
     }));
     stream.write({ id: 1, type: 'X' });
   });
-  test('instantiate: invalid id', function(t) {
+};
+
+// catch pelias/model errors and continue, erroneous docs
+// should not be piped downstream
+module.exports.tests.model_errors = function(test, common) {
+  test('model errors: avoid fatal errors', function(t) {
     var stream = constructor();
-    t.throws(function(){
-      stream.write({ type: 'X' });
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.end(); // test will if document is piped downstream
+      next();
+    }));
+    t.doesNotThrow( function emptyDocument(){
+      stream.write({});
     });
     t.end();
   });
@@ -59,6 +68,15 @@ module.exports.tests.centroid = function(test, common) {
       next();
     }));
     stream.write({ id: 1, type: 'X' });
+  });
+  test('centroid: contains zero value', function(t) {
+    var stream = constructor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getCentroid(), { lat: 0, lon: 0 }, 'accepts zero values' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write({ id: 1, type: 'X', lat: 0, lon: 0 });
   });
 };
 
