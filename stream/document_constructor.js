@@ -11,30 +11,37 @@ module.exports = function(){
 
   var stream = through.obj( function( item, enc, next ) {
 
-    var doc = new Document( 'osm' + item.type, item.id );
+    try {
+      var doc = new Document( 'osm' + item.type, item.id );
 
-    // Set latitude / longitude
-    if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
-      doc.setCentroid({
-        lat: item.lat,
-        lon: item.lon
-      });
+      // Set latitude / longitude
+      if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
+        doc.setCentroid({
+          lat: item.lat,
+          lon: item.lon
+        });
+      }
+
+      // Set noderefs (for ways)
+      if( item.hasOwnProperty('nodes') ){
+        doc.setMeta( 'nodes', item.nodes );
+      }
+
+      // Store osm tags as a property inside _meta
+      doc.setMeta( 'tags', item.tags || {} );
+
+      // Push instance of Document downstream
+      this.push( doc );
     }
 
-    // Set noderefs (for ways)
-    if( item.hasOwnProperty('nodes') ){
-      doc.setMeta( 'nodes', item.nodes );
+    catch( e ){
+      console.error( 'error constructing document model', e.stack );
     }
 
-    // Store osm tags as a property inside _meta
-    doc.setMeta( 'tags', item.tags || {} );
-
-    // Push instance of Document downstream
-    this.push( doc );
     return next();
 
   });
-  
+
   // catch stream errors
   stream.on( 'error', console.error.bind( console, __filename ) );
 
