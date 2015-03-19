@@ -8,7 +8,7 @@ var through = require('through2'),
     trimmer = require('trimmer'),
     merge = require('merge');
 
-var localized_keys = require('../config/localized_keys');
+var LOCALIZED_KEYS = require('../config/localized_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
 var ADDRESS_SCHEMA = merge( true, false,
   require('../schema/address_osm'),
@@ -83,7 +83,7 @@ function getNameSuffix( tag ){
   var suffix = tag.substr(5).toLowerCase();
 
   // check the suffix is in the localized key list
-  if( localized_keys.indexOf(suffix) === -1 ){
+  if( LOCALIZED_KEYS.indexOf(suffix) === -1 ){
     return false;
   }
 
