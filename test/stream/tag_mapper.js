@@ -113,13 +113,13 @@ module.exports.tests.reject_difficult_keys = function(test, common) {
 // Accept keys from ./config/localized_keys.js
 module.exports.tests.accept_localized_keys = function(test, common) {
   var doc = new Document('a',1);
-  doc.setMeta('tags', { 'name:ru': 'test1', 'name:full': 'test2', 'name:etymology': 'test3' });
+  doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2', 'name:ko': 'test3' });
   test('maps - localized keys', function(t) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
-      t.equal(doc.getName('full'), 'test2', 'correctly mapped');
-      t.equal(doc.getName('etymology'), 'test3', 'correctly mapped');
+      t.equal(doc.getName('pl'), 'test2', 'correctly mapped');
+      t.equal(doc.getName('ko'), 'test3', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
