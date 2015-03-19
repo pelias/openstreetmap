@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "node test/run.js | tap-spec",
-    "pretest": "test/pretest.sh"
+    "pretest": "test/pretest.sh",
+    "end-to-end": "node test/end-to-end.js;"
   },
   "repository": {
     "type": "git",
