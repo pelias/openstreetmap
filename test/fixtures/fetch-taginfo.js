@@ -25,6 +25,7 @@ function request( page ){
   };
 }
 
+// 5 pages of 500 results
 var requests = [
   request(1),
   request(2),
