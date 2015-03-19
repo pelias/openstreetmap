@@ -139,6 +139,12 @@ Please fork and pull request against upstream master on a feature branch.
 
 Pretty please; provide unit tests and script fixtures in the `test` directory.
 
+## Code Linting
+
+A `.jshintrc` file is provided which contains a linting config, usually your text editor will understand this config and give you inline hints on code style and readability.
+
+These settings are strictly inforced when you do a `git commit`, you can execute `git commit` at any time to run the linter against your code.
+
 ### Running Unit Tests
 
 ```bash
