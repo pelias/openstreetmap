@@ -8,6 +8,7 @@
   eg. tags['alt_name'] -> doc.name['alternative']
 
   @ref: http://wiki.openstreetmap.org/wiki/Key:name
+  @ref: http://wiki.openstreetmap.org/wiki/Names
 **/
 
 var OSM_NAMING_SCHEMA = {
