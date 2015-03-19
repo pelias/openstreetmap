@@ -35,6 +35,7 @@
     "geolib": "^2.0.14",
     "gjtk": "^1.0.0-b",
     "is-object": "^1.0.1",
+    "iso-639-3": "^0.2.0",
     "merge": "^1.2.0",
     "pbf2json": "0.0.3",
     "pelias-admin-lookup": "^2.0.0",
@@ -46,10 +47,12 @@
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
+    "async": "^0.9.0",
     "deep-diff": "^0.3.0",
     "jshint": "^2.6.3",
     "naivedb": "^1.0.7",
     "precommit-hook": "^1.0.7",
+    "taginfo": "^1.0.1",
     "tap-spec": "^2.2.2",
     "tape": "^3.5.0",
     "tmp": "0.0.25"

@@ -79,6 +79,68 @@ module.exports.tests.osm_names = function(test, common) {
   });
 };
 
+// Cover the case of a tag key being 'name:' eg. { 'name:': 'foo' }
+// Not to be confused with { 'name': 'foo' } (note the extraneous colon)
+module.exports.tests.extraneous_colon = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name:': 'test' });
+  test('rejects - extraneous colon', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.name, {}, 'extraneous colon tag ignored');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// Reject the bulk of the free-tagging keys used to mark up data in osm
+module.exports.tests.reject_difficult_keys = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name:*': 'test', 'name:ဗမာ': 'test2', 'name:<阪神電鉄>': 'test3' });
+  test('rejects - difficult keys', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.name, {}, 'all keys rejected');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// Accept keys from ./config/localized_keys.js
+module.exports.tests.accept_localized_keys = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2', 'name:ko': 'test3' });
+  test('maps - localized keys', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
+      t.equal(doc.getName('pl'), 'test2', 'correctly mapped');
+      t.equal(doc.getName('ko'), 'test3', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.lowercase_keys = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name:EN': 'test' });
+  test('maps - lowercase keys', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('en'), 'test', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ======================== addresses =========================
 
 module.exports.tests.osm_schema = function(test, common) {

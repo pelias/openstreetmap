@@ -8,6 +8,7 @@ var through = require('through2'),
     trimmer = require('trimmer'),
     merge = require('merge');
 
+var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
 var ADDRESS_SCHEMA = merge( true, false,
   require('../schema/address_osm'),
@@ -28,10 +29,11 @@ module.exports = function(){
 
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
-        if( tag.match('name:') ){
+        var suffix = getNameSuffix( tag );
+        if( suffix ){
           var val1 = trim( tags[tag] );
           if( val1 ){
-            doc.setName( tag.replace('name:',''), val1 );
+            doc.setName( suffix, val1 );
           }
         }
 
@@ -57,7 +59,7 @@ module.exports = function(){
     done();
 
   });
-  
+
   // catch stream errors
   stream.on( 'error', console.error.bind( console, __filename ) );
 
@@ -67,4 +69,23 @@ module.exports = function(){
 // Clean string of leading/trailing junk chars
 function trim( str ){
   return trimmer( str, '#$%^*()<>-=_{};:",./?\' ' );
+}
+
+// extract name suffix, eg for 'name:EN' return 'en'
+// if not valid, return false.
+function getNameSuffix( tag ){
+
+  if( tag.length < 6 || tag.substr(0,5) !== 'name:' ){
+    return false;
+  }
+
+  // normalize suffix
+  var suffix = tag.substr(5).toLowerCase();
+
+  // check the suffix is in the localized key list
+  if( LOCALIZED_NAME_KEYS.indexOf(suffix) === -1 ){
+    return false;
+  }
+
+  return suffix;
 }
