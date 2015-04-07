@@ -81,6 +81,10 @@ Make sure you change the following settings to reflect your environment:
 You can optionally change:
 
 - `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
+- `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
+  county, etc. names), but you can optionally create it via the
+  [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) plugin; just set this property to `true`.  Consult
+  the `admin-lookup` README for setup documentation (namely just downloading the Quattroshapes dataset).
 
 If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
 
