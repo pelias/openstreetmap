@@ -7,7 +7,8 @@
 var elasticsearch = require('pelias-dbclient'),
     adminLookup = require('pelias-admin-lookup'),
     suggester = require('pelias-suggester-pipeline'),
-    dbmapper = require('./stream/dbmapper');
+    dbmapper = require('./stream/dbmapper'),
+    peliasConfig = require( 'pelias-config' ).generate();
 
 var osm = { pbf: {}, doc: {}, address: {}, tag: {} };
 
@@ -19,11 +20,16 @@ osm.address.extractor = require('./stream/address_extractor');
 
 // default import pipeline
 osm.import = function(opts){
-  osm.pbf.parser(opts)
+  var pipeline = osm.pbf.parser(opts)
     .pipe( osm.doc.constructor() )
     .pipe( osm.tag.mapper() )
-    .pipe( osm.doc.denormalizer() )
-    .pipe( adminLookup.stream() )
+    .pipe( osm.doc.denormalizer() );
+
+  if( peliasConfig.imports.openstreetmap.adminLookup ){
+    pipeline = pipeline.pipe( adminLookup.stream() );
+  }
+
+  pipeline
     .pipe( osm.address.extractor() )
     .pipe( suggester.pipeline )
     .pipe( dbmapper() )
