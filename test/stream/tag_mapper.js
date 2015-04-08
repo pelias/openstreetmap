@@ -174,11 +174,11 @@ module.exports.tests.naptan_schema = function(test, common) {
 module.exports.tests.karlsruhe_schema = function(test, common) {
   test('maps - karlsruhe schema', function(t) {
     var doc = new Document('a',1);
-    doc.setMeta('tags', { 'addr:housename': 'CCC', 'addr:city': 'DDD' });
+    doc.setMeta('tags', { 'addr:housename': 'CCC', 'addr:housenumber': '111' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getAddress('name'), 'CCC', 'correctly mapped');
-      t.equal(doc.getAddress('city'), 'DDD', 'correctly mapped');
+      t.equal(doc.getAddress('number'), '111', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
