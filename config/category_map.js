@@ -1,6 +1,21 @@
 
-// ref: http://wiki.openstreetmap.org/wiki/Map_Features
-// https://github.com/pelias/pelias/wiki/Taxonomy-v1
+/**
+ default category mapping, openstreetmap features on the left
+ correspond to the Pelias taxonomy on the right.
+
+ you can modify this file to suit your specific use-case, or
+ alternatively you can inject your own custom taxonomy mapping
+ at runtime.
+
+ A special key '*' is used to match any tag value for that key.
+ eg. 'aerialway:*' would match 'aerialway:foo' and 'aerialway:bar'.
+
+ Categories are cumulative, so if a document matches on many different
+ mappings then it will inherit *all* of those categories.
+
+ @see: http://wiki.openstreetmap.org/wiki/Map_Features
+ @see: https://github.com/pelias/pelias/wiki/Taxonomy-v1
+**/
 
 var mapping = {
 

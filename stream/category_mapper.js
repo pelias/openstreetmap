@@ -1,4 +1,18 @@
 
+/**
+  The category mapper is responsible for checking each documents tags
+  against a predefined taxonomy mapping file.
+
+  For each openstreetmap 'feature' that matches the mapping file we
+  create a new document 'category' by calling `doc.addCategory( category );`.
+
+  This idea is to classify places-of-interest in order to facilitate the
+  building of industry and interest specific geocoders.
+
+  @see: https://github.com/pelias/pelias/wiki/Taxonomy-v1
+  @see: ./config/category_map.js
+**/
+
 var through = require('through2');
 
 module.exports = function( mapping ){
