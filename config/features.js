@@ -4,6 +4,9 @@
  imports. @see: https://github.com/pelias/pbf2json for more info.
 **/
 
+// @todo: blacklist public_transport:stop_area
+// eg. http://www.openstreetmap.org/node/2478086894
+
 var tags = [
   'addr:housenumber+addr:street',
   'amenity+name',

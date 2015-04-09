@@ -12,7 +12,9 @@ var tests = [
   require('./stream/denormalizer'),
   require('./stream/pbf'),
   require('./stream/stats'),
-  require('./stream/tag_mapper')
+  require('./stream/tag_mapper'),
+  require('./stream/category_mapper'),
+  require('./config/category_map')
 ];
 
 tests.map(function(t) {
