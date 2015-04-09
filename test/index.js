@@ -1,5 +1,6 @@
 
-var osm = require('../index');
+var osm = require('../index'),
+    isObject = require('is-object');
 
 module.exports.tests = {};
 
@@ -19,6 +20,14 @@ module.exports.tests.interface = function(test, common) {
   });
   test('interface: osm.address.extractor', function(t) {
     t.equal(typeof osm.address.extractor, 'function', 'stream factory');
+    t.end();
+  });
+  test('interface: osm.category.mapper', function(t) {
+    t.equal(typeof osm.category.mapper, 'function', 'stream factory');
+    t.end();
+  });
+  test('interface: osm.category.defaults', function(t) {
+    t.true(isObject( osm.category.defaults ), 'default mapping object');
     t.end();
   });
 };
