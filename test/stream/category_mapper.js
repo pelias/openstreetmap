@@ -153,6 +153,20 @@ module.exports.tests.sport_wildcard = function(test, common) {
   });
 };
 
+module.exports.tests.argentinian_steak_restaurant = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta( 'tags', { 'cuisine': 'argentinian' } );
+  test('maps - argentinian steak restaurant', function(t) {
+    var stream = mapper( defaultMapping );
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.category, ['food','food:cuisine:argentinian'], 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.all = function (tape, common) {
 
   function test(name, testFunction) {
