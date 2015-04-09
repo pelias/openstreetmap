@@ -14,8 +14,10 @@ var KARLSRUHE_SCHEMA = {
   'addr:housename':     'name',
   'addr:housenumber':   'number',
   'addr:street':        'street',
+  'addr:postcode':      'zip'
+
+  // @ref: https://github.com/pelias/model/pull/13
   // 'addr:state':         'state',
-  'addr:postcode':      'zip',
   // 'addr:city':          'city',
   // 'addr:country':       'country'
 };
