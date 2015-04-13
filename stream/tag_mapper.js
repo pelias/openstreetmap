@@ -63,6 +63,7 @@ module.exports = function(){
     catch( e ){
       console.error( 'tag_mapper error' );
       console.error( e.stack );
+      console.error( JSON.stringify( doc, null, 2 ) );
     }
 
     return next( null, doc );
