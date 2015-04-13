@@ -169,6 +169,24 @@ module.exports.tests.argentinian_steak_restaurant = function(test, common) {
 
 // ======================= errors ========================
 
+// catch general errors in the stream, emit logs and passthrough the doc
+module.exports.tests.catch_thrown_errors = function(test, common) {
+  test('errors - catch thrown errors', function(t) {
+    var doc = new Document('a',1);
+
+    // this method will throw a generic Error for testing
+    doc.getMeta = function(){ throw new Error('test'); };
+
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getType(), 'a', 'doc passthrough' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.tests.empty_tag_value = function(test, common) {
   test('errors - ignore empty tags', function(t) {
     var doc = new Document('a',1);

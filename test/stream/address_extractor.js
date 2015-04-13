@@ -1,6 +1,7 @@
 
 var extractor = require('../../stream/address_extractor'),
     fixtures = require('../fixtures/docs'),
+    Document = require('pelias-model').Document,
     through = require('through2');
 
 module.exports.tests = {};
@@ -209,6 +210,26 @@ module.exports.tests.duplicateAllFields = function(test, common) {
       next();
     }));
     stream.write(fixtures.completeDoc);
+  });
+};
+
+// ======================= errors ========================
+
+// catch general errors in the stream, emit logs and discard the doc
+module.exports.tests.catch_thrown_errors = function(test, common) {
+  test('errors - catch thrown errors', function(t) {
+    var doc = new Document('a',1);
+
+    // this method will throw a generic Error for testing
+    doc.getName = function(){ throw new Error('test'); };
+
+    var stream = extractor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.end(); // test will fail if called (called twice).
+      next();
+    }));
+    stream.write(doc);
+    t.end();
   });
 };
 

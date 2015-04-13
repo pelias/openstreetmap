@@ -19,22 +19,24 @@ module.exports = function( mapping ){
 
   return through.obj( function( doc, enc, next ){
 
-    // do not categorize addresses
-    if( doc.getId().match('address') ){
-      return next( null, doc );
-    }
+    try {
 
-    // skip records with no tags
-    var tags = doc.getMeta('tags');
-    if( !tags ){
-      return next( null, doc );
-    }
+      // do not categorize addresses
+      if( doc.getId().match('address') ){
+        return next( null, doc );
+      }
 
-    // iterate over mapping
-    for( var key in mapping ){
+      // skip records with no tags
+      var tags = doc.getMeta('tags');
+      if( !tags ){
+        return next( null, doc );
+      }
 
-      // check each mapping key against document tags
-      if( tags.hasOwnProperty( key ) ){
+      // iterate over mapping
+      for( var key in mapping ){
+
+        // check each mapping key against document tags
+        if( !tags.hasOwnProperty( key ) ){ continue; }
 
         // handle mapping wildcards
         if( mapping[key].hasOwnProperty('*') ){
@@ -49,6 +51,11 @@ module.exports = function( mapping ){
           }
         }
       }
+    }
+
+    catch( e ){
+      console.error( 'category_mapper error' );
+      console.error( e.stack );
     }
 
     return next( null, doc );

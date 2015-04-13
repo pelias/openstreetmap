@@ -18,10 +18,15 @@ var ADDRESS_SCHEMA = merge( true, false,
 
 module.exports = function(){
 
-  var stream = through.obj( function( doc, enc, done ) {
+  var stream = through.obj( function( doc, enc, next ) {
 
-    var tags = doc.getMeta('tags');
-    if( tags ){
+    try {
+
+      // skip records with no tags
+      var tags = doc.getMeta('tags');
+      if( !tags ){
+        return next( null, doc );
+      }
 
       // Unfortunately we need to iterate over every tag,
       // so we only do the iteration once to save CPU.
@@ -55,8 +60,12 @@ module.exports = function(){
       }
     }
 
-    this.push( doc );
-    done();
+    catch( e ){
+      console.error( 'tag_mapper error' );
+      console.error( e.stack );
+    }
+
+    return next( null, doc );
 
   });
 
