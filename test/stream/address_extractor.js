@@ -215,13 +215,14 @@ module.exports.tests.duplicateAllFields = function(test, common) {
 
 // ======================= errors ========================
 
-// catch general errors in the stream, emit logs and discard the doc
+// catch general errors in the stream, emit logs
+// discard the address doc but passthrough the named poi
 module.exports.tests.catch_thrown_errors = function(test, common) {
   test('errors - catch thrown errors', function(t) {
     var doc = new Document('a',1);
 
     // this method will throw a generic Error for testing
-    doc.getName = function(){ throw new Error('test'); };
+    doc.getType = function(){ throw new Error('test'); };
 
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -230,6 +231,21 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     }));
     stream.write(doc);
     t.end();
+  });
+  test('errors - passthrough named poi records', function(t) {
+    var doc = new Document('a',1);
+    doc.setName('default','test');
+
+    // this method will throw a generic Error for testing
+    doc.getType = function(){ throw new Error('test'); };
+
+    var stream = extractor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal( doc.getName('default'), 'test', 'changed' );
+      t.end(); // test will fail if called (called twice).
+      next();
+    }));
+    stream.write(doc);
   });
 };
 
