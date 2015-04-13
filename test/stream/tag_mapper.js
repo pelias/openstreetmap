@@ -202,13 +202,71 @@ module.exports.tests.trim_junk = function(test, common) {
   });
 };
 
-module.exports.tests.empty_tags = function(test, common) {
-  test('clean - ignore empty tags', function(t) {
+// ======================= errors ========================
+
+module.exports.tests.empty_tag_value = function(test, common) {
+  test('errors - ignore empty tags', function(t) {
     var doc = new Document('a',1);
     doc.setMeta('tags', { name: '' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getName('default'), undefined, 'ignore empty tags');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.tab_only_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name': '\t' });
+  test('errors - tab only value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), undefined, 'remove tabs');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.tab_in_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name': '\tfoo\t' });
+  test('errors - tab in value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'foo', 'remove tabs');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.newline_only_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name': '\n' });
+  test('errors - newline only value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), undefined, 'remove newlines');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.newline_in_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'name': '\nfoo\n' });
+  test('errors - newline in value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'foo', 'remove newlines');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
