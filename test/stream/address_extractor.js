@@ -242,7 +242,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( doc.getName('default'), 'test', 'changed' );
-      t.end(); // test will fail if called (called twice).
+      t.end(); // test should fail if not called, or called more than twice.
       next();
     }));
     stream.write(doc);
