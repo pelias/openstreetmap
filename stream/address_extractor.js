@@ -43,9 +43,9 @@ module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
 
+    var isNamedPoi = !!doc.getName('default');
+    
     try {
-
-      var isNamedPoi = !!doc.getName('default');
 
       // create a new record for street addresses
       if( hasValidAddress( doc ) ){
@@ -77,18 +77,18 @@ module.exports = function(){
         this.push( record );
       }
 
-      // forward doc downstream is it's a POI in it's own right
-      // note: this MUST be below the address push()
-      if( isNamedPoi ){
-        this.push( doc );
-      }
-
     }
 
     catch( e ){
       console.error( 'address_extractor error' );
       console.error( e.stack );
       console.error( JSON.stringify( doc, null, 2 ) );
+    }
+
+    // forward doc downstream is it's a POI in it's own right
+    // note: this MUST be below the address push()
+    if( isNamedPoi ){
+      this.push( doc );
     }
 
     return next();
