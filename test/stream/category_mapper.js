@@ -167,6 +167,68 @@ module.exports.tests.argentinian_steak_restaurant = function(test, common) {
   });
 };
 
+// ======================= errors ========================
+
+// catch general errors in the stream, emit logs and passthrough the doc
+module.exports.tests.catch_thrown_errors = function(test, common) {
+  test('errors - catch thrown errors', function(t) {
+    var doc = new Document('a',1);
+
+    // this method will throw a generic Error for testing
+    doc.getMeta = function(){ throw new Error('test'); };
+
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getType(), 'a', 'doc passthrough' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.empty_tag_value = function(test, common) {
+  test('errors - ignore empty tags', function(t) {
+    var doc = new Document('a',1);
+    doc.setMeta('tags', { 'cuisine': '' });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.category, [], 'ignore empty tags');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.tab_only_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'cuisine': '\t' });
+  test('errors - tab only value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.category, [], 'remove tabs');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.newline_only_value = function(test, common) {
+  var doc = new Document('a',1);
+  doc.setMeta('tags', { 'cuisine': '\n' });
+  test('errors - newline only value', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.category, [], 'remove newlines');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.all = function (tape, common) {
 
   function test(name, testFunction) {

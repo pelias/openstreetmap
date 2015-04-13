@@ -29,59 +29,70 @@ var through = require('through2'),
     Document = require('pelias-model').Document,
     idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
-function hasValidAddress( item ){
-  if( !isObject( item ) ){ return false; }
-  if( !isObject( item.address ) ){ return false; }
-  if( 'string' !== typeof item.address.number ){ return false; }
-  if( 'string' !== typeof item.address.street ){ return false; }
-  if( !item.address.number.length ){ return false; }
-  if( !item.address.street.length ){ return false; }
+function hasValidAddress( doc ){
+  if( !isObject( doc ) ){ return false; }
+  if( !isObject( doc.address ) ){ return false; }
+  if( 'string' !== typeof doc.address.number ){ return false; }
+  if( 'string' !== typeof doc.address.street ){ return false; }
+  if( !doc.address.number.length ){ return false; }
+  if( !doc.address.street.length ){ return false; }
   return true;
 }
 
 module.exports = function(){
 
-  var stream = through.obj( function( item, enc, done ) {
+  var stream = through.obj( function( doc, enc, next ) {
 
-    var isNamedPoi = !!item.getName('default');
+    try {
 
-    // create a new record for street addresses
-    if( hasValidAddress( item ) ){
-      var type = isNamedPoi ? 'poi-address' : 'address';
+      var isNamedPoi = !!doc.getName('default');
 
-      // copy data to new document
-      var record = new Document( 'osmaddress', type + '-' + item.getType() + '-' + (item.getId() || ++idOrdinal) );
+      // create a new record for street addresses
+      if( hasValidAddress( doc ) ){
+        var type = isNamedPoi ? 'poi-address' : 'address';
 
-      record
-        .setName( 'default', item.address.number + ' ' + item.address.street )
-        .setCentroid( item.getCentroid() );
+        // copy data to new document
+        var record = new Document( 'osmaddress', type + '-' + doc.getType() + '-' + (doc.getId() || ++idOrdinal) );
 
-      // copy address info
-      record.address = item.address;
+        record
+          .setName( 'default', doc.address.number + ' ' + doc.address.street )
+          .setCentroid( doc.getCentroid() );
 
-      // copy admin data
-      if( item.alpha3 ){ record.setAlpha3( item.alpha3 ); }
-      if( item.admin0 ){ record.setAdmin( 'admin0', item.admin0 ); }
-      if( item.admin1 ){ record.setAdmin( 'admin1', item.admin1 ); }
-      if( item.admin1_abbr ){ record.setAdmin( 'admin1_abbr', item.admin1_abbr ); }
-      if( item.admin2 ){ record.setAdmin( 'admin2', item.admin2 ); }
-      if( item.local_admin ){ record.setAdmin( 'local_admin', item.local_admin ); }
-      if( item.locality ){ record.setAdmin( 'locality', item.locality ); }
-      if( item.neighborhood ){ record.setAdmin( 'neighborhood', item.neighborhood ); }
-      
-      // copy meta data (but maintain the id & type assigned above)
-      record._meta = extend( true, {}, item._meta, { id: record.getId(), type: record.getType() } );
+        // copy address info
+        record.address = doc.address;
 
-      this.push( record );
+        // copy admin data
+        if( doc.alpha3 ){ record.setAlpha3( doc.alpha3 ); }
+        if( doc.admin0 ){ record.setAdmin( 'admin0', doc.admin0 ); }
+        if( doc.admin1 ){ record.setAdmin( 'admin1', doc.admin1 ); }
+        if( doc.admin1_abbr ){ record.setAdmin( 'admin1_abbr', doc.admin1_abbr ); }
+        if( doc.admin2 ){ record.setAdmin( 'admin2', doc.admin2 ); }
+        if( doc.local_admin ){ record.setAdmin( 'local_admin', doc.local_admin ); }
+        if( doc.locality ){ record.setAdmin( 'locality', doc.locality ); }
+        if( doc.neighborhood ){ record.setAdmin( 'neighborhood', doc.neighborhood ); }
+
+        // copy meta data (but maintain the id & type assigned above)
+        record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+
+        this.push( record );
+      }
+
+      // forward doc downstream is it's a POI in it's own right
+      // note: this MUST be below the address push()
+      if( isNamedPoi ){
+        this.push( doc );
+      }
+
     }
 
-    // forward item downstream is it's a POI in it's own right
-    // note: this MUST be below the address push()
-    if( isNamedPoi ){
-      this.push( item );
+    catch( e ){
+      console.error( 'address_extractor error' );
+      console.error( e.stack );
+      console.error( JSON.stringify( doc, null, 2 ) );
     }
 
-    return done();
+    return next();
+
   });
 
   // catch stream errors
