@@ -42,19 +42,16 @@ function hasValidAddress( doc ){
 module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
-
     var isNamedPoi = !!doc.getName('default');
-    
-    try {
 
-      // create a new record for street addresses
-      if( hasValidAddress( doc ) ){
-        var type = isNamedPoi ? 'poi-address' : 'address';
+    // create a new record for street addresses
+    if( hasValidAddress( doc ) ){
+      var type = isNamedPoi ? 'poi-address' : 'address';
+      var record;
 
+      try {
         // copy data to new document
-        var record = new Document( 'osmaddress', type + '-' + doc.getType() + '-' + (doc.getId() || ++idOrdinal) );
-
-        record
+        record = new Document( 'osmaddress', type + '-' + doc.getType() + '-' + (doc.getId() || ++idOrdinal) )
           .setName( 'default', doc.address.number + ' ' + doc.address.street )
           .setCentroid( doc.getCentroid() );
 
@@ -70,19 +67,18 @@ module.exports = function(){
         if( doc.local_admin ){ record.setAdmin( 'local_admin', doc.local_admin ); }
         if( doc.locality ){ record.setAdmin( 'locality', doc.locality ); }
         if( doc.neighborhood ){ record.setAdmin( 'neighborhood', doc.neighborhood ); }
-
-        // copy meta data (but maintain the id & type assigned above)
-        record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
-
-        this.push( record );
+      }
+      catch( e ){
+        console.error( 'address_extractor error' );
+        console.error( e.stack );
+        console.error( JSON.stringify( doc, null, 2 ) );
       }
 
-    }
-
-    catch( e ){
-      console.error( 'address_extractor error' );
-      console.error( e.stack );
-      console.error( JSON.stringify( doc, null, 2 ) );
+      if( record !== undefined ){
+        // copy meta data (but maintain the id & type assigned above)
+        record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+        this.push( record );
+      }
     }
 
     // forward doc downstream is it's a POI in it's own right
