@@ -10,6 +10,7 @@
     "start": "node index.js",
     "test": "node test/run.js | tap-spec",
     "pretest": "test/pretest.sh",
+    "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "node test/end-to-end.js;"
   },
   "repository": {
@@ -50,6 +51,7 @@
   "devDependencies": {
     "async": "^0.9.0",
     "deep-diff": "^0.3.0",
+    "istanbul": "^0.3.13",
     "jshint": "^2.6.3",
     "naivedb": "^1.0.7",
     "precommit-hook": "^1.0.7",

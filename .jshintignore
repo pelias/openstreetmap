@@ -1,1 +1,6 @@
-node_modules
+/node_modules/
+esclient.log
+*.log
+nohup.out
+test/*.pbf
+coverage
