@@ -163,6 +163,12 @@ These tests run the entire pipeline against a small PBF extract to assert that t
 $ npm run end-to-end
 ```
 
+## Code Coverage
+
+```bash
+$ npm run coverage
+```
+
 ### Continuous Integration
 
 Travis tests every release against node version `0.10` & `0.12`.
