@@ -5,7 +5,8 @@
 **/
 
 var through = require('through2'),
-    Document = require('pelias-model').Document;
+    Document = require('pelias-model').Document,
+    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 module.exports = function(){
 
@@ -35,7 +36,7 @@ module.exports = function(){
     }
 
     catch( e ){
-      console.error( 'error constructing document model', e.stack );
+      peliasLogger.error( 'error constructing document model', e.stack );
     }
 
     return next();
@@ -43,7 +44,7 @@ module.exports = function(){
   });
 
   // catch stream errors
-  stream.on( 'error', console.error.bind( console, __filename ) );
+  stream.on( 'error', peliasLogger.error.bind( peliasLogger, __filename ) );
 
   return stream;
 };

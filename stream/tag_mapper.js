@@ -6,7 +6,8 @@
 
 var through = require('through2'),
     trimmer = require('trimmer'),
-    merge = require('merge');
+    merge = require('merge'),
+    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
@@ -61,9 +62,9 @@ module.exports = function(){
     }
 
     catch( e ){
-      console.error( 'tag_mapper error' );
-      console.error( e.stack );
-      console.error( JSON.stringify( doc, null, 2 ) );
+      peliasLogger.error( 'tag_mapper error' );
+      peliasLogger.error( e.stack );
+      peliasLogger.error( JSON.stringify( doc, null, 2 ) );
     }
 
     return next( null, doc );
@@ -71,7 +72,7 @@ module.exports = function(){
   });
 
   // catch stream errors
-  stream.on( 'error', console.error.bind( console, __filename ) );
+  stream.on( 'error', peliasLogger.error.bind( peliasLogger, __filename ) );
 
   return stream;
 };

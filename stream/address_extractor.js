@@ -26,6 +26,7 @@
 var through = require('through2'),
     isObject = require('is-object'),
     extend = require('extend'),
+    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' ),
     Document = require('pelias-model').Document,
     idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
 
@@ -75,9 +76,9 @@ module.exports = function(){
         });
       }
       catch( e ){
-        console.error( 'address_extractor error' );
-        console.error( e.stack );
-        console.error( JSON.stringify( doc, null, 2 ) );
+        peliasLogger.error( 'address_extractor error' );
+        peliasLogger.error( e.stack );
+        peliasLogger.error( JSON.stringify( doc, null, 2 ) );
       }
 
       if( record !== undefined ){
@@ -98,7 +99,7 @@ module.exports = function(){
   });
 
   // catch stream errors
-  stream.on( 'error', console.error.bind( console, __filename ) );
+  stream.on( 'error', peliasLogger.error.bind( peliasLogger, __filename ) );
 
   return stream;
 };
