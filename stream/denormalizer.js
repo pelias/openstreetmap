@@ -10,7 +10,8 @@
 var through = require('through2'),
     isObject = require('is-object'),
     geoJsonCenter = require('../util/geoJsonCenter'),
-    geoJsonTypeFor = require('../util/geoJsonTypeFor');
+    geoJsonTypeFor = require('../util/geoJsonTypeFor'),
+    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 // convert de-normalized ways to geojson
 function denormalizer(){
@@ -45,7 +46,7 @@ function denormalizer(){
       next();
 
     } catch( e ){
-      console.log( 'failed to denormalize way', e );
+      peliasLogger.error( 'failed to denormalize way', e );
       next();
     }
   });

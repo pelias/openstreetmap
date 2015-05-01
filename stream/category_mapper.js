@@ -14,6 +14,7 @@
 **/
 
 var through = require('through2');
+var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 module.exports = function( mapping ){
 
@@ -54,9 +55,9 @@ module.exports = function( mapping ){
     }
 
     catch( e ){
-      console.error( 'category_mapper error' );
-      console.error( e.stack );
-      console.error( JSON.stringify( doc, null, 2 ) );
+      peliasLogger.error( 'category_mapper error' );
+      peliasLogger.error( e.stack );
+      peliasLogger.error( JSON.stringify( doc, null, 2 ) );
     }
 
     return next( null, doc );

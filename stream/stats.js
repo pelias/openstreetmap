@@ -14,7 +14,8 @@
 
   you can then get throughput statistics in your terminal to identify bottlenecks:
 
-    setInterval( console.log.bind( console, stats.metrics ), 1000 );
+    var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+    setInterval( peliasLogger.log.bind( peliasLogger, stats.metrics ), 1000 );
 **/
 
 var through = require('through2');
