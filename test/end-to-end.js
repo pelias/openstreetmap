@@ -2,7 +2,7 @@
 /**
   End-to-end tests of a small pbf extract.
 
-  The somes.osm.pbf extract will be automatically downloaded before testing.
+  The vancouver_canada.osm.pbf extract will be automatically downloaded before testing.
   @see: ./pretest.sh for more details, or run manually to download file.
 **/
 
@@ -16,8 +16,8 @@ var fs = require('fs'),
     dbmapper = require('../stream/dbmapper');
 
 var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
-    pbfPath = path.resolve(__dirname) + '/somes.osm.pbf',
-    expectedPath = path.resolve(__dirname) + '/fixtures/somes.extract.expected.json';
+    pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
+    expectedPath = path.resolve(__dirname) + '/fixtures/vancouver.extract.expected.json';
 
 fs.writeFileSync( tmpfile, '{}' ); // init naivedb
 var db = naivedb(tmpfile);

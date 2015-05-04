@@ -6,7 +6,7 @@ var fs = require('fs'),
 settings.imports.openstreetmap.datapath = path.resolve(__dirname);
 settings.imports.openstreetmap.import = [{
   type: { node: 'osmnode', way: 'osmway' },
-  filename: 'somes.osm.pbf'
+  filename: 'vancouver_canada.osm.pbf'
 }];
 
 var configPath = process.env.HOME + '/pelias.json';
