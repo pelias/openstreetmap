@@ -28,6 +28,7 @@ osm.pbf.parser({ file: pbfPath })
   .pipe( osm.doc.denormalizer() )
   .pipe( osm.address.extractor() )
   .pipe( suggester.pipeline )
+  .pipe( osm.category.mapper( osm.category.defaults ) )
   .pipe( dbmapper() )
   .pipe( db.createWriteStream('_id') )
   .on('finish', function assert(){
