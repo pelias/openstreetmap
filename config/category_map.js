@@ -117,6 +117,8 @@ var mapping = {
     'university':               ['education'],
     'public':                   ['government'],
 
+    'farm':                     ['industry','industry:agriculture'],
+
     'train_station':            ['transport','transport:station'],
     'transportation':           ['transport','transport:station']
   },
@@ -262,7 +264,7 @@ var mapping = {
   },
 
   'military': {
-    '*':                        ['government'],
+    '*':                        ['government:military','government'],
   },
 
   'natural': {
