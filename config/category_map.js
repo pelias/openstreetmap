@@ -268,10 +268,10 @@ var mapping = {
   },
 
   'natural': {
-    'wood':                     ['recreation'],
-    'water':                    ['recreation'],
-    'glacier':                  ['recreation'],
-    'beach':                    ['recreation'],
+    'wood':                     ['natural','recreation'],
+    'water':                    ['natural','natural:water','recreation'],
+    'glacier':                  ['natural','recreation'],
+    'beach':                    ['natural','recreation'],
   },
 
   'office': {
