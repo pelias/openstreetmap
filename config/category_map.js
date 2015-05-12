@@ -99,7 +99,7 @@ var mapping = {
   },
 
   'building': {
-    'hotel':                    ['accomodation'],
+    'hotel':                    ['accommodation'],
     'commercial':               ['professional'],
     'retail':                   ['retail'],
 
@@ -336,15 +336,15 @@ var mapping = {
   },
 
   'tourism': {
-    'hotel':                    ['accomodation'],
-    'motel':                    ['accomodation'],
-    'alpine_hut':               ['accomodation'],
-    'apartment':                ['accomodation'],
-    'guest_house':              ['accomodation'],
-    'chalet':                   ['accomodation'],
-    'caravan_site':             ['accomodation'],
-    'camp_site':                ['accomodation'],
-    'wilderness_hut':           ['accomodation'],
+    'hotel':                    ['accommodation'],
+    'motel':                    ['accommodation'],
+    'alpine_hut':               ['accommodation'],
+    'apartment':                ['accommodation'],
+    'guest_house':              ['accommodation'],
+    'chalet':                   ['accommodation'],
+    'caravan_site':             ['accommodation'],
+    'camp_site':                ['accommodation'],
+    'wilderness_hut':           ['accommodation'],
     'information':              ['government'],
     'attraction':               ['entertainment'],
     'theme_park':               ['entertainment'],
