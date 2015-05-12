@@ -52,7 +52,7 @@ module.exports = function(){
 
       // accept semi-colon delimited house numbers
       // ref: https://github.com/pelias/openstreetmap/issues/21
-      var streetnumbers = doc.address.number.split(';');
+      var streetnumbers = doc.address.number.split(';').map(Function.prototype.call, String.prototype.trim);
       streetnumbers.forEach( function( streetno, i ){
 
         try {

@@ -70,7 +70,7 @@ docs.semicolonStreetNumbers = new Document('item10',10);
 docs.semicolonStreetNumbers.setName('default','poi10');
 docs.semicolonStreetNumbers.setCentroid({lat:10,lon:10});
 docs.semicolonStreetNumbers.address = {
-  number: '1;2;3', street: 'Pennine Road'
+  number: '1; 2 ;3', street: 'Pennine Road'
 };
 
 module.exports = docs;
