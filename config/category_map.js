@@ -117,6 +117,8 @@ var mapping = {
     'university':               ['education'],
     'public':                   ['government'],
 
+    'farm':                     ['industry','industry:agriculture'],
+
     'train_station':            ['transport','transport:station'],
     'transportation':           ['transport','transport:station']
   },
@@ -262,14 +264,14 @@ var mapping = {
   },
 
   'military': {
-    '*':                        ['government'],
+    '*':                        ['government:military','government'],
   },
 
   'natural': {
-    'wood':                     ['recreation'],
-    'water':                    ['recreation'],
-    'glacier':                  ['recreation'],
-    'beach':                    ['recreation'],
+    'wood':                     ['natural','recreation'],
+    'water':                    ['natural','natural:water','recreation'],
+    'glacier':                  ['natural','recreation'],
+    'beach':                    ['natural','recreation'],
   },
 
   'office': {
