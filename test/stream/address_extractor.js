@@ -213,6 +213,44 @@ module.exports.tests.duplicateAllFields = function(test, common) {
   });
 };
 
+// ========= semi-colon delimeted street numbers =========
+// ref: https://github.com/pelias/openstreetmap/issues/21
+module.exports.tests.semi_colon_street_numbers = function(test, common) {
+  test('create: one record per street number', function(t) {
+    t.plan(12);
+    var stream = extractor();
+    var i = 0;
+    stream.pipe( through.obj( function( doc, enc, next ){
+      // first doc
+      if( i === 0 ){
+        t.equal( doc.getId(), 'poi-address-item10-10', 'changed' );
+        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getName('default'), '1 Pennine Road', 'changed' );
+      // second doc
+      } else if( i === 1 ){
+        t.equal( doc.getId(), 'poi-address-item10-10-2', 'changed' );
+        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getName('default'), '2 Pennine Road', 'changed' );
+      // third doc
+      } else if( i === 2 ){
+        t.equal( doc.getId(), 'poi-address-item10-10-3', 'changed' );
+        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getName('default'), '3 Pennine Road', 'changed' );
+      // last doc
+      } else {
+        t.equal( doc.getId(), '10', 'not changed' );
+        t.equal( doc.getType(), 'item10', 'not changed' );
+        t.equal( doc.getName('default'), 'poi10', 'not changed' );
+        t.end(); // test should fail if not called, or called more than twice.
+      }
+
+      i++;
+      next();
+    }));
+    stream.write(fixtures.semicolonStreetNumbers);
+  });
+};
+
 // ======================= errors ========================
 
 // catch general errors in the stream, emit logs

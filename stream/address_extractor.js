@@ -50,42 +50,38 @@ module.exports = function(){
       var type = isNamedPoi ? 'poi-address' : 'address';
       var record;
 
-      try {
-        // copy data to new document
-        record = new Document( 'osmaddress', type + '-' + doc.getType() + '-' + (doc.getId() || ++idOrdinal) )
-          .setName( 'default', doc.address.number + ' ' + doc.address.street )
-          .setCentroid( doc.getCentroid() );
-
-        [ 'name', 'number', 'street', 'zip' ].forEach( function ( prop ){
-          try {
-            record.setAddress( prop, doc.getAddress( prop ) );
-          } catch ( ex ) {}
-        });
+      // accept semi-colon delimited house numbers
+      // ref: https://github.com/pelias/openstreetmap/issues/21
+      var streetnumbers = doc.address.number.split(';');
+      for( var i in streetnumbers ){
 
         try {
-          record.setAlpha3( doc.getAlpha3() );
-        } catch ( ex ) {}
 
-        [
-          'admin0', 'admin1', 'admin1_abbr', 'admin2', 'local_admin',
-          'locality', 'neighborhood'
-        ].forEach( function ( level ){
-          try {
-            record.setAdmin( level, doc.getAdmin( level ) );
-          } catch ( ex ) {}
-        });
-      }
-      catch( e ){
-        peliasLogger.error( 'address_extractor error' );
-        peliasLogger.error( e.stack );
-        peliasLogger.error( JSON.stringify( doc, null, 2 ) );
+          var newid = [ type, doc.getType(), (doc.getId() || ++idOrdinal) ];
+          if( i > 0 ){ newid.push( streetnumbers[i] ); }
+
+          // copy data to new document
+          record = new Document( 'osmaddress', newid.join('-') )
+            .setName( 'default', streetnumbers[i] + ' ' + doc.address.street )
+            .setCentroid( doc.getCentroid() );
+
+          setProperties( record, doc );
+        }
+
+        catch( e ){
+          peliasLogger.error( 'address_extractor error' );
+          peliasLogger.error( e.stack );
+          peliasLogger.error( JSON.stringify( doc, null, 2 ) );
+        }
+
+        if( record !== undefined ){
+          // copy meta data (but maintain the id & type assigned above)
+          record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+          this.push( record );
+        }
+
       }
 
-      if( record !== undefined ){
-        // copy meta data (but maintain the id & type assigned above)
-        record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
-        this.push( record );
-      }
     }
 
     // forward doc downstream is it's a POI in it's own right
@@ -103,6 +99,29 @@ module.exports = function(){
 
   return stream;
 };
+
+// properties to map from the osm record to the pelias doc
+var addrProps = [ 'name', 'number', 'street', 'zip' ];
+var adminProps = [ 'admin0', 'admin1', 'admin1_abbr', 'admin2', 'local_admin', 'locality', 'neighborhood' ];
+
+// call document setters and ignore non-fatal errors
+function setProperties( record, doc ){
+  addrProps.forEach( function ( prop ){
+    try {
+      record.setAddress( prop, doc.getAddress( prop ) );
+    } catch ( ex ) {}
+  });
+
+  try {
+    record.setAlpha3( doc.getAlpha3() );
+  } catch ( ex ) {}
+
+  adminProps.forEach( function ( level ){
+    try {
+      record.setAdmin( level, doc.getAdmin( level ) );
+    } catch ( ex ) {}
+  });
+}
 
 // export for testing
 module.exports.hasValidAddress = hasValidAddress;
