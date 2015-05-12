@@ -65,4 +65,12 @@ docs.osmRelation1 = new Document('item9',9)
   .setName('osmrelation','relation9')
   .setCentroid({lat:9,lon:9});
 
+// ref: https://github.com/pelias/openstreetmap/issues/21
+docs.semicolonStreetNumbers = new Document('item10',10);
+docs.semicolonStreetNumbers.setName('default','poi10');
+docs.semicolonStreetNumbers.setCentroid({lat:10,lon:10});
+docs.semicolonStreetNumbers.address = {
+  number: '1; 2 ;3', street: 'Pennine Road'
+};
+
 module.exports = docs;
