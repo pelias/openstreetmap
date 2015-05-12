@@ -53,16 +53,16 @@ module.exports = function(){
       // accept semi-colon delimited house numbers
       // ref: https://github.com/pelias/openstreetmap/issues/21
       var streetnumbers = doc.address.number.split(';');
-      for( var i in streetnumbers ){
+      streetnumbers.forEach( function( streetno, i ){
 
         try {
 
           var newid = [ type, doc.getType(), (doc.getId() || ++idOrdinal) ];
-          if( i > 0 ){ newid.push( streetnumbers[i] ); }
+          if( i > 0 ){ newid.push( streetno ); }
 
           // copy data to new document
           record = new Document( 'osmaddress', newid.join('-') )
-            .setName( 'default', streetnumbers[i] + ' ' + doc.address.street )
+            .setName( 'default', streetno + ' ' + doc.address.street )
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );
@@ -80,7 +80,7 @@ module.exports = function(){
           this.push( record );
         }
 
-      }
+      }, this);
 
     }
 
