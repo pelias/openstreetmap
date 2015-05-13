@@ -8,6 +8,7 @@
 
 var fs = require('fs'),
     path = require('path'),
+    colors = require('colors'),
     tmp = require('tmp'),
     deep = require('deep-diff'),
     naivedb = require('naivedb'),
@@ -41,9 +42,11 @@ osm.pbf.parser({ file: pbfPath })
     var diff = deep.diff( actual, expected );
 
     if( diff ){
-      console.log( 'end-to-end error:', tmpfile );
-      console.log( 'actual !== expected' );
       console.log( diff );
+      console.error( colors.red( 'end-to-end tests failed :(' ) );
+      console.error( 'contents of', tmpfile, 'do not match expected:', expectedPath );
       process.exit(1);
     }
+
+    console.error( colors.green( 'end-to-end tests passed :)' ) );
   });
