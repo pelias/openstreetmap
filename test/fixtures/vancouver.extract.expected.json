@@ -1,155 +1,75 @@
 {
-  "5405078": {
+  "23165846": {
     "_index": "pelias",
-    "_id": "5405078",
+    "_id": "23165846",
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Lost Lagoon"
+        "default": "Central Park"
       },
       "address": {},
       "center_point": {
-        "lon": -123.141132,
-        "lat": 49.295596
-      },
-      "category": [
-        "natural",
-        "natural:water",
-        "recreation"
-      ],
-      "suggest": {
-        "input": [
-          "lost lagoon"
-        ],
-        "output": "osmway:5405078",
-        "weight": 6
-      }
-    }
-  },
-  "22824179": {
-    "_index": "pelias",
-    "_id": "22824179",
-    "_type": "osmway",
-    "data": {
-      "name": {
-        "default": "Riley Park"
-      },
-      "address": {},
-      "center_point": {
-        "lon": -123.104292,
-        "lat": 49.242335
+        "lon": -123.023325,
+        "lat": 49.227114
       },
       "category": [
         "recreation"
       ],
       "suggest": {
         "input": [
-          "riley park"
+          "central park"
         ],
-        "output": "osmway:22824179",
+        "output": "osmway:23165846",
         "weight": 6
       }
     }
   },
-  "23102299": {
+  "23603965": {
     "_index": "pelias",
-    "_id": "23102299",
+    "_id": "23603965",
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Fraserview Park"
+        "default": "Lower MacKay Park"
       },
       "address": {},
       "center_point": {
-        "lon": -123.067538,
-        "lat": 49.215374
+        "lon": -123.104247,
+        "lat": 49.318872
       },
       "category": [
         "recreation"
       ],
       "suggest": {
         "input": [
-          "fraserview park"
+          "lower mackay park"
         ],
-        "output": "osmway:23102299",
+        "output": "osmway:23603965",
         "weight": 6
       }
     }
   },
-  "23102375": {
+  "23787107": {
     "_index": "pelias",
-    "_id": "23102375",
+    "_id": "23787107",
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Trout Lake"
+        "default": "Brooksbank Elementary"
       },
       "address": {},
       "center_point": {
-        "lon": -123.062308,
-        "lat": 49.255859
-      },
-      "category": [
-        "natural",
-        "natural:water",
-        "recreation"
-      ],
-      "suggest": {
-        "input": [
-          "trout lake"
-        ],
-        "output": "osmway:23102375",
-        "weight": 6
-      }
-    }
-  },
-  "23102627": {
-    "_index": "pelias",
-    "_id": "23102627",
-    "_type": "osmway",
-    "data": {
-      "name": {
-        "default": "Sir James Douglas Primary School"
-      },
-      "address": {},
-      "center_point": {
-        "lon": -123.06501,
-        "lat": 49.215949
+        "lon": -123.045962,
+        "lat": 49.319884
       },
       "category": [
         "education"
       ],
       "suggest": {
         "input": [
-          "sir james douglas primary school"
+          "brooksbank elementary"
         ],
-        "output": "osmway:23102627",
-        "weight": 6
-      }
-    }
-  },
-  "23102723": {
-    "_index": "pelias",
-    "_id": "23102723",
-    "_type": "osmway",
-    "data": {
-      "name": {
-        "default": "Fraserview Golf Course"
-      },
-      "address": {},
-      "center_point": {
-        "lon": -123.048721,
-        "lat": 49.212739
-      },
-      "category": [
-        "recreation",
-        "entertainment"
-      ],
-      "suggest": {
-        "input": [
-          "fraserview golf course"
-        ],
-        "output": "osmway:23102723",
+        "output": "osmway:23787107",
         "weight": 6
       }
     }
@@ -231,6 +151,250 @@
           "main street-science world station"
         ],
         "output": "osmnode:25751159",
+        "weight": 6
+      }
+    }
+  },
+  "36980898": {
+    "_index": "pelias",
+    "_id": "36980898",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "SkyTrain Canada Line"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.123193,
+        "lat": 49.196737
+      },
+      "category": [
+        "transport",
+        "transport:rail"
+      ],
+      "suggest": {
+        "input": [
+          "skytrain canada line"
+        ],
+        "output": "osmway:36980898",
+        "weight": 6
+      }
+    }
+  },
+  "36980900": {
+    "_index": "pelias",
+    "_id": "36980900",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "SkyTrain Canada Line"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.150724,
+        "lat": 49.195018
+      },
+      "category": [
+        "transport",
+        "transport:rail"
+      ],
+      "suggest": {
+        "input": [
+          "skytrain canada line"
+        ],
+        "output": "osmway:36980900",
+        "weight": 6
+      }
+    }
+  },
+  "41840545": {
+    "_index": "pelias",
+    "_id": "41840545",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Burnaby Heights Park"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.020742,
+        "lat": 49.289209
+      },
+      "category": [
+        "recreation"
+      ],
+      "suggest": {
+        "input": [
+          "burnaby heights park"
+        ],
+        "output": "osmway:41840545",
+        "weight": 6
+      }
+    }
+  },
+  "42163539": {
+    "_index": "pelias",
+    "_id": "42163539",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Bridge Studios"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.022115,
+        "lat": 49.263694
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "bridge studios"
+        ],
+        "output": "osmway:42163539",
+        "weight": 6
+      }
+    }
+  },
+  "72831379": {
+    "_index": "pelias",
+    "_id": "72831379",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Morey Channel"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.133536,
+        "lat": 49.197271
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "morey channel"
+        ],
+        "output": "osmway:72831379",
+        "weight": 6
+      }
+    }
+  },
+  "72833844": {
+    "_index": "pelias",
+    "_id": "72833844",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Still Creek"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.02109,
+        "lat": 49.261061
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "still creek"
+        ],
+        "output": "osmway:72833844",
+        "weight": 6
+      }
+    }
+  },
+  "94062274": {
+    "_index": "pelias",
+    "_id": "94062274",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Suncrest Park"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.020746,
+        "lat": 49.21538
+      },
+      "category": [
+        "recreation"
+      ],
+      "suggest": {
+        "input": [
+          "suncrest park"
+        ],
+        "output": "osmway:94062274",
+        "weight": 6
+      }
+    }
+  },
+  "96523394": {
+    "_index": "pelias",
+    "_id": "96523394",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "CNR / BCR"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.118859,
+        "lat": 49.317704
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "cnr / bcr"
+        ],
+        "output": "osmway:96523394",
+        "weight": 6
+      }
+    }
+  },
+  "158189612": {
+    "_index": "pelias",
+    "_id": "158189612",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Bansal & Sons Diesel Automotive Ltd"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.020421,
+        "lat": 49.205035
+      },
+      "category": [
+        "retail"
+      ],
+      "suggest": {
+        "input": [
+          "bansal & sons diesel automotive ltd"
+        ],
+        "output": "osmway:158189612",
+        "weight": 6
+      }
+    }
+  },
+  "198850449": {
+    "_index": "pelias",
+    "_id": "198850449",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Capilano University"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.021692,
+        "lat": 49.317255
+      },
+      "category": [
+        "education"
+      ],
+      "suggest": {
+        "input": [
+          "capilano university"
+        ],
+        "output": "osmway:198850449",
         "weight": 6
       }
     }
@@ -460,6 +624,52 @@
           "burrard inlet"
         ],
         "output": "osmnode:256823596",
+        "weight": 6
+      }
+    }
+  },
+  "257543728": {
+    "_index": "pelias",
+    "_id": "257543728",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "River Rock Parking"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.130515,
+        "lat": 49.195454
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "river rock parking"
+        ],
+        "output": "osmway:257543728",
+        "weight": 6
+      }
+    }
+  },
+  "257543736": {
+    "_index": "pelias",
+    "_id": "257543736",
+    "_type": "osmway",
+    "data": {
+      "name": {
+        "default": "Van Horne Lead"
+      },
+      "address": {},
+      "center_point": {
+        "lon": -123.117106,
+        "lat": 49.195082
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "van horne lead"
+        ],
+        "output": "osmway:257543736",
         "weight": 6
       }
     }
@@ -95131,6 +95341,81 @@
           "2120 commercial drive"
         ],
         "output": "osmaddress:poi-address-osmnode-3487915642"
+      }
+    }
+  },
+  "address-osmway-194950746": {
+    "_index": "pelias",
+    "_id": "address-osmway-194950746",
+    "_type": "osmaddress",
+    "data": {
+      "name": {
+        "default": "9200 Van Horne Way"
+      },
+      "address": {
+        "number": "9200",
+        "street": "Van Horne Way"
+      },
+      "center_point": {
+        "lon": -123.122722,
+        "lat": 49.195435
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "9200 van horne way"
+        ],
+        "output": "osmaddress:address-osmway-194950746"
+      }
+    }
+  },
+  "address-osmway-261150289": {
+    "_index": "pelias",
+    "_id": "address-osmway-261150289",
+    "_type": "osmaddress",
+    "data": {
+      "name": {
+        "default": "2400/2420 Viscount Way"
+      },
+      "address": {
+        "number": "2400/2420",
+        "street": "Viscount Way"
+      },
+      "center_point": {
+        "lon": -123.078163,
+        "lat": 49.195074
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "2400/2420 viscount way"
+        ],
+        "output": "osmaddress:address-osmway-261150289"
+      }
+    }
+  },
+  "address-osmway-261315232": {
+    "_index": "pelias",
+    "_id": "address-osmway-261315232",
+    "_type": "osmaddress",
+    "data": {
+      "name": {
+        "default": "2251 Number 5 Road"
+      },
+      "address": {
+        "number": "2251",
+        "street": "Number 5 Road"
+      },
+      "center_point": {
+        "lon": -123.092594,
+        "lat": 49.195771
+      },
+      "category": [],
+      "suggest": {
+        "input": [
+          "2251 number 5 road"
+        ],
+        "output": "osmaddress:address-osmway-261315232"
       }
     }
   }
