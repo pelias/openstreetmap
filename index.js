@@ -33,7 +33,7 @@ osm.import = function(opts){
 
   pipeline
     .pipe( osm.address.extractor() )
-    .pipe( suggester.pipeline )
+    // .pipe( suggester.pipeline )
     .pipe( osm.category.mapper( osm.category.defaults ) )
     .pipe( dbmapper() )
     .pipe( elasticsearch() );
