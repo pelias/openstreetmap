@@ -20,6 +20,8 @@ osm.address.extractor = require('./stream/address_extractor');
 osm.category.mapper = require('./stream/category_mapper');
 osm.category.defaults = require('./config/category_map');
 
+var through = require('through2');
+
 // default import pipeline
 osm.import = function(opts){
   var pipeline = osm.pbf.parser(opts)
@@ -35,6 +37,11 @@ osm.import = function(opts){
     .pipe( osm.address.extractor() )
     // .pipe( suggester.pipeline )
     .pipe( osm.category.mapper( osm.category.defaults ) )
+    .pipe( through.obj( function( doc, enc, next ){
+      doc.shingle = doc.name;
+      this.push( doc );
+      next();
+    }))
     .pipe( dbmapper() )
     .pipe( elasticsearch() );
 };
