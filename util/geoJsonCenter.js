@@ -8,12 +8,7 @@ var extent = require('geojson-extent'),
 
 module.exports = function( geometry ){
 
-  var bounds = extent( geometry );
-
-  var center = geolib.getCenter([
-    [ bounds[0], bounds[1] ],
-    [ bounds[2], bounds[3] ]
-  ]);
+  var center = geolib.getCenter( geometry );
 
   if( center.latitude && center.longitude ){
     return { lat: center.latitude, lon: center.longitude };
