@@ -11,7 +11,9 @@
     "test": "node test/run.js | tap-spec",
     "pretest": "test/pretest.sh",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
-    "end-to-end": "npm run pretest && node test/end-to-end.js;"
+    "end-to-end": "npm run pretest && node test/end-to-end.js;",
+    "lint": "jshint .",
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
@@ -32,34 +34,39 @@
     "elasticsearch": ">=1.3.4"
   },
   "dependencies": {
-    "extend": "^2.0.0",
+    "extend": "^2.0.1",
     "geojson-extent": "^0.3.1",
-    "geolib": "^2.0.14",
+    "geolib": "^2.0.17",
     "gjtk": "^1.0.0-b",
     "is-object": "^1.0.1",
     "iso-639-3": "^0.2.0",
     "merge": "^1.2.0",
     "pbf2json": "^2.4.0",
-    "pelias-admin-lookup": "^2.0.0",
+    "pelias-admin-lookup": "^2.0.8",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.9",
     "pelias-logger": "^0.0.8",
     "pelias-model": "^0.3.0",
-    "pelias-suggester-pipeline": "^2.0.3",
-    "through2": "^0.6.3",
+    "pelias-suggester-pipeline": "^2.0.4",
+    "through2": "^2.0.0",
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
-    "async": "^0.9.0",
-    "colors": "^1.1.0",
-    "deep-diff": "^0.3.0",
-    "istanbul": "^0.3.13",
-    "jshint": "^2.6.3",
+    "async": "^1.2.1",
+    "colors": "^1.1.2",
+    "deep-diff": "^0.3.2",
+    "istanbul": "^0.3.16",
+    "jshint": "^2.8.0",
     "naivedb": "^1.0.7",
-    "precommit-hook": "^1.0.7",
+    "precommit-hook": "^3.0.0",
     "taginfo": "^1.0.1",
-    "tap-spec": "^2.2.2",
-    "tape": "^3.5.0",
-    "tmp": "0.0.25"
-  }
+    "tap-spec": "^4.0.2",
+    "tape": "^4.0.0",
+    "tmp": "0.0.26"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ]
 }
