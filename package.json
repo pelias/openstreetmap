@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "extend": "^2.0.1",
-    "geojson-extent": "^0.3.1",
     "geolib": "^2.0.17",
     "gjtk": "^1.0.0-b",
     "is-object": "^1.0.1",
