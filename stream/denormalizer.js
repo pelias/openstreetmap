@@ -10,7 +10,6 @@
 var through = require('through2'),
     isObject = require('is-object'),
     geoJsonCenter = require('../util/geoJsonCenter'),
-    geoJsonTypeFor = require('../util/geoJsonTypeFor'),
     peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 // convert de-normalized ways to geojson
@@ -29,15 +28,13 @@ function denormalizer(){
       if( !nodes ){ return next(); }
 
       var points = nodes.map( function( doc ){
-        return [ doc.lon, doc.lat ];
+        return {
+          longitude: doc.lon,
+          latitude: doc.lat
+        };
       });
 
-      var geo = {
-        type: geoJsonTypeFor( points ),
-        coordinates: points
-      };
-
-      var center = geoJsonCenter( geo );
+      var center = geoJsonCenter( points );
       if( isObject( center ) ){
         doc.setCentroid( center );
       }
