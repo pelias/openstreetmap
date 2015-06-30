@@ -200,6 +200,18 @@ module.exports.tests.trim_junk = function(test, common) {
     }));
     stream.write(doc);
   });
+  // ref: https://github.com/pelias/openstreetmap/issues/47
+  test('clean - preserve brackets', function(t) {
+    var doc = new Document('a',1);
+    doc.setMeta('tags', { name: 'Transportation Center Bus Stop (Coach USA)' });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'Transportation Center Bus Stop (Coach USA)', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
 };
 
 // ======================= errors ========================
