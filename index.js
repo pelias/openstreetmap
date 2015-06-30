@@ -35,13 +35,19 @@ osm.import = function(opts){
 
   pipeline
     .pipe( osm.address.extractor() )
+
+    // @todo: remove suggester once ngrams lauched
     // .pipe( suggester.pipeline )
+
     .pipe( osm.category.mapper( osm.category.defaults ) )
+
+    // @todo: integrate/test phrase mathing
     .pipe( through.obj( function( doc, enc, next ){
-      doc.shingle = doc.name;
+      doc.phrase = doc.name;
       this.push( doc );
       next();
     }))
+
     .pipe( dbmapper() )
     .pipe( elasticsearch() );
 };
