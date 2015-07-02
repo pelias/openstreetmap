@@ -9417,7 +9417,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Royal Vancouver Yacht Club (Jericho"
+        "default": "Royal Vancouver Yacht Club (Jericho)"
       },
       "address": {},
       "center_point": {
@@ -9427,7 +9427,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "royal vancouver yacht club (jericho"
+          "royal vancouver yacht club (jericho)"
         ],
         "output": "osmway:54222099",
         "weight": 6
@@ -9536,7 +9536,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Bessborough Armoury -- 15 BC Field Regiment (RCA"
+        "default": "Bessborough Armoury -- 15 BC Field Regiment (RCA)"
       },
       "address": {},
       "center_point": {
@@ -9546,7 +9546,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "bessborough armoury -- 15 bc field regiment (rca"
+          "bessborough armoury -- 15 bc field regiment (rca)"
         ],
         "output": "osmway:54222124",
         "weight": 6
@@ -10150,7 +10150,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Saint George's School (Junior"
+        "default": "Saint George's School (Junior)"
       },
       "address": {},
       "center_point": {
@@ -10162,7 +10162,7 @@
       ],
       "suggest": {
         "input": [
-          "saint george's school (junior"
+          "saint george's school (junior)"
         ],
         "output": "osmway:58744388",
         "weight": 6
@@ -11125,7 +11125,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Fraser River (North Arm"
+        "default": "Fraser River (North Arm)"
       },
       "address": {},
       "center_point": {
@@ -11135,7 +11135,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "fraser river (north arm"
+          "fraser river (north arm)"
         ],
         "output": "osmway:72811554",
         "weight": 6
@@ -13611,7 +13611,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Empire Field (Historical"
+        "default": "Empire Field (Historical)"
       },
       "address": {},
       "center_point": {
@@ -13624,7 +13624,7 @@
       ],
       "suggest": {
         "input": [
-          "empire field (historical"
+          "empire field (historical)"
         ],
         "output": "osmway:89367584",
         "weight": 6
@@ -17846,7 +17846,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Kids Club (Prince Rupert Child Care"
+        "default": "Kids Club (Prince Rupert Child Care)"
       },
       "address": {},
       "center_point": {
@@ -17856,7 +17856,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "kids club (prince rupert child care"
+          "kids club (prince rupert child care)"
         ],
         "output": "osmway:98822847",
         "weight": 6
@@ -26423,7 +26423,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Engineering Design Centre (Wayne and William White"
+        "default": "Engineering Design Centre (Wayne and William White)"
       },
       "address": {},
       "center_point": {
@@ -26433,7 +26433,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "engineering design centre (wayne and william white"
+          "engineering design centre (wayne and william white)"
         ],
         "output": "osmway:150420271",
         "weight": 6
@@ -38150,7 +38150,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Vancouver General Hospital (VGH"
+        "default": "Vancouver General Hospital (VGH)"
       },
       "address": {
         "number": "899",
@@ -38165,7 +38165,7 @@
       ],
       "suggest": {
         "input": [
-          "vancouver general hospital (vgh"
+          "vancouver general hospital (vgh)"
         ],
         "output": "osmway:326979267",
         "weight": 6
@@ -38821,7 +38821,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "Military Vehicle Compound (Restricted Access"
+        "default": "Military Vehicle Compound (Restricted Access)"
       },
       "address": {},
       "center_point": {
@@ -38831,7 +38831,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "military vehicle compound (restricted access"
+          "military vehicle compound (restricted access)"
         ],
         "output": "osmway:336763845",
         "weight": 6
@@ -40214,7 +40214,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "New AMS SUB / Alumni Centre (2015"
+        "default": "New AMS SUB / Alumni Centre (2015)"
       },
       "address": {},
       "center_point": {
@@ -40224,7 +40224,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "new ams sub / alumni centre (2015"
+          "new ams sub / alumni centre (2015)"
         ],
         "output": "osmway:341691669",
         "weight": 6
@@ -40237,7 +40237,7 @@
     "_type": "osmway",
     "data": {
       "name": {
-        "default": "New Aquatic Center (2016"
+        "default": "New Aquatic Center (2016)"
       },
       "address": {},
       "center_point": {
@@ -40249,7 +40249,7 @@
       ],
       "suggest": {
         "input": [
-          "new aquatic center (2016"
+          "new aquatic center (2016)"
         ],
         "output": "osmway:341691670",
         "weight": 6
@@ -41279,7 +41279,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Point Grey Inter-Mennonite Fellowship (PGIMF"
+        "default": "Point Grey Inter-Mennonite Fellowship (PGIMF)"
       },
       "address": {},
       "center_point": {
@@ -41291,7 +41291,7 @@
       ],
       "suggest": {
         "input": [
-          "point grey inter-mennonite fellowship (pgimf"
+          "point grey inter-mennonite fellowship (pgimf)"
         ],
         "output": "osmnode:473387686",
         "weight": 6
@@ -49425,7 +49425,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "China Holidays (Canada"
+        "default": "China Holidays (Canada)"
       },
       "address": {
         "number": "223",
@@ -49440,7 +49440,7 @@
       ],
       "suggest": {
         "input": [
-          "china holidays (canada"
+          "china holidays (canada)"
         ],
         "output": "osmnode:704317954",
         "weight": 6
@@ -49479,7 +49479,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Saravanaa Bhavan (South Indian"
+        "default": "Saravanaa Bhavan (South Indian)"
       },
       "address": {
         "number": "955",
@@ -49496,7 +49496,7 @@
       ],
       "suggest": {
         "input": [
-          "saravanaa bhavan (south indian"
+          "saravanaa bhavan (south indian)"
         ],
         "output": "osmnode:704317958",
         "weight": 6
@@ -52563,7 +52563,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Parkwell (Seymour entrance"
+        "default": "Parkwell (Seymour entrance)"
       },
       "address": {},
       "center_point": {
@@ -52573,7 +52573,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "parkwell (seymour entrance"
+          "parkwell (seymour entrance)"
         ],
         "output": "osmnode:741418452",
         "weight": 6
@@ -52586,7 +52586,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Parkwell (Richards entrance"
+        "default": "Parkwell (Richards entrance)"
       },
       "address": {},
       "center_point": {
@@ -52596,7 +52596,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "parkwell (richards entrance"
+          "parkwell (richards entrance)"
         ],
         "output": "osmnode:741418457",
         "weight": 6
@@ -56330,7 +56330,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Industrial And Commercial Bank Of China (Canada"
+        "default": "Industrial And Commercial Bank Of China (Canada)"
       },
       "address": {},
       "center_point": {
@@ -56343,7 +56343,7 @@
       ],
       "suggest": {
         "input": [
-          "industrial and commercial bank of china (canada"
+          "industrial and commercial bank of china (canada)"
         ],
         "output": "osmnode:849008677",
         "weight": 6
@@ -70227,7 +70227,7 @@
     "data": {
       "name": {
         "alternative": "MEC",
-        "default": "Mountain Equipment Co-op (MEC"
+        "default": "Mountain Equipment Co-op (MEC)"
       },
       "address": {
         "number": "212",
@@ -70243,7 +70243,7 @@
       ],
       "suggest": {
         "input": [
-          "mountain equipment co-op (mec",
+          "mountain equipment co-op (mec)",
           "mec"
         ],
         "output": "osmnode:1249540878",
@@ -77466,7 +77466,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Costco (Fast Food Restaurant"
+        "default": "Costco (Fast Food Restaurant)"
       },
       "address": {},
       "center_point": {
@@ -77480,7 +77480,7 @@
       ],
       "suggest": {
         "input": [
-          "costco (fast food restaurant"
+          "costco (fast food restaurant)"
         ],
         "output": "osmnode:1504559495",
         "weight": 6
@@ -95392,7 +95392,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Bitbulls - (Coinkite Terminal Location"
+        "default": "Bitbulls - (Coinkite Terminal Location)"
       },
       "address": {
         "number": "900",
@@ -95405,7 +95405,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "bitbulls - (coinkite terminal location"
+          "bitbulls - (coinkite terminal location)"
         ],
         "output": "osmnode:2601356374",
         "weight": 6
@@ -98709,7 +98709,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Hastings Building (HB"
+        "default": "Hastings Building (HB)"
       },
       "address": {
         "number": "688",
@@ -98725,7 +98725,7 @@
       ],
       "suggest": {
         "input": [
-          "hastings building (hb"
+          "hastings building (hb)"
         ],
         "output": "osmnode:2895786319",
         "weight": 6
@@ -102593,7 +102593,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Flight (Spindle Whorl"
+        "default": "Flight (Spindle Whorl)"
       },
       "address": {},
       "center_point": {
@@ -102603,7 +102603,7 @@
       "category": [],
       "suggest": {
         "input": [
-          "flight (spindle whorl"
+          "flight (spindle whorl)"
         ],
         "output": "osmnode:3148592029",
         "weight": 6
@@ -105534,7 +105534,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Vancouver Hack Space (VHS"
+        "default": "Vancouver Hack Space (VHS)"
       },
       "address": {
         "number": "104-1715",
@@ -105551,7 +105551,7 @@
       ],
       "suggest": {
         "input": [
-          "vancouver hack space (vhs"
+          "vancouver hack space (vhs)"
         ],
         "output": "osmnode:3448679058",
         "weight": 6
@@ -106244,7 +106244,7 @@
     "_type": "osmnode",
     "data": {
       "name": {
-        "default": "Roger's Video (CLOSED"
+        "default": "Roger's Video (CLOSED)"
       },
       "address": {
         "number": "2696",
@@ -106259,7 +106259,7 @@
       ],
       "suggest": {
         "input": [
-          "roger's video (closed"
+          "roger's video (closed)"
         ],
         "output": "osmnode:3477294760",
         "weight": 6
