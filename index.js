@@ -6,7 +6,6 @@
 
 var elasticsearch = require('pelias-dbclient'),
     adminLookup = require('pelias-admin-lookup'),
-    suggester = require('pelias-suggester-pipeline'),
     dbmapper = require('./stream/dbmapper'),
     peliasConfig = require( 'pelias-config' ).generate();
 
@@ -33,7 +32,6 @@ osm.import = function(opts){
 
   pipeline
     .pipe( osm.address.extractor() )
-    .pipe( suggester.pipeline )
     .pipe( osm.category.mapper( osm.category.defaults ) )
     .pipe( dbmapper() )
     .pipe( elasticsearch() );

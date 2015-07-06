@@ -35,6 +35,15 @@ module.exports.tests.envelope = function(test, common) {
     }));
     stream.write(fixtures.completeDoc);
   });
+  test('copy name object to phrase object', function(t) {
+    var stream = dbmapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal( doc.phrase, doc.name, 'duplicated correctly' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(fixtures.completeDoc);
+  });
 };
 
 module.exports.all = function (tape, common) {

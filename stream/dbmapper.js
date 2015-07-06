@@ -8,6 +8,12 @@ var through = require('through2');
 
 function databaseMapper(){
   return through.obj( function( doc, enc, next ){
+
+    // copy 'name' object to 'phrase' in order
+    // to allow ES to create seperate indeces
+    // with different analysis techniques.
+    doc.phrase = doc.name;
+
     this.push({
       _index:   'pelias',
       _id:      doc.getId(),
