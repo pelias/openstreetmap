@@ -12,12 +12,6 @@ The recommended version for nodejs is `0.12+` and elasticsearch is `1.3.4+` alth
 
 Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
 
-## Elasticsearch plugin
-
-In order to perform more complex analysis of text we have a custom elasticsearch plugin which needs to be installed.
-
-You can find more information about the plugin here: https://github.com/pelias/elasticsearch-plugin
-
 ## Elasticsearch scripts
 
 In order to perform better document ranking we provide custom elasticsearch groovy scripts which must be installed.
@@ -83,7 +77,7 @@ You can optionally change:
 - `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
 - `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
   county, etc. names), but you can optionally create it via the
-  [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) plugin; just set this property to `true`.  Consult
+  [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) module; just set this property to `true`.  Consult
   the `admin-lookup` README for setup documentation (namely just downloading the Quattroshapes dataset).
 
 If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
