@@ -79,7 +79,7 @@ module.exports = function(){
 
 // Clean string of leading/trailing junk chars
 function trim( str ){
-  return trimmer( str, '#$%^*()<>-=_{};:",./?\t\n\' ' );
+  return trimmer( str, '#$%^*<>-=_{};:",./?\t\n\' ' );
 }
 
 // extract name suffix, eg for 'name:EN' return 'en'
