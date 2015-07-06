@@ -6,7 +6,6 @@
 
 var elasticsearch = require('pelias-dbclient'),
     adminLookup = require('pelias-admin-lookup'),
-    suggester = require('pelias-suggester-pipeline'),
     dbmapper = require('./stream/dbmapper'),
     peliasConfig = require( 'pelias-config' ).generate();
 
@@ -19,8 +18,6 @@ osm.tag.mapper = require('./stream/tag_mapper');
 osm.address.extractor = require('./stream/address_extractor');
 osm.category.mapper = require('./stream/category_mapper');
 osm.category.defaults = require('./config/category_map');
-
-var through = require('through2');
 
 // default import pipeline
 osm.import = function(opts){
@@ -35,19 +32,7 @@ osm.import = function(opts){
 
   pipeline
     .pipe( osm.address.extractor() )
-
-    // @todo: remove suggester once ngrams lauched
-    // .pipe( suggester.pipeline )
-
     .pipe( osm.category.mapper( osm.category.defaults ) )
-
-    // @todo: integrate/test phrase mathing
-    .pipe( through.obj( function( doc, enc, next ){
-      doc.phrase = doc.name;
-      this.push( doc );
-      next();
-    }))
-
     .pipe( dbmapper() )
     .pipe( elasticsearch() );
 };
