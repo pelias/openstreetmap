@@ -51,10 +51,8 @@ As a minimum, it should be valid json and contain the following:
     }]
   },
   "imports": {
-    "quattroshapes": {
-      "datapath": "/data/quattro"
-    },
     "openstreetmap": {
+      "adminLookup": true,
       "leveldbpath": "/tmp",
       "datapath": "/data/pbf",
       "import": [{
