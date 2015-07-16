@@ -12,6 +12,7 @@ var through = require('through2'),
 var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
 var ADDRESS_SCHEMA = merge( true, false,
+  require('../schema/address_tiger'),
   require('../schema/address_osm'),
   require('../schema/address_naptan'),
   require('../schema/address_karlsruhe')
