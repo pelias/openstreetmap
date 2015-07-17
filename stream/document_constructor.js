@@ -23,6 +23,16 @@ module.exports = function(){
         });
       }
 
+      // Set latitude / longitude (for ways where the centroid has been precomputed)
+      else if( item.hasOwnProperty('centroid') ){
+        if( item.centroid.hasOwnProperty('lat') && item.centroid.hasOwnProperty('lon') ){
+          doc.setCentroid({
+            lat: item.centroid.lat,
+            lon: item.centroid.lon
+          });
+        }
+      }
+
       // Set noderefs (for ways)
       if( item.hasOwnProperty('nodes') ){
         doc.setMeta( 'nodes', item.nodes );

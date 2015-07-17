@@ -50,16 +50,14 @@ docs.osmNode1 = new Document('item7',7)
   .setName('osmnode','node7')
   .setCentroid({lat:7,lon:7});
 
-docs.osmWay1 = new Document('item8',8)
+docs.osmWay1 = new Document('osmway',8)
   .setName('osmway','way8')
-  .setCentroid({lat:8,lon:8});
-
-docs.osmWay1.nodes = [
-  { lat: 10, lon: 10 },
-  { lat: 06, lon: 10 },
-  { lat: 06, lon: 06 },
-  { lat: 10, lon: 06 }
-];
+  .setMeta('nodes', [
+    { lat: 10, lon: 10 },
+    { lat: 06, lon: 10 },
+    { lat: 06, lon: 06 },
+    { lat: 10, lon: 06 }
+  ]);
 
 docs.osmRelation1 = new Document('item9',9)
   .setName('osmrelation','relation9')
@@ -72,5 +70,10 @@ docs.semicolonStreetNumbers.setCentroid({lat:10,lon:10});
 docs.semicolonStreetNumbers.address = {
   number: '1; 2 ;3', street: 'Pennine Road'
 };
+
+// has no 'nodes' and a preset centroid
+docs.osmWay2 = new Document('osmway',11)
+  .setName('osmway','way11')
+  .setCentroid({lat:11,lon:11});
 
 module.exports = docs;

@@ -40,7 +40,7 @@
     "is-object": "^1.0.1",
     "iso-639-3": "^0.2.0",
     "merge": "^1.2.0",
-    "pbf2json": "^2.4.0",
+    "pbf2json": "^3.0.0",
     "pelias-admin-lookup": "^2.0.8",
     "pelias-config": "latest",
     "pelias-dbclient": "0.0.9",

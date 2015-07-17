@@ -78,6 +78,24 @@ module.exports.tests.centroid = function(test, common) {
     }));
     stream.write({ id: 1, type: 'X', lat: 0, lon: 0 });
   });
+  test('centroid: from preprocessed centroid property', function(t) {
+    var stream = constructor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getCentroid(), { lat: 1, lon: 2 }, 'accepts centroid property' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write({ id: 1, type: 'X', centroid: { lat: 1, lon: 2 } } );
+  });
+  test('centroid: prefers lat/lon to centroid', function(t) {
+    var stream = constructor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getCentroid(), { lat: 1, lon: 1 }, 'prefers lat/lon' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write({ id: 1, type: 'X', lat: 1, lon: 1, centroid: { lat: 2, lon: 2 } } );
+  });
 };
 
 module.exports.tests.noderefs = function(test, common) {

@@ -24,19 +24,26 @@ function denormalizer(){
 
     try {
 
-      var nodes = doc.getMeta('nodes');
-      if( !nodes ){ return next(); }
+      // only compute centroids where they have not already
+      // been computed (avoid doing double work)
+      if( 'number' !== typeof doc.getLat() || 'number' !== typeof doc.getLon() ){
 
-      var points = nodes.map( function( doc ){
-        return {
-          longitude: doc.lon,
-          latitude: doc.lat
-        };
-      });
+        var nodes = doc.getMeta('nodes');
+        if( nodes ){
 
-      var center = geoJsonCenter( points );
-      if( isObject( center ) ){
-        doc.setCentroid( center );
+          var points = nodes.map( function( doc ){
+            return {
+              longitude: doc.lon,
+              latitude: doc.lat
+            };
+          });
+
+          var center = geoJsonCenter( points );
+          if( isObject( center ) ){
+            doc.setCentroid( center );
+          }
+        }
+
       }
 
       this.push( doc );
