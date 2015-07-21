@@ -44,15 +44,27 @@ module.exports.tests.passthrough = function(test, common) {
 
 // compute centroid for ways
 module.exports.tests.computeWayCentroid = function(test, common) {
-  test('passthrough: nodes', function(t) {
+  test('compute centroid: nodes', function(t) {
     var stream = denormalizer();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc, fixtures.osmWay1, 'no-op for nodes' );
-      t.deepEqual( doc.getCentroid(), { lat: 8, lon: 8 }, 'centroid computed' );
+      t.deepEqual( doc.getCentroid(), { lat: 8.004813, lon: 8 }, 'centroid computed' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
     stream.write(fixtures.osmWay1);
+  });
+};
+
+// skip computing centroid where centroid info already available in src
+module.exports.tests.skipComputeWayCentroid = function(test, common) {
+  test('compute centroid: skip', function(t) {
+    var stream = denormalizer();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getCentroid(), { lat: 11, lon: 11 }, 'centroid computed' );
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(fixtures.osmWay2);
   });
 };
 
