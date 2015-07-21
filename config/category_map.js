@@ -132,6 +132,7 @@ var mapping = {
     'barbecue':                 ['food:barbecue'],
     'bougatsa':                 ['food:bougatsa'],
     'burger':                   ['food:burger'],
+    'burrito':                  ['food:burrito'],
     'cake':                     ['food:cake'],
     'casserole':                ['food:casserole'],
     'chicken':                  ['food:chicken'],
