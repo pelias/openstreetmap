@@ -12,12 +12,6 @@ The recommended version for nodejs is `0.12+` and elasticsearch is `1.3.4+` alth
 
 Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
 
-## Elasticsearch scripts
-
-In order to perform better document ranking we provide custom elasticsearch groovy scripts which must be installed.
-
-You can find more information about installing the scripts here: https://github.com/pelias/scripts
-
 ## Clone and Install dependencies
 
 ```bash
