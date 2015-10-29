@@ -71,6 +71,8 @@ You can optionally change:
   county, etc. names), but you can optionally create it via the
   [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) module; just set this property to `true`.  Consult
   the `admin-lookup` README for setup documentation (namely just downloading the Quattroshapes dataset).
+- `import.openstreetmap.deduplicate` - this makes it possible to import multiple datasets containing the same addresses, without getting duplicates in the pelias database.
+  Please see [`pelias/address-deduplicator`](https://github.com/pelias/address-deduplicator) for more details.
 
 If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
 
