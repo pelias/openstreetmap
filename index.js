@@ -5,6 +5,7 @@
 **/
 
 var elasticsearch = require('pelias-dbclient'),
+    addressDedupStream = require( 'pelias-address-deduplicator' );
     adminLookup = require('pelias-admin-lookup'),
     dbmapper = require('./stream/dbmapper'),
     peliasConfig = require( 'pelias-config' ).generate();
@@ -30,8 +31,13 @@ osm.import = function(opts){
     pipeline = pipeline.pipe( adminLookup.stream() );
   }
 
+  pipeline = pipeline.pipe( osm.address.extractor() );
+  
+  if( peliasConfig.imports.openstreetmap.deduplicate ){
+    pipeline = pipeline.pipe( addressDedupStream() );
+  }
+  
   pipeline
-    .pipe( osm.address.extractor() )
     .pipe( osm.category.mapper( osm.category.defaults ) )
     .pipe( dbmapper() )
     .pipe( elasticsearch() );
