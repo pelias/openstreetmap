@@ -12,12 +12,6 @@ The recommended version for nodejs is `0.12+` and elasticsearch is `1.3.4+` alth
 
 Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
 
-## Elasticsearch scripts
-
-In order to perform better document ranking we provide custom elasticsearch groovy scripts which must be installed.
-
-You can find more information about installing the scripts here: https://github.com/pelias/scripts
-
 ## Clone and Install dependencies
 
 ```bash
@@ -77,6 +71,8 @@ You can optionally change:
   county, etc. names), but you can optionally create it via the
   [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) module; just set this property to `true`.  Consult
   the `admin-lookup` README for setup documentation (namely just downloading the Quattroshapes dataset).
+- `import.openstreetmap.deduplicate` - this makes it possible to import multiple datasets containing the same addresses, without getting duplicates in the pelias database.
+  Please see [`pelias/address-deduplicator`](https://github.com/pelias/address-deduplicator) for more details.
 
 If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
 
