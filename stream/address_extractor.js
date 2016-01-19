@@ -57,13 +57,14 @@ module.exports = function(){
 
         try {
 
-          var newid = [ type, doc.getType(), (doc.getId() || ++idOrdinal) ];
+          var newid = [ 'osm', doc.getType(), type, (doc.getSourceId() || ++idOrdinal) ];
           if( i > 0 ){ newid.push( streetno ); }
 
           // copy data to new document
-          record = new Document( 'osmaddress', newid.join('-') )
+          record = new Document( 'osm', 'address', newid.join('-') )
             .setName( 'default', streetno + ' ' + doc.address.street )
-            .setCentroid( doc.getCentroid() );
+            .setCentroid( doc.getCentroid() )
+            .setSourceId(doc.getSourceId());
 
           setProperties( record, doc );
         }
