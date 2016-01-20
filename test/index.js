@@ -1,33 +1,40 @@
 
-var osm = require('../index'),
-    isObject = require('is-object');
+var osm = require('../index');
+var isObject = require('is-object');
 
 module.exports.tests = {};
 
 // test exports
 module.exports.tests.interface = function(test, common) {
-  test('interface: osm.pbf.parser', function(t) {
-    t.equal(typeof osm.pbf.parser, 'function', 'stream factory');
+
+  var streams = [
+    'pbfParser',
+    'docConstructor',
+    'docDenormalizer',
+    'tagMapper',
+    'adminLookup',
+    'addressExtractor',
+    'deduper',
+    'categoryMapper',
+    'dbMapper',
+    'elasticsearch',
+    'import'
+  ];
+
+  streams.forEach(function (stream) {
+    test('interface: ' + stream, function(t) {
+      t.equal(typeof osm[stream], 'function', 'stream factory');
+      t.end();
+    });
+  });
+
+  test('interface: stream count', function(t) {
+    t.equal( Object.keys(osm).length, streams.length + 1, 'correct number of streams');
     t.end();
   });
-  test('interface: osm.tag.mapper', function(t) {
-    t.equal(typeof osm.tag.mapper, 'function', 'stream factory');
-    t.end();
-  });
-  test('interface: osm.doc.denormalizer', function(t) {
-    t.equal(typeof osm.doc.denormalizer, 'function', 'stream factory');
-    t.end();
-  });
-  test('interface: osm.address.extractor', function(t) {
-    t.equal(typeof osm.address.extractor, 'function', 'stream factory');
-    t.end();
-  });
-  test('interface: osm.category.mapper', function(t) {
-    t.equal(typeof osm.category.mapper, 'function', 'stream factory');
-    t.end();
-  });
-  test('interface: osm.category.defaults', function(t) {
-    t.true(isObject( osm.category.defaults ), 'default mapping object');
+
+  test('interface: osm.config.categoryDefaults', function(t) {
+    t.true(isObject( osm.config.categoryDefaults ), 'default mapping object');
     t.end();
   });
 };
