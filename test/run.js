@@ -14,7 +14,9 @@ var tests = [
   require('./stream/stats'),
   require('./stream/tag_mapper'),
   require('./stream/category_mapper'),
-  require('./config/category_map')
+  require('./config/category_map'),
+  require('./stream/adminLookup'),
+  require('./stream/deduper')
 ];
 
 tests.map(function(t) {
