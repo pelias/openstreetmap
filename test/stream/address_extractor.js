@@ -93,10 +93,10 @@ module.exports.tests.createFromNameless = function(test, common) {
   test('create: from nameless record', function(t) {
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getId(), 'address-item3-3', 'address only id schema' );
+      t.equal( doc.getId(), 'osm-item3-address-3', 'address only id schema' );
       t.deepEqual( Object.keys(doc.name), ['default'], 'only default name set' );
       t.equal( doc.getName('default'), '10 Mapzen pl', 'correct name' );
-      t.equal( doc.getType(), 'osmaddress', 'type changed' );
+      t.equal( doc.getType(), 'address', 'type changed' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -117,9 +117,9 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'poi-address-item4-4', 'poi address id schema' );
+        t.equal( doc.getId(), 'osm-item4-poi-address-4', 'poi address id schema' );
         t.equal( doc.getName('default'), '11 Sesame st', 'correct name' );
-        t.equal( doc.getType(), 'osmaddress', 'type changed' );
+        t.equal( doc.getType(), 'address', 'type changed' );
         next();
       // second doc
       } else {
@@ -134,32 +134,6 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
   });
 };
 
-// If for some reason the id from the original record is unset before we
-// get a chance to copy it to the new address record then we need to
-// generate a globally-unique-id instead.
-// This is the reason we generate the address records BEFORE sending the
-// original document downstream where the id may be unset.
-module.exports.tests.generateUniqueIds = function(test, common) {
-  test('create: from nameless record - generates unique ids', function(t) {
-    t.plan(2); // should run 2 tests
-    var stream = extractor();
-    var i = 0;
-    stream.pipe( through.obj( function( doc, enc, next ){
-      // first doc
-      if( i++ === 0 ){
-        t.equal( doc.getId(), 'address-item5-1', 'unique id' );
-      // second doc
-      } else {
-        t.equal( doc.getId(), 'address-item5-2', 'unique id' );
-        t.end(); // test should fail if not called, or called more than once.
-      }
-      next();
-    }));
-    stream.write(fixtures.invalidId);
-    stream.write(fixtures.invalidId);
-  });
-};
-
 // When duplicating the origin record to create an address record
 // we must ensure that no properties are unintentially missed.
 // Also we need to ensure that the original document is not mutated.
@@ -171,8 +145,8 @@ module.exports.tests.duplicateAllFields = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'poi-address-item6-6', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'osm-item6-poi-address-6', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.deepEqual( Object.keys(doc.name).length, 1, 'changed' );
         t.equal( doc.getName('default'), '13 Goldsmiths row', 'changed' );
         t.false( doc.getName('alt'), 'unset' );
@@ -223,18 +197,18 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i === 0 ){
-        t.equal( doc.getId(), 'poi-address-item10-10', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'osm-item10-poi-address-10', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '1 Pennine Road', 'changed' );
       // second doc
       } else if( i === 1 ){
-        t.equal( doc.getId(), 'poi-address-item10-10-2', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'osm-item10-poi-address-10-2', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '2 Pennine Road', 'changed' );
       // third doc
       } else if( i === 2 ){
-        t.equal( doc.getId(), 'poi-address-item10-10-3', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'osm-item10-poi-address-10-3', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '3 Pennine Road', 'changed' );
       // last doc
       } else {
@@ -257,7 +231,7 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
 // discard the address doc but passthrough the named poi
 module.exports.tests.catch_thrown_errors = function(test, common) {
   test('errors - catch thrown errors', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b', 1);
 
     // this method will throw a generic Error for testing
     doc.getType = function(){ throw new Error('test'); };
@@ -271,7 +245,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     t.end();
   });
   test('errors - passthrough named poi records', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a', 'b', 1);
     doc.setName('default','test');
 
     // this method will throw a generic Error for testing

@@ -23,12 +23,11 @@
   not searchable.
 **/
 
-var through = require('through2'),
-    isObject = require('is-object'),
-    extend = require('extend'),
-    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' ),
-    Document = require('pelias-model').Document,
-    idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
+var through = require('through2');
+var isObject = require('is-object');
+var extend = require('extend');
+var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+var Document = require('pelias-model').Document;
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
@@ -56,14 +55,14 @@ module.exports = function(){
       streetnumbers.forEach( function( streetno, i ){
 
         try {
-
-          var newid = [ type, doc.getType(), (doc.getId() || ++idOrdinal) ];
+          var newid = [ 'osm', doc.getType(), type, doc.getSourceId() ];
           if( i > 0 ){ newid.push( streetno ); }
 
           // copy data to new document
-          record = new Document( 'osmaddress', newid.join('-') )
+          record = new Document( 'osm', 'address', newid.join('-') )
             .setName( 'default', streetno + ' ' + doc.address.street )
-            .setCentroid( doc.getCentroid() );
+            .setCentroid( doc.getCentroid() )
+            .setSourceId(doc.getSourceId());
 
           setProperties( record, doc );
         }

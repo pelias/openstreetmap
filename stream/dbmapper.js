@@ -14,13 +14,12 @@ function databaseMapper(){
     // with different analysis techniques.
     doc.phrase = doc.name;
 
-    this.push({
+    next(null, {
       _index:   'pelias',
       _id:      doc.getId(),
       _type:    doc.getType(),
       data:     doc
     });
-    next();
   });
 }
 
