@@ -93,7 +93,7 @@ module.exports.tests.createFromNameless = function(test, common) {
   test('create: from nameless record', function(t) {
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getId(), 'osm-item3-address-3', 'address only id schema' );
+      t.equal( doc.getId(), '3', 'address only id schema' );
       t.deepEqual( Object.keys(doc.name), ['default'], 'only default name set' );
       t.equal( doc.getName('default'), '10 Mapzen pl', 'correct name' );
       t.equal( doc.getType(), 'address', 'type changed' );
@@ -117,7 +117,7 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'osm-item4-poi-address-4', 'poi address id schema' );
+        t.equal( doc.getId(), '4', 'poi address id schema' );
         t.equal( doc.getName('default'), '11 Sesame st', 'correct name' );
         t.equal( doc.getType(), 'address', 'type changed' );
         next();
@@ -145,7 +145,7 @@ module.exports.tests.duplicateAllFields = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'osm-item6-poi-address-6', 'changed' );
+        t.equal( doc.getId(), '6', 'changed' );
         t.equal( doc.getType(), 'address', 'changed' );
         t.deepEqual( Object.keys(doc.name).length, 1, 'changed' );
         t.equal( doc.getName('default'), '13 Goldsmiths row', 'changed' );
@@ -197,17 +197,17 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i === 0 ){
-        t.equal( doc.getId(), 'osm-item10-poi-address-10', 'changed' );
+        t.equal( doc.getId(), '10', 'changed' );
         t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '1 Pennine Road', 'changed' );
       // second doc
       } else if( i === 1 ){
-        t.equal( doc.getId(), 'osm-item10-poi-address-10-2', 'changed' );
+        t.equal( doc.getId(), '10:2', 'changed' );
         t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '2 Pennine Road', 'changed' );
       // third doc
       } else if( i === 2 ){
-        t.equal( doc.getId(), 'osm-item10-poi-address-10-3', 'changed' );
+        t.equal( doc.getId(), '10:3', 'changed' );
         t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '3 Pennine Road', 'changed' );
       // last doc
