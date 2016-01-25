@@ -50,7 +50,7 @@
     "pelias-wof-admin-lookup": "git://github.com/pelias/wof-admin-lookup#parallel-stream",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0",
-    "through2-sync": "^0.2.2",
+    "through2-spy": "^2.0.0",
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
