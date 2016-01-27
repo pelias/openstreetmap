@@ -46,11 +46,10 @@ As a minimum, it should be valid json and contain the following:
   },
   "imports": {
     "openstreetmap": {
-      "adminLookup": true,
+      "adminLookup": false,
       "leveldbpath": "/tmp",
       "datapath": "/data/pbf",
       "import": [{
-        "type": { "node": "osmnode", "way": "osmway" },
         "filename": "london_england.osm.pbf"
       }]
     }
@@ -58,25 +57,26 @@ As a minimum, it should be valid json and contain the following:
 }
 ```
 
-Make sure you change the following settings to reflect your environment:
+### Environment Settings
 
-- `imports.quattroshapes.datapath` - this is the directory where you extracted the `.shp` and other files from the quattroshapes download
 - `imports.openstreetmap.datapath` - this is the directory which you downloaded the pbf file to
 - `imports.openstreetmap.import[0].filename` - this is the name of the pbf file you downloaded
-
-You can optionally change:
-
 - `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
+
+> __PRO-TIP:__ If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
+
+
+### Administrative Hierarchy Lookup
+
 - `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
   county, etc. names), but you can optionally create it via the
-  [`pelias/admin-lookup`](https://github.com/pelias/admin-lookup) module; just set this property to `true`.  Consult
-  the `admin-lookup` README for setup documentation (namely just downloading the Quattroshapes dataset).
-- `import.openstreetmap.deduplicate` - this makes it possible to import multiple datasets containing the same addresses, without getting duplicates in the pelias database.
-  Please see [`pelias/address-deduplicator`](https://github.com/pelias/address-deduplicator) for more details.
+  [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) module; just set this property to `true`.  Consult
+  the `wof-admin-lookup` README for setup documentation. You'll need a WOF point-in-polygon service running to query against.
+- `imports.adminLookup.url` - this is the endpoint to query for admin hierarchy lookups, currently the code only supports usage of WOF admin lookup module.
+- `imports.adminLookup.maxConcurrentReqs` - this is the number of concurrent requests your setup will support to the admin lookup service. The bigger this number, the faster the import process.
 
-If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
 
-## Configuring the elasticsearch mappings
+## Setting up Elasticsearch Mappings
 
 While `elasticsearch` is technically schema-less, the data will not be correctly stored unless you first tell it how the data is to be indexed.
 
@@ -93,13 +93,12 @@ In order to confirm that the mappings have been correctly inserted in to elastic
 This will start the import process, it will take around 30 seconds to prime it's in-memory data and then you should see regular debugging output in the terminal.
 
 ```bash
-$ node index.js
+$ PELIAS_CONFIG=<path_to_config_json> npm start
 ```
 
 You should now be able to retrieve the OSM data directly from `elasticsearch`:
-- http://localhost:9200/pelias/osmnode/_search
-- http://localhost:9200/pelias/osmway/_search
-- http://localhost:9200/pelias/osmaddress/_search
+- http://localhost:9200/pelias/address/_search
+- http://localhost:9200/pelias/venue/_search
 
 ## How long does it take?
 
@@ -114,12 +113,13 @@ If you are looking to run a planet-wide cluster like the one we provide at https
 Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
 
 To perform a very basic URI search you can execute a query such as:
-- http://localhost:9200/pelias/osmway/_search?df=name.default&q=hackney%20city%20farm
+- http://localhost:9200/pelias/venue/_search?df=name.default&q=hackney%20city%20farm
 
 ## More open data sets
 
 - https://github.com/pelias/geonames
 - https://github.com/pelias/openaddresses
+- https://github.com/pelias/whosonfirst
 
 ## Issues
 

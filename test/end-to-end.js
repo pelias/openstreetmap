@@ -21,6 +21,8 @@ var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
 
 var results = [];
 
+console.log(pbfPath);
+
 streams.pbfParser({ file: pbfPath })
   .pipe( streams.docConstructor() )
   .pipe( streams.tagMapper() )
@@ -66,7 +68,7 @@ streams.pbfParser({ file: pbfPath })
     fs.unlinkSync('expected_output.json');
 
     if( diff ){
-      console.log( JSON.stringify(diff, null, 2) );
+      //console.log( JSON.stringify(diff, null, 2) );
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
       console.log('matching count:', colors.green(countSame));

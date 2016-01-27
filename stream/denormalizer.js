@@ -17,7 +17,7 @@ function denormalizer(){
   return through.obj( function( doc, enc, next ){
 
     // skip non-way docs
-    if( doc.getType() !== 'osmway'){
+    if( doc.getId().indexOf('way') === -1 ){
       this.push( doc );
       return next();
     }
