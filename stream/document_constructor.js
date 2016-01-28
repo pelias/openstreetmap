@@ -14,12 +14,13 @@ module.exports = function(){
   var stream = through.obj( function( item, enc, next ) {
 
     try {
-      var uniqueId = ['osm', item.type, item.id].join('-');
-      var doc = new Document( 'osm', item.type, uniqueId );
+      if (!item.type || ! item.id) {
+        throw new Error('doc without valid id or type');
+      }
+      var uniqueId = [ item.type, item.id ].join(':');
 
-      // until we decouple source_id and _id in pelias-model, keep manually forcing source_id after construction
-      // construct with unique id
-      doc.setSourceId(item.id);
+      // we need to assume it will be a venue and later if it turns out to be an address it will get changed
+      var doc = new Document( 'openstreetmap', 'venue', uniqueId );
 
       // Set latitude / longitude
       if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
@@ -46,8 +47,6 @@ module.exports = function(){
 
       // Store osm tags as a property inside _meta
       doc.setMeta( 'tags', item.tags || {} );
-
-      //peliasLogger.info('[NEW DOC]', { source: 'osm', layer: item.type, id: item.id, centroid: doc.getCentroid()});
 
       // Push instance of Document downstream
       this.push( doc );

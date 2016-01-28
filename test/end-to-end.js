@@ -11,16 +11,17 @@ var fs = require('fs'),
     colors = require('colors'),
     tmp = require('tmp'),
     deep = require('deep-diff'),
-    naivedb = require('naivedb'),
     streams = require('../'),
+    sink = require('through2-sink');
     _ = require('lodash');
 
 var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
     pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
     expectedPath = path.resolve(__dirname) + '/fixtures/vancouver.extract.expected.json';
 
-fs.writeFileSync( tmpfile, '{}' ); // init naivedb
-var db = naivedb(tmpfile);
+var results = [];
+
+console.log(pbfPath);
 
 streams.pbfParser({ file: pbfPath })
   .pipe( streams.docConstructor() )
@@ -29,16 +30,20 @@ streams.pbfParser({ file: pbfPath })
   .pipe( streams.addressExtractor() )
   .pipe( streams.categoryMapper( streams.config.categoryDefaults ) )
   .pipe( streams.dbMapper() )
-  .pipe( db.createWriteStream('_id') )
+  .pipe( sink.obj(function (doc) {
+    results.push(doc);
+  }) )
+  .on('error', function error(err) {
+    console.error('YIKES! Test failed with the following error: ', err.message);
+    process.exit();
+  })
   .on('finish', function assert(){
 
-    db.writeSync();
+    var actual = results;
+    var expected = JSON.parse( fs.readFileSync( expectedPath, { encoding: 'utf8' } ) );
 
-    var actual = JSON.parse( fs.readFileSync( tmpfile, { encoding: 'utf8' } ) ),
-        expected = JSON.parse( fs.readFileSync( expectedPath, { encoding: 'utf8' } ) );
-
-    actual = _.sortBy(actual, ['_id']);
-    expected = _.sortBy(expected, ['_id']);
+    actual = _.sortBy(actual, ['_id', '_type']);
+    expected = _.sortBy(expected, ['_id', '_type']);
 
     fs.writeFileSync('actual_output.json', JSON.stringify(actual, null, 2));
     fs.writeFileSync('expected_output.json', JSON.stringify(expected, null, 2));
@@ -63,7 +68,7 @@ streams.pbfParser({ file: pbfPath })
     fs.unlinkSync('expected_output.json');
 
     if( diff ){
-      console.log( JSON.stringify(diff, null, 2) );
+      //console.log( JSON.stringify(diff, null, 2) );
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
       console.log('matching count:', colors.green(countSame));

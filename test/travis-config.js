@@ -5,7 +5,6 @@ var fs = require('fs'),
 
 settings.imports.openstreetmap.datapath = path.resolve(__dirname);
 settings.imports.openstreetmap.import = [{
-  type: { node: 'osmnode', way: 'osmway' },
   filename: 'vancouver_canada.osm.pbf'
 }];
 
