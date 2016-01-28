@@ -106,7 +106,7 @@ Ingestion time varies from machine-to-machine but as a general guide it takes ab
 
 These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
 
-If you are looking to run a planet-wide cluster like the one we provide at https://pelias.mapzen.com/ please get in contact for more information from our ops team.
+If you are looking to run a planet-wide cluster like the one we provide at https://search.mapzen.com/ please get in contact for more information from our ops team.
 
 ## Querying the data and running a service
 
