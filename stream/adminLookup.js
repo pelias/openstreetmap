@@ -33,7 +33,8 @@ function createStream(config, adminLookup) {
 
   // admin lookup enabled
   if (config.imports.adminLookup && config.imports.adminLookup.url) {
-    var pipResolver = adminLookup.createWofPipResolver(config.imports.adminLookup.url);
+    //var pipResolver = adminLookup.createWofPipResolver(config.imports.adminLookup.url);
+    var pipResolver = adminLookup.createLocalWofPipResolver();
     return adminLookup.createLookupStream(pipResolver);
   }
 
