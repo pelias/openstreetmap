@@ -1,8 +1,18 @@
+sudo: false
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-notifications:
-  flowdock: f0bbceadacc5c97e7f3a657941b5a5eb
+  - 0.10
+  - 0.12
+  - 4.0
+  - 4.1
+  - 4.2
+matrix:
+    allow_failures:
+        - node_js: 4.0
+        - node_js: 4.1
+        - node_js: 4.2
+env:
+    - TEST_SUITE=units
+    - TEST_SUITE=end-to-end
 before_script: node ./test/travis-config.js
-after_script: node ./test/end-to-end.js
+script: "npm run $TEST_SUITE"
