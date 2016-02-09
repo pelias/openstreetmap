@@ -12,7 +12,7 @@ var fs = require('fs'),
     tmp = require('tmp'),
     deep = require('deep-diff'),
     streams = require('../'),
-    sink = require('through2-sink');
+    sink = require('through2-sink'),
     _ = require('lodash');
 
 var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
