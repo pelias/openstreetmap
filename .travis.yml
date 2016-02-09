@@ -14,5 +14,5 @@ matrix:
 env:
     - TEST_SUITE=units
     - TEST_SUITE=end-to-end
-before_script: node ./test/travis-config.js
+before_script: npm run pretest && node ./test/travis-config.js
 script: "npm run $TEST_SUITE"
