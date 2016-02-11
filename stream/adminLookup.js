@@ -32,17 +32,13 @@ function createStream(config, adminLookup) {
   }
 
   // admin lookup enabled
-  if (config.imports.adminLookup && config.imports.adminLookup.url) {
+  if (config.imports.adminLookup) {
     //var pipResolver = adminLookup.createWofPipResolver(config.imports.adminLookup.url);
     var pipResolver = adminLookup.createLocalWofPipResolver();
     return adminLookup.createLookupStream(pipResolver);
+  } else {
+    return sendPassthroughStream();
   }
-
-  // throw error if flag is set but no URL configured
-  var message = 'Admin lookup is enabled but no url is specified in your config ' +
-    'at imports.adminLookup.url. Make sure a URL pointing to a Who\'s on First point ' +
-    'in polygon server (https://github.com/whosonfirst/go-whosonfirst-pip) is set in your config';
-  throw new Error(message);
 }
 
 module.exports = createStream;
