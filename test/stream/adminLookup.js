@@ -17,18 +17,16 @@ module.exports.tests.enabled = function(test, common) {
   };
 
   var wofAdminLookup = {
-    createWofPipResolver: function () {
+    createLocalWofPipResolver: function () {
     },
     createLookupStream: function () {
     }
   };
 
   test('enabled: create pipResolver', function (t) {
-    t.plan(1); // expect 1 assertions
-
     // assert that the PipResolver was instantiated with the correct URL
-    wofAdminLookup.createWofPipResolver = function (url) {
-      t.equal(url, config.imports.adminLookup.url, 'pip service url set');
+    wofAdminLookup.createLocalWofPipResolver = function () {
+      t.pass('Resolver created');
       t.end();
     };
 
@@ -41,7 +39,7 @@ module.exports.tests.enabled = function(test, common) {
     var pipResolverMock = {foo: 'bar'};
 
     // mock the creation of pip resolver
-    wofAdminLookup.createWofPipResolver = function () {
+    wofAdminLookup.createLocalWofPipResolver = function () {
       return pipResolverMock;
     };
 
@@ -58,7 +56,7 @@ module.exports.tests.enabled = function(test, common) {
 
     var streamMock = {madeBy: 'mock'};
 
-    wofAdminLookup.createWofPipResolver = function () {
+    wofAdminLookup.createLocalWofPipResolver = function () {
     };
     wofAdminLookup.createLookupStream = function () {
       return streamMock;
