@@ -64,8 +64,10 @@ streams.pbfParser({ file: pbfPath })
     }
     var diff = deep.diff( actual, expected );
 
-    fs.unlinkSync('actual_output.json');
-    fs.unlinkSync('expected_output.json');
+    if (!diff) {
+      fs.unlinkSync('actual_output.json');
+      fs.unlinkSync('expected_output.json');
+    }
 
     if( diff ){
       //console.log( JSON.stringify(diff, null, 2) );
