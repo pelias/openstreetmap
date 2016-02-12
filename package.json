@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test/run.js | tap-spec",
+    "test": "npm run units",
+    "units": "node test/run.js | tap-spec",
     "pretest": "test/pretest.sh",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "npm run pretest && node test/end-to-end.js;",

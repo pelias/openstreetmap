@@ -1,8 +1,27 @@
+sudo: false
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-notifications:
-  flowdock: f0bbceadacc5c97e7f3a657941b5a5eb
-before_script: node ./test/travis-config.js
-after_script: node ./test/end-to-end.js
+  - 0.10
+  - 0.12
+  - 4.0
+  - 4.1
+  - 4.2
+matrix:
+    allow_failures:
+        - node_js: 4.0
+        - node_js: 4.1
+        - node_js: 4.2
+env:
+  global:
+    - CXX=g++-4.8
+  matrix:
+    - TEST_SUITE=units
+    - TEST_SUITE=end-to-end
+before_script: npm run pretest && node ./test/travis-config.js
+script: "npm run $TEST_SUITE"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
