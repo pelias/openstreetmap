@@ -41,7 +41,10 @@ streams.import = function(opts){
       })
     )
     .pipe( streams.dbMapper() )
-    .pipe( streams.elasticsearch() );
+    .pipe( streams.elasticsearch() )
+    .on('finish', function() {
+      process.exit(0); // TODO: handle this properly in wof-admin-lookup
+    });
 };
 
 
