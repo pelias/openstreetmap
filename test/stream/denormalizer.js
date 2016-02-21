@@ -44,7 +44,7 @@ module.exports.tests.passthrough = function(test, common) {
 
 // compute centroid for ways
 module.exports.tests.computeWayCentroid = function(test, common) {
-  test('compute centroid: nodes', function(t) {
+  test('compute centroid: ways', function(t) {
     var stream = denormalizer();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.deepEqual( doc.getCentroid(), { lat: 8.004813, lon: 8 }, 'centroid computed' );
@@ -67,6 +67,23 @@ module.exports.tests.skipComputeWayCentroid = function(test, common) {
     stream.write(fixtures.osmWay2);
   });
 };
+
+// compute bbox for ways
+module.exports.tests.computeWayBBox = function(test, common) {
+  test('compute bbox: ways', function(t) {
+    
+    var expectedBBox = '{"min_lat":6,"max_lat":10,"min_lon":6,"max_lon":10}';
+
+    var stream = denormalizer();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getBoundingBox(), expectedBBox, 'bbox computed' );
+      t.end();
+      next();
+    }));
+    stream.write(fixtures.osmWay1);
+  });
+};
+
 
 module.exports.all = function (tape, common) {
 

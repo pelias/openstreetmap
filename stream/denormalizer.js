@@ -9,7 +9,7 @@
 
 var through = require('through2'),
     isObject = require('is-object'),
-    geoJsonCenter = require('../util/geoJsonCenter'),
+    geometryUtil = require('../util/geometryUtil'),
     peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
 // convert de-normalized ways to geojson
@@ -38,9 +38,14 @@ function denormalizer(){
             };
           });
 
-          var center = geoJsonCenter( points );
+          var center = geometryUtil.computeCenter( points );
           if( isObject( center ) ){
             doc.setCentroid( center );
+          }
+
+          var bbox = geometryUtil.computeBBox( points );
+          if( isObject( bbox ) ) {
+            doc.setBoundingBox(bbox);
           }
         }
 
