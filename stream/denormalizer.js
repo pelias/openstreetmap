@@ -24,28 +24,28 @@ function denormalizer(){
 
     try {
 
-      // only compute centroids where they have not already
-      // been computed (avoid doing double work)
-      if( 'number' !== typeof doc.getLat() || 'number' !== typeof doc.getLon() ){
+      var nodes = doc.getMeta('nodes');
+      if( nodes ){
 
-        var nodes = doc.getMeta('nodes');
-        if( nodes ){
+        var points = nodes.map( function( doc ){
+          return {
+            longitude: doc.lon,
+            latitude: doc.lat
+          };
+        });
 
-          var points = nodes.map( function( doc ){
-            return {
-              longitude: doc.lon,
-              latitude: doc.lat
-            };
-          });
+        // compute the bounding box of the geometry
+        var bbox = geometryUtil.computeBBox( points );
+        if( isObject( bbox ) ) {
+          doc.setBoundingBox(bbox);
+        }
 
-          var center = geometryUtil.computeCenter( points );
-          if( isObject( center ) ){
-            doc.setCentroid( center );
-          }
-
-          var bbox = geometryUtil.computeBBox( points );
-          if( isObject( bbox ) ) {
-            doc.setBoundingBox(bbox);
+        // only compute centroids where they have not already
+        // been computed (avoid doing double work)
+        if ( 'number' !== typeof doc.getLat() || 'number' !== typeof doc.getLon() ) {
+          var center = geometryUtil.computeCenter(points);
+          if (isObject(center)) {
+            doc.setCentroid(center);
           }
         }
 
