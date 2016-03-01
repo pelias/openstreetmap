@@ -22,7 +22,7 @@ streams.adminLookup = require('./stream/adminLookup');
 streams.addressExtractor = require('./stream/address_extractor');
 streams.deduper = require('./stream/deduper');
 streams.categoryMapper = require('./stream/category_mapper');
-streams.dbMapper = require('./stream/dbmapper');
+streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
 
 
