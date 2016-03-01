@@ -12,6 +12,7 @@ var fs = require('fs'),
     tmp = require('tmp'),
     deep = require('deep-diff'),
     streams = require('../'),
+    model = require('pelias-model'),
     sink = require('through2-sink'),
     _ = require('lodash');
 
@@ -29,7 +30,7 @@ streams.pbfParser({ file: pbfPath })
   .pipe( streams.docDenormalizer() )
   .pipe( streams.addressExtractor() )
   .pipe( streams.categoryMapper( streams.config.categoryDefaults ) )
-  .pipe( streams.dbMapper() )
+  .pipe( model.createDocumentMapperStream() )
   .pipe( sink.obj(function (doc) {
     results.push(doc);
   }) )
