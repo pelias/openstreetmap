@@ -28,7 +28,7 @@ module.exports.tests.passthrough = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( doc, fixtures.osmNode1, 'no-op for docs with no tags' );
       t.deepEqual( doc.name, { node: 'node7' }, 'no name data mapped' );
-      t.deepEqual( doc.address, {}, 'no address data mapped' );
+      t.deepEqual( doc.address_parts, {}, 'no address data mapped' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

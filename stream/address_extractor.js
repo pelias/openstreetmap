@@ -31,11 +31,11 @@ var Document = require('pelias-model').Document;
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
-  if( !isObject( doc.address ) ){ return false; }
-  if( 'string' !== typeof doc.address.number ){ return false; }
-  if( 'string' !== typeof doc.address.street ){ return false; }
-  if( !doc.address.number.length ){ return false; }
-  if( !doc.address.street.length ){ return false; }
+  if( !isObject( doc.address_parts ) ){ return false; }
+  if( 'string' !== typeof doc.address_parts.number ){ return false; }
+  if( 'string' !== typeof doc.address_parts.street ){ return false; }
+  if( !doc.address_parts.number.length ){ return false; }
+  if( !doc.address_parts.street.length ){ return false; }
   return true;
 }
 
@@ -51,7 +51,7 @@ module.exports = function(){
 
       // accept semi-colon delimited house numbers
       // ref: https://github.com/pelias/openstreetmap/issues/21
-      var streetnumbers = doc.address.number.split(';').map(Function.prototype.call, String.prototype.trim);
+      var streetnumbers = doc.address_parts.number.split(';').map(Function.prototype.call, String.prototype.trim);
       streetnumbers.forEach( function( streetno, i ){
 
         try {
@@ -63,7 +63,7 @@ module.exports = function(){
 
           // copy data to new document
           record = new Document( 'openstreetmap', 'address', newid.join(':') )
-            .setName( 'default', streetno + ' ' + doc.address.street )
+            .setName( 'default', streetno + ' ' + doc.address_parts.street )
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );

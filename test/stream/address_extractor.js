@@ -37,23 +37,23 @@ module.exports.tests.hasValidAddress = function(test, common) {
     t.end();
   });
   test('hasValidAddress: invalid address number', function(t) {
-    t.false(extractor.hasValidAddress({address:{street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address_parts:{street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address number length', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'',street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'',street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'10'}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'10'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street length', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'10',street:''}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'10',street:''}}));
     t.end();
   });
   test('hasValidAddress: valid address', function(t) {
-    t.true(extractor.hasValidAddress({address:{number:'10',street:'sesame st'}}));
+    t.true(extractor.hasValidAddress({address_parts:{number:'10',street:'sesame st'}}));
     t.end();
   });
 };
