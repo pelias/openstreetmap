@@ -9,19 +9,19 @@ docs.unnamed = new Document('osm', 'venue', 'item:2'); // no name
 
 docs.unnamedWithAddress = new Document('osm', 'address', 'item:3');
 docs.unnamedWithAddress.setCentroid({lat:3,lon:3});
-docs.unnamedWithAddress.address = {
+docs.unnamedWithAddress.address_parts = {
   number: '10', street: 'Mapzen pl'
 };
 
 docs.namedWithAddress = new Document('osm','address', 'item:4');
 docs.namedWithAddress.setName('default','poi4');
 docs.namedWithAddress.setCentroid({lat:4,lon:4});
-docs.namedWithAddress.address = {
+docs.namedWithAddress.address_parts = {
   number: '11', street: 'Sesame st'
 };
 
 docs.completeDoc = new Document('osm','address','item:6');
-docs.completeDoc.address = {
+docs.completeDoc.address_parts = {
   number: '13', street: 'Goldsmiths row', test: 'prop'
 };
 docs.completeDoc
@@ -60,7 +60,7 @@ docs.osmRelation1 = new Document('osm','venue','item:9')
 docs.semicolonStreetNumbers = new Document('osm','venue','item:10');
 docs.semicolonStreetNumbers.setName('default','poi10');
 docs.semicolonStreetNumbers.setCentroid({lat:10,lon:10});
-docs.semicolonStreetNumbers.address = {
+docs.semicolonStreetNumbers.address_parts = {
   number: '1; 2 ;3', street: 'Pennine Road'
 };
 
