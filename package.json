@@ -45,7 +45,7 @@
     "pbf2json": "^3.0.0",
     "pelias-address-deduplicator": "^1.x.x",
     "pelias-config": "latest",
-    "pelias-dbclient": "1.0.0",
+    "pelias-dbclient": "^1.0.1",
     "pelias-logger": "^0.0.8",
     "pelias-model": "3.0.0",
     "pelias-wof-admin-lookup": "1.3.0",
