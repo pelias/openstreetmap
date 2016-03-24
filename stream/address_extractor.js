@@ -23,20 +23,19 @@
   not searchable.
 **/
 
-var through = require('through2'),
-    isObject = require('is-object'),
-    extend = require('extend'),
-    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' ),
-    Document = require('pelias-model').Document,
-    idOrdinal = 0; // used for addresses lacking an id (to keep them unique)
+var through = require('through2');
+var isObject = require('is-object');
+var extend = require('extend');
+var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+var Document = require('pelias-model').Document;
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
-  if( !isObject( doc.address ) ){ return false; }
-  if( 'string' !== typeof doc.address.number ){ return false; }
-  if( 'string' !== typeof doc.address.street ){ return false; }
-  if( !doc.address.number.length ){ return false; }
-  if( !doc.address.street.length ){ return false; }
+  if( !isObject( doc.address_parts ) ){ return false; }
+  if( 'string' !== typeof doc.address_parts.number ){ return false; }
+  if( 'string' !== typeof doc.address_parts.street ){ return false; }
+  if( !doc.address_parts.number.length ){ return false; }
+  if( !doc.address_parts.street.length ){ return false; }
   return true;
 }
 
@@ -44,25 +43,27 @@ module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
     var isNamedPoi = !!doc.getName('default');
+    var isAddress = hasValidAddress( doc );
 
     // create a new record for street addresses
-    if( hasValidAddress( doc ) ){
-      var type = isNamedPoi ? 'poi-address' : 'address';
+    if( isAddress ){
       var record;
 
       // accept semi-colon delimited house numbers
       // ref: https://github.com/pelias/openstreetmap/issues/21
-      var streetnumbers = doc.address.number.split(';').map(Function.prototype.call, String.prototype.trim);
+      var streetnumbers = doc.address_parts.number.split(';').map(Function.prototype.call, String.prototype.trim);
       streetnumbers.forEach( function( streetno, i ){
 
         try {
-
-          var newid = [ type, doc.getType(), (doc.getId() || ++idOrdinal) ];
-          if( i > 0 ){ newid.push( streetno ); }
+          var newid = [ doc.getSourceId() ];
+          if( i > 0 ){
+            newid.push( streetno );
+            peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetnumbers);
+          }
 
           // copy data to new document
-          record = new Document( 'osmaddress', newid.join('-') )
-            .setName( 'default', streetno + ' ' + doc.address.street )
+          record = new Document( 'openstreetmap', 'address', newid.join(':') )
+            .setName( 'default', streetno + ' ' + doc.address_parts.street )
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );
@@ -79,15 +80,25 @@ module.exports = function(){
           record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
           this.push( record );
         }
+        else {
+          peliasLogger.error( '[address_extractor] failed to push address downstream' );
+        }
 
       }, this);
 
     }
 
-    // forward doc downstream is it's a POI in it's own right
+    // forward doc downstream if it's a POI in its own right
     // note: this MUST be below the address push()
     if( isNamedPoi ){
       this.push( doc );
+    }
+
+    if ( isAddress && isNamedPoi ) {
+      peliasLogger.verbose('[address_extractor] duplicating a venue with address');
+    }
+    else if ( !isAddress && !isNamedPoi ) {
+      peliasLogger.error('[address_extractor] Invalid doc not pushed downstream: ', JSON.stringify( doc, null, 2 ));
     }
 
     return next();
