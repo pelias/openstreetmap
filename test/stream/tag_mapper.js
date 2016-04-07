@@ -27,8 +27,8 @@ module.exports.tests.passthrough = function(test, common) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( doc, fixtures.osmNode1, 'no-op for docs with no tags' );
-      t.deepEqual( doc.name, { osmnode: 'node7' }, 'no name data mapped' );
-      t.deepEqual( doc.address, {}, 'no address data mapped' );
+      t.deepEqual( doc.name, { node: 'node7' }, 'no name data mapped' );
+      t.deepEqual( doc.address_parts, {}, 'no address data mapped' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -39,7 +39,7 @@ module.exports.tests.passthrough = function(test, common) {
 // ======================== names =========================
 
 module.exports.tests.localised_names = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:en': 'test', 'name:es': 'prueba' });
   test('maps - localised names', function(t) {
     var stream = mapper();
@@ -55,7 +55,7 @@ module.exports.tests.localised_names = function(test, common) {
 
 module.exports.tests.osm_names = function(test, common) {
   test('maps - default name', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { name: 'test name 1' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -66,7 +66,7 @@ module.exports.tests.osm_names = function(test, common) {
     stream.write(doc);
   });
   test('maps - name schema', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { loc_name: 'test1', nat_name: 'test2' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -82,7 +82,7 @@ module.exports.tests.osm_names = function(test, common) {
 // Cover the case of a tag key being 'name:' eg. { 'name:': 'foo' }
 // Not to be confused with { 'name': 'foo' } (note the extraneous colon)
 module.exports.tests.extraneous_colon = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:': 'test' });
   test('rejects - extraneous colon', function(t) {
     var stream = mapper();
@@ -97,7 +97,7 @@ module.exports.tests.extraneous_colon = function(test, common) {
 
 // Reject the bulk of the free-tagging keys used to mark up data in osm
 module.exports.tests.reject_difficult_keys = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:*': 'test', 'name:ဗမာ': 'test2', 'name:<阪神電鉄>': 'test3' });
   test('rejects - difficult keys', function(t) {
     var stream = mapper();
@@ -112,7 +112,7 @@ module.exports.tests.reject_difficult_keys = function(test, common) {
 
 // Accept keys from ./config/localized_keys.js
 module.exports.tests.accept_localized_keys = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2', 'name:ko': 'test3' });
   test('maps - localized keys', function(t) {
     var stream = mapper();
@@ -128,7 +128,7 @@ module.exports.tests.accept_localized_keys = function(test, common) {
 };
 
 module.exports.tests.lowercase_keys = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:EN': 'test' });
   test('maps - lowercase keys', function(t) {
     var stream = mapper();
@@ -145,7 +145,7 @@ module.exports.tests.lowercase_keys = function(test, common) {
 
 module.exports.tests.osm_schema = function(test, common) {
   test('maps - osm schema', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { postal_code: 'AAA' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -159,7 +159,7 @@ module.exports.tests.osm_schema = function(test, common) {
 
 module.exports.tests.naptan_schema = function(test, common) {
   test('maps - naptan schema', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { 'naptan:Street': 'BBB' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -173,7 +173,7 @@ module.exports.tests.naptan_schema = function(test, common) {
 
 module.exports.tests.karlsruhe_schema = function(test, common) {
   test('maps - karlsruhe schema', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { 'addr:housename': 'CCC', 'addr:housenumber': '111' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -190,7 +190,7 @@ module.exports.tests.karlsruhe_schema = function(test, common) {
 
 module.exports.tests.trim_junk = function(test, common) {
   test('clean - junk chars', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { name: '- \'Round Midnight Jazz and Blues Bar "* ' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -202,7 +202,7 @@ module.exports.tests.trim_junk = function(test, common) {
   });
   // ref: https://github.com/pelias/openstreetmap/issues/47
   test('clean - preserve brackets', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { name: 'Transportation Center Bus Stop (Coach USA)' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -219,14 +219,14 @@ module.exports.tests.trim_junk = function(test, common) {
 // catch general errors in the stream, emit logs and passthrough the doc
 module.exports.tests.catch_thrown_errors = function(test, common) {
   test('errors - catch thrown errors', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
 
     // this method will throw a generic Error for testing
     doc.getMeta = function(){ throw new Error('test'); };
 
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.deepEqual( doc.getType(), 'a', 'doc passthrough' );
+      t.deepEqual( doc.getType(), 'b', 'doc passthrough' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -236,7 +236,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
 
 module.exports.tests.empty_tag_value = function(test, common) {
   test('errors - ignore empty tags', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b',1);
     doc.setMeta('tags', { name: '' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -249,7 +249,7 @@ module.exports.tests.empty_tag_value = function(test, common) {
 };
 
 module.exports.tests.tab_only_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name': '\t' });
   test('errors - tab only value', function(t) {
     var stream = mapper();
@@ -263,7 +263,7 @@ module.exports.tests.tab_only_value = function(test, common) {
 };
 
 module.exports.tests.tab_in_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name': '\tfoo\t' });
   test('errors - tab in value', function(t) {
     var stream = mapper();
@@ -277,7 +277,7 @@ module.exports.tests.tab_in_value = function(test, common) {
 };
 
 module.exports.tests.newline_only_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name': '\n' });
   test('errors - newline only value', function(t) {
     var stream = mapper();
@@ -291,7 +291,7 @@ module.exports.tests.newline_only_value = function(test, common) {
 };
 
 module.exports.tests.newline_in_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name': '\nfoo\n' });
   test('errors - newline in value', function(t) {
     var stream = mapper();

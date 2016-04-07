@@ -3,9 +3,9 @@
   Attempt to map OSM address tags to the Pelias address schema.
 
   On the left is the OSM tag name, on the right is corresponding
-  doc.address key for which it should be mapped to.
+  doc.address_parts key for which it should be mapped to.
 
-  eg. tags['addr:street'] -> doc.address['street']
+  eg. tags['addr:street'] -> doc.address_parts['street']
 
   @ref: http://wiki.openstreetmap.org/wiki/Karlsruhe_Schema
 **/

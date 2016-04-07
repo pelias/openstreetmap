@@ -5,7 +5,7 @@
   On the left is the OSM tag name, on the right is corresponding
   doc.address key for which it should be mapped to.
 
-  eg. tags['postal_code'] -> doc.address['zip']
+  eg. tags['postal_code'] -> doc.address_parts['zip']
 
   @ref: http://wiki.openstreetmap.org/wiki/Key:postal_code
 **/
