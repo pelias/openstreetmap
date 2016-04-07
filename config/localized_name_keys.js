@@ -30,7 +30,7 @@
   @see: http://wiki.openstreetmap.org/wiki/Talk:Names
 **/
 
-var iso6393 = require('iso-639-3').all();
+var iso6393 = require('iso-639-3');
 var keys = [];
 
 for( var i in iso6393 ){

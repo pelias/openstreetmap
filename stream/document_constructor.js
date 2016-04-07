@@ -4,16 +4,23 @@
   in to model.Document() objects which the rest of the pipeline expect to consume.
 **/
 
-var through = require('through2'),
-    Document = require('pelias-model').Document,
-    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+var through = require('through2');
+var Document = require('pelias-model').Document;
+var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+var _ = require('lodash');
 
 module.exports = function(){
 
   var stream = through.obj( function( item, enc, next ) {
 
     try {
-      var doc = new Document( 'osm' + item.type, item.id );
+      if (!item.type || ! item.id) {
+        throw new Error('doc without valid id or type');
+      }
+      var uniqueId = [ item.type, item.id ].join(':');
+
+      // we need to assume it will be a venue and later if it turns out to be an address it will get changed
+      var doc = new Document( 'openstreetmap', 'venue', uniqueId );
 
       // Set latitude / longitude
       if( item.hasOwnProperty('lat') && item.hasOwnProperty('lon') ){
