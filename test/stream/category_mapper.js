@@ -28,8 +28,8 @@ module.exports.tests.passthrough = function(test, common) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( doc, fixtures.osmNode1, 'no-op for docs with no tags' );
-      t.deepEqual( doc.name, { osmnode: 'node7' }, 'no name data mapped' );
-      t.deepEqual( doc.address, {}, 'no address data mapped' );
+      t.deepEqual( doc.name, { node: 'node7' }, 'no name data mapped' );
+      t.deepEqual( doc.address_parts, {}, 'no address data mapped' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -40,7 +40,7 @@ module.exports.tests.passthrough = function(test, common) {
 // ===================== feature mapping ======================
 
 module.exports.tests.regular_features = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'foo': 'baz' } );
   test('maps - regular features', function(t) {
     var stream = mapper( { 'foo': { 'baz': 'category1' } } );
@@ -54,7 +54,7 @@ module.exports.tests.regular_features = function(test, common) {
 };
 
 module.exports.tests.wildcard_features = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'foo': 'baz' } );
   test('maps - wilcard features', function(t) {
     var stream = mapper( { 'foo': { '*': 'category2' } } );
@@ -70,7 +70,7 @@ module.exports.tests.wildcard_features = function(test, common) {
 // ===================== default mapping ======================
 
 module.exports.tests.bakery = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'shop': 'bakery' } );
   test('maps - bakery', function(t) {
     var stream = mapper( defaultMapping );
@@ -84,7 +84,7 @@ module.exports.tests.bakery = function(test, common) {
 };
 
 module.exports.tests.biergarten = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'amenity': 'biergarten' } );
   test('maps - biergarten', function(t) {
     var stream = mapper( defaultMapping );
@@ -98,7 +98,7 @@ module.exports.tests.biergarten = function(test, common) {
 };
 
 module.exports.tests.international_airport = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'aeroway': 'international' } );
   test('maps - international airport', function(t) {
     var stream = mapper( defaultMapping );
@@ -112,7 +112,7 @@ module.exports.tests.international_airport = function(test, common) {
 };
 
 module.exports.tests.public_transport = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'public_transport': 'something' } );
   test('maps - public transport', function(t) {
     var stream = mapper( defaultMapping );
@@ -126,7 +126,7 @@ module.exports.tests.public_transport = function(test, common) {
 };
 
 module.exports.tests.combination_bakery_biergarten = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'shop': 'bakery', 'amenity': 'biergarten' } );
   test('maps - combination bakery biergarten', function(t) {
     var stream = mapper( defaultMapping );
@@ -140,7 +140,7 @@ module.exports.tests.combination_bakery_biergarten = function(test, common) {
 };
 
 module.exports.tests.sport_wildcard = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'sport': 'rugby_union' } );
   test('maps - sports inherit recreation via wildcard', function(t) {
     var stream = mapper( defaultMapping );
@@ -154,7 +154,7 @@ module.exports.tests.sport_wildcard = function(test, common) {
 };
 
 module.exports.tests.argentinian_steak_restaurant = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'cuisine': 'argentinian' } );
   test('maps - argentinian steak restaurant', function(t) {
     var stream = mapper( defaultMapping );
@@ -172,7 +172,7 @@ module.exports.tests.argentinian_steak_restaurant = function(test, common) {
 // catch general errors in the stream, emit logs and passthrough the doc
 module.exports.tests.catch_thrown_errors = function(test, common) {
   test('errors - catch thrown errors', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('osm','a',1);
 
     // this method will throw a generic Error for testing
     doc.getMeta = function(){ throw new Error('test'); };
@@ -189,7 +189,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
 
 module.exports.tests.empty_tag_value = function(test, common) {
   test('errors - ignore empty tags', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('osm','a',1);
     doc.setMeta('tags', { 'cuisine': '' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
@@ -202,7 +202,7 @@ module.exports.tests.empty_tag_value = function(test, common) {
 };
 
 module.exports.tests.tab_only_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta('tags', { 'cuisine': '\t' });
   test('errors - tab only value', function(t) {
     var stream = mapper();
@@ -216,7 +216,7 @@ module.exports.tests.tab_only_value = function(test, common) {
 };
 
 module.exports.tests.newline_only_value = function(test, common) {
-  var doc = new Document('a',1);
+  var doc = new Document('osm','a',1);
   doc.setMeta('tags', { 'cuisine': '\n' });
   test('errors - newline only value', function(t) {
     var stream = mapper();

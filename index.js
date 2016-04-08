@@ -4,48 +4,50 @@
   augmenting OSM data in to elasticsearch.
 **/
 
-var elasticsearch = require('pelias-dbclient'),
-    addressDedupStream = require( 'pelias-address-deduplicator' );
-    adminLookup = require('pelias-admin-lookup'),
-    dbmapper = require('./stream/dbmapper'),
-    peliasConfig = require( 'pelias-config' ).generate();
+var spy = require('through2-spy');
+var logger = require('pelias-logger').get('openstreetmap-points');
+var categoryDefaults = require('./config/category_map');
 
-var osm = { pbf: {}, doc: {}, address: {}, tag: {}, category: {} };
+var streams = {};
 
-osm.pbf.parser = require('./stream/pbf').parser;
-osm.doc.constructor = require('./stream/document_constructor');
-osm.doc.denormalizer = require('./stream/denormalizer');
-osm.tag.mapper = require('./stream/tag_mapper');
-osm.address.extractor = require('./stream/address_extractor');
-osm.category.mapper = require('./stream/category_mapper');
-osm.category.defaults = require('./config/category_map');
+streams.config = {
+  categoryDefaults: categoryDefaults
+};
+
+streams.pbfParser = require('./stream/pbf').parser;
+streams.docConstructor = require('./stream/document_constructor');
+streams.docDenormalizer = require('./stream/denormalizer');
+streams.tagMapper = require('./stream/tag_mapper');
+streams.adminLookup = require('./stream/adminLookup');
+streams.addressExtractor = require('./stream/address_extractor');
+streams.deduper = require('./stream/deduper');
+streams.categoryMapper = require('./stream/category_mapper');
+streams.dbMapper = require('pelias-model').createDocumentMapperStream;
+streams.elasticsearch = require('pelias-dbclient');
+
 
 // default import pipeline
-osm.import = function(opts){
-  var pipeline = osm.pbf.parser(opts)
-    .pipe( osm.doc.constructor() )
-    .pipe( osm.tag.mapper() )
-    .pipe( osm.doc.denormalizer() );
-
-  if( peliasConfig.imports.openstreetmap.adminLookup ){
-    pipeline = pipeline.pipe( adminLookup.stream() );
-  }
-
-  pipeline = pipeline.pipe( osm.address.extractor() );
-  
-  if( peliasConfig.imports.openstreetmap.deduplicate ){
-    pipeline = pipeline.pipe( addressDedupStream() );
-  }
-  
-  pipeline
-    .pipe( osm.category.mapper( osm.category.defaults ) )
-    .pipe( dbmapper() )
-    .pipe( elasticsearch() );
+streams.import = function(opts){
+  streams.pbfParser(opts)
+    .pipe( streams.docConstructor() )
+    .pipe( streams.tagMapper() )
+    .pipe( streams.docDenormalizer() )
+    .pipe( streams.addressExtractor() )
+    .pipe( streams.categoryMapper( categoryDefaults ) )
+    .pipe( streams.adminLookup() )
+    .pipe( streams.deduper() )
+    .pipe( spy.obj(function (doc) {
+        logger.info(doc.getGid(), doc.getName('default'), doc.getCentroid());
+      })
+    )
+    .pipe( streams.dbMapper() )
+    .pipe( streams.elasticsearch() );
 };
+
 
 // run import if executed directly; but not if imported via require()
 if( require.main === module ){
-  osm.import();
+  streams.import();
 }
 
-module.exports = osm;
+module.exports = streams;

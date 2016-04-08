@@ -37,23 +37,23 @@ module.exports.tests.hasValidAddress = function(test, common) {
     t.end();
   });
   test('hasValidAddress: invalid address number', function(t) {
-    t.false(extractor.hasValidAddress({address:{street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address_parts:{street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address number length', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'',street:'sesame st'}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'',street:'sesame st'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'10'}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'10'}}));
     t.end();
   });
   test('hasValidAddress: invalid address street length', function(t) {
-    t.false(extractor.hasValidAddress({address:{number:'10',street:''}}));
+    t.false(extractor.hasValidAddress({address_parts:{number:'10',street:''}}));
     t.end();
   });
   test('hasValidAddress: valid address', function(t) {
-    t.true(extractor.hasValidAddress({address:{number:'10',street:'sesame st'}}));
+    t.true(extractor.hasValidAddress({address_parts:{number:'10',street:'sesame st'}}));
     t.end();
   });
 };
@@ -64,7 +64,7 @@ module.exports.tests.passthrough = function(test, common) {
   test('passthrough: regular POI', function(t) {
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getType(), 'item1', 'type not changed' );
+      t.equal( doc.getType(), 'venue', 'type not changed' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -93,10 +93,10 @@ module.exports.tests.createFromNameless = function(test, common) {
   test('create: from nameless record', function(t) {
     var stream = extractor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getId(), 'address-item3-3', 'address only id schema' );
+      t.equal( doc.getId(), 'item:3', 'address only id schema' );
       t.deepEqual( Object.keys(doc.name), ['default'], 'only default name set' );
       t.equal( doc.getName('default'), '10 Mapzen pl', 'correct name' );
-      t.equal( doc.getType(), 'osmaddress', 'type changed' );
+      t.equal( doc.getType(), 'address', 'type changed' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -117,46 +117,20 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'poi-address-item4-4', 'poi address id schema' );
+        t.equal( doc.getId(), 'item:4', 'poi address id schema' );
         t.equal( doc.getName('default'), '11 Sesame st', 'correct name' );
-        t.equal( doc.getType(), 'osmaddress', 'type changed' );
+        t.equal( doc.getType(), 'address', 'type changed' );
         next();
       // second doc
       } else {
-        t.equal( doc.getId(), '4', 'id unchanged' );
+        t.equal( doc.getId(), 'item:4', 'id unchanged' );
         t.equal( doc.getName('default'), 'poi4', 'correct name' );
-        t.equal( doc.getType(), 'item4', 'type unchanged' );
+        t.equal( doc.getType(), 'address', 'type unchanged' );
         t.end(); // test should fail if not called, or called more than once.
         next();
       }
     }));
     stream.write(fixtures.namedWithAddress);
-  });
-};
-
-// If for some reason the id from the original record is unset before we
-// get a chance to copy it to the new address record then we need to
-// generate a globally-unique-id instead.
-// This is the reason we generate the address records BEFORE sending the
-// original document downstream where the id may be unset.
-module.exports.tests.generateUniqueIds = function(test, common) {
-  test('create: from nameless record - generates unique ids', function(t) {
-    t.plan(2); // should run 2 tests
-    var stream = extractor();
-    var i = 0;
-    stream.pipe( through.obj( function( doc, enc, next ){
-      // first doc
-      if( i++ === 0 ){
-        t.equal( doc.getId(), 'address-item5-1', 'unique id' );
-      // second doc
-      } else {
-        t.equal( doc.getId(), 'address-item5-2', 'unique id' );
-        t.end(); // test should fail if not called, or called more than once.
-      }
-      next();
-    }));
-    stream.write(fixtures.invalidId);
-    stream.write(fixtures.invalidId);
   });
 };
 
@@ -171,8 +145,8 @@ module.exports.tests.duplicateAllFields = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i++ === 0 ){
-        t.equal( doc.getId(), 'poi-address-item6-6', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'item:6', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.deepEqual( Object.keys(doc.name).length, 1, 'changed' );
         t.equal( doc.getName('default'), '13 Goldsmiths row', 'changed' );
         t.false( doc.getName('alt'), 'unset' );
@@ -189,8 +163,8 @@ module.exports.tests.duplicateAllFields = function(test, common) {
         t.deepEqual( doc.getMeta('bing'), 'bang', 'not changed' );
       // second doc
       } else {
-        t.equal( doc.getId(), '6', 'not changed' );
-        t.equal( doc.getType(), 'item6', 'not changed' );
+        t.equal( doc.getId(), 'item:6', 'not changed' );
+        t.equal( doc.getType(), 'address', 'not changed' );
         t.deepEqual( Object.keys(doc.name).length, 2, 'not changed' );
         t.equal( doc.getName('default'), 'item6', 'not changed' );
         t.equal( doc.getName('alt'), 'item six', 'not changed' );
@@ -223,23 +197,23 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       // first doc
       if( i === 0 ){
-        t.equal( doc.getId(), 'poi-address-item10-10', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'item:10', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '1 Pennine Road', 'changed' );
       // second doc
       } else if( i === 1 ){
-        t.equal( doc.getId(), 'poi-address-item10-10-2', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'item:10:2', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '2 Pennine Road', 'changed' );
       // third doc
       } else if( i === 2 ){
-        t.equal( doc.getId(), 'poi-address-item10-10-3', 'changed' );
-        t.equal( doc.getType(), 'osmaddress', 'changed' );
+        t.equal( doc.getId(), 'item:10:3', 'changed' );
+        t.equal( doc.getType(), 'address', 'changed' );
         t.equal( doc.getName('default'), '3 Pennine Road', 'changed' );
       // last doc
       } else {
-        t.equal( doc.getId(), '10', 'not changed' );
-        t.equal( doc.getType(), 'item10', 'not changed' );
+        t.equal( doc.getId(), 'item:10', 'not changed' );
+        t.equal( doc.getType(), 'venue', 'not changed' );
         t.equal( doc.getName('default'), 'poi10', 'not changed' );
         t.end(); // test should fail if not called, or called more than twice.
       }
@@ -257,7 +231,7 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
 // discard the address doc but passthrough the named poi
 module.exports.tests.catch_thrown_errors = function(test, common) {
   test('errors - catch thrown errors', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a','b', 1);
 
     // this method will throw a generic Error for testing
     doc.getType = function(){ throw new Error('test'); };
@@ -271,7 +245,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     t.end();
   });
   test('errors - passthrough named poi records', function(t) {
-    var doc = new Document('a',1);
+    var doc = new Document('a', 'b', 1);
     doc.setName('default','test');
 
     // this method will throw a generic Error for testing

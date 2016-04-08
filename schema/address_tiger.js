@@ -5,7 +5,7 @@
   On the left is the OSM tag name, on the right is corresponding
   doc.address key for which it should be mapped to.
 
-  eg. tags['tiger:zip_left'] -> doc.address['zip']
+  eg. tags['tiger:zip_left'] -> doc.address_parts['zip']
 
   @ref: http://wiki.openstreetmap.org/wiki/TIGER_to_OSM_Attribute_Map
 **/
