@@ -8,7 +8,7 @@ In order to use the importer you must first install and configure `elasticsearch
 
 You can follow the instructions here: https://github.com/pelias/pelias/blob/master/INSTALL.md to get set up.
 
-The recommended version for nodejs is `0.12+` and elasticsearch is `1.3.4+` although we also test against `nodejs@0.10`.
+The recommended version for nodejs is `0.12` and elasticsearch is `1.7`. We support Nodejs 4 and 5, but not Elasticsearch 2 (yet).
 
 Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
 
@@ -159,6 +159,6 @@ $ npm run coverage
 
 ### Continuous Integration
 
-Travis tests every release against node version `0.10` & `0.12`.
+Travis tests every change against node version `0.10`, `0.12`, `4.x`, and `5.x`.
 
 [![Build Status](https://travis-ci.org/pelias/openstreetmap.png?branch=master)](https://travis-ci.org/pelias/openstreetmap)
