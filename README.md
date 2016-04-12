@@ -86,7 +86,7 @@ $ npm install
 $ node scripts/create_index.js
 ```
 
-In order to confirm that the mappings have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/_mapping
+In order to confirm that the mappings have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/\_mapping
 
 ## Running an import
 
@@ -97,8 +97,8 @@ $ PELIAS_CONFIG=<path_to_config_json> npm start
 ```
 
 You should now be able to retrieve the OSM data directly from `elasticsearch`:
-- http://localhost:9200/pelias/address/_search
-- http://localhost:9200/pelias/venue/_search
+- http://localhost:9200/pelias/address/\_search
+- http://localhost:9200/pelias/venue/\_search
 
 ## How long does it take?
 
@@ -113,7 +113,7 @@ If you are looking to run a planet-wide cluster like the one we provide at https
 Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
 
 To perform a very basic URI search you can execute a query such as:
-- http://localhost:9200/pelias/venue/_search?df=name.default&q=hackney%20city%20farm
+- http://localhost:9200/pelias/venue/\_search?df=name.default&q=hackney%20city%20farm
 
 ## More open data sets
 
