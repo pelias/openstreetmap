@@ -1,8 +1,16 @@
 
-var extractor = require('../../stream/address_extractor'),
-    fixtures = require('../fixtures/docs'),
-    Document = require('pelias-model').Document,
-    through = require('through2');
+var extractor = require('../../stream/address_extractor');
+var fixtures = require('../fixtures/docs');
+var Document = require('pelias-model').Document;
+var through = require('through2');
+var event_stream = require( 'event-stream' );
+
+function test_stream(input, testedStream, callback) {
+  var input_stream = event_stream.readArray(input);
+  var destination_stream = event_stream.writeArray(callback);
+
+  input_stream.pipe(testedStream).pipe(destination_stream);
+}
 
 module.exports.tests = {};
 
@@ -63,12 +71,11 @@ module.exports.tests.hasValidAddress = function(test, common) {
 module.exports.tests.passthrough = function(test, common) {
   test('passthrough: regular POI', function(t) {
     var stream = extractor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getType(), 'venue', 'type not changed' );
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write(fixtures.named);
+
+    test_stream([fixtures.named], stream, function (err, actual) {
+      t.equal(actual[0].getType(), 'venue', 'type not changed');
+      t.end();
+    });
   });
 };
 
@@ -76,13 +83,10 @@ module.exports.tests.passthrough = function(test, common) {
 // should be filtered and removed from the pipeline completely.
 module.exports.tests.filter = function(test, common) {
   test('filter: invalid POI', function(t) {
-    var stream = extractor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.end(); // test will fail if doc is not filtered.
-      next();
-    }));
-    stream.write(fixtures.unnamed);
-    t.end();
+    test_stream([fixtures.unnamed], extractor(), function (err, actual) {
+      t.equal(actual.length, 0, 'invalid doc should get filtered out');
+      t.end();
+    });
   });
 };
 
@@ -91,16 +95,14 @@ module.exports.tests.filter = function(test, common) {
 // address and discard the original as it has no valid name.
 module.exports.tests.createFromNameless = function(test, common) {
   test('create: from nameless record', function(t) {
-    var stream = extractor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getId(), 'item:3', 'address only id schema' );
-      t.deepEqual( Object.keys(doc.name), ['default'], 'only default name set' );
-      t.equal( doc.getName('default'), '10 Mapzen pl', 'correct name' );
-      t.equal( doc.getType(), 'address', 'type changed' );
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write(fixtures.unnamedWithAddress);
+    test_stream([fixtures.unnamedWithAddress], extractor(), function( err, actual ) {
+      t.equal(actual.length, 1, 'correct number of results');
+      t.equal(actual[0].getId(), 'item:3', 'address only id schema');
+      t.deepEqual(Object.keys(actual[0].name), ['default'], 'only default name set');
+      t.equal(actual[0].getName('default'), '10 Mapzen pl', 'correct name');
+      t.equal(actual[0].getType(), 'address', 'type changed');
+      t.end();
+    });
   });
 };
 
@@ -111,79 +113,52 @@ module.exports.tests.createFromNameless = function(test, common) {
 // the POI record or errors can occur. see comment in test below.
 module.exports.tests.duplicateFromPOIAddress = function(test, common) {
   test('create: from named record', function(t) {
-    t.plan(6);
-    var stream = extractor();
-    var i = 0; // count total records coming out of the stream
-    stream.pipe( through.obj( function( doc, enc, next ){
-      // first doc
-      if( i++ === 0 ){
-        t.equal( doc.getId(), 'item:4', 'poi address id schema' );
-        t.equal( doc.getName('default'), '11 Sesame st', 'correct name' );
-        t.equal( doc.getType(), 'address', 'type changed' );
-        next();
-      // second doc
-      } else {
-        t.equal( doc.getId(), 'item:4', 'id unchanged' );
-        t.equal( doc.getName('default'), 'poi4', 'correct name' );
-        t.equal( doc.getType(), 'address', 'type unchanged' );
-        t.end(); // test should fail if not called, or called more than once.
-        next();
-      }
-    }));
-    stream.write(fixtures.namedWithAddress);
+    test_stream( [fixtures.namedWithAddress], extractor(), function( err, actual ) {
+      t.equal(actual.length, 2, 'correct number of results');
+
+      t.equal(actual[0].getId(), 'item:4', 'poi address id schema');
+      t.equal(actual[0].getName('default'), '11 Sesame st', 'correct name');
+      t.equal(actual[0].getType(), 'address', 'type changed');
+
+      t.equal(actual[1].getId(), 'item:4', 'id unchanged');
+      t.equal(actual[1].getName('default'), 'poi4', 'correct name');
+      t.equal(actual[1].getType(), 'address', 'type unchanged');
+
+      t.end(); // test should fail if not called, or called more than once.
+    });
   });
 };
 
 // When duplicating the origin record to create an address record
-// we must ensure that no properties are unintentially missed.
+// we must ensure that no properties are unintentionally missed.
 // Also we need to ensure that the original document is not mutated.
 module.exports.tests.duplicateAllFields = function(test, common) {
   test('create: duplicate records correctly', function(t) {
-    t.plan(32);
-    var stream = extractor();
-    var i = 0;
-    stream.pipe( through.obj( function( doc, enc, next ){
-      // first doc
-      if( i++ === 0 ){
-        t.equal( doc.getId(), 'item:6', 'changed' );
-        t.equal( doc.getType(), 'address', 'changed' );
-        t.deepEqual( Object.keys(doc.name).length, 1, 'changed' );
-        t.equal( doc.getName('default'), '13 Goldsmiths row', 'changed' );
-        t.false( doc.getName('alt'), 'unset' );
-        t.deepEqual( doc.getCentroid(), { lat: 6, lon: 6 }, 'not changed' );
-        t.deepEqual( doc.getAlpha3(), 'FOO', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin0'), 'country', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin1'), 'state', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin1_abbr'), 'STA', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin2'), 'city', 'not changed' );
-        t.deepEqual( doc.getAdmin('local_admin'), 'borough', 'not changed' );
-        t.deepEqual( doc.getAdmin('locality'), 'town', 'not changed' );
-        t.deepEqual( doc.getAdmin('neighborhood'), 'hood', 'not changed' );
-        t.deepEqual( doc.getMeta('foo'), 'bar', 'not changed' );
-        t.deepEqual( doc.getMeta('bing'), 'bang', 'not changed' );
+    test_stream([fixtures.completeDoc], extractor(), function( err, actual ) {
+      // the first item pushed downstream should be the extracted address
+      var docAddress = actual[0];
+      t.equal(docAddress.getId(), 'item:6', 'changed');
+      t.equal(docAddress.getType(), 'address', 'changed');
+      t.deepEqual(Object.keys(docAddress.name).length, 1, 'changed');
+      t.equal(docAddress.getName('default'), '13 Goldsmiths row', 'changed');
+      t.false(docAddress.getName('alt'), 'unset');
+      t.deepEqual(docAddress.getCentroid(), {lat: 6, lon: 6}, 'not changed');
+      t.deepEqual(docAddress.getMeta('foo'), 'bar', 'not changed');
+      t.deepEqual(docAddress.getMeta('bing'), 'bang', 'not changed');
+
       // second doc
-      } else {
-        t.equal( doc.getId(), 'item:6', 'not changed' );
-        t.equal( doc.getType(), 'address', 'not changed' );
-        t.deepEqual( Object.keys(doc.name).length, 2, 'not changed' );
-        t.equal( doc.getName('default'), 'item6', 'not changed' );
-        t.equal( doc.getName('alt'), 'item six', 'not changed' );
-        t.deepEqual( doc.getCentroid(), { lat: 6, lon: 6 }, 'not changed' );
-        t.deepEqual( doc.getAlpha3(), 'FOO', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin0'), 'country', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin1'), 'state', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin1_abbr'), 'STA', 'not changed' );
-        t.deepEqual( doc.getAdmin('admin2'), 'city', 'not changed' );
-        t.deepEqual( doc.getAdmin('local_admin'), 'borough', 'not changed' );
-        t.deepEqual( doc.getAdmin('locality'), 'town', 'not changed' );
-        t.deepEqual( doc.getAdmin('neighborhood'), 'hood', 'not changed' );
-        t.deepEqual( doc.getMeta('foo'), 'bar', 'not changed' );
-        t.deepEqual( doc.getMeta('bing'), 'bang', 'not changed' );
-        t.end(); // test should fail if not called, or called more than twice.
-      }
-      next();
-    }));
-    stream.write(fixtures.completeDoc);
+      var docVenue = actual[1];
+      t.equal(docVenue.getId(), 'item:6', 'not changed');
+      t.equal(docVenue.getType(), 'venue', 'not changed');
+      t.deepEqual(Object.keys(docVenue.name).length, 2, 'not changed');
+      t.equal(docVenue.getName('default'), 'item6', 'not changed');
+      t.equal(docVenue.getName('alt'), 'item six', 'not changed');
+      t.deepEqual(docVenue.getCentroid(), {lat: 6, lon: 6}, 'not changed');
+      t.deepEqual(docVenue.getMeta('foo'), 'bar', 'not changed');
+      t.deepEqual(docVenue.getMeta('bing'), 'bang', 'not changed');
+
+      t.end(); // test should fail if not called, or called more than twice.
+    });
   });
 };
 
@@ -191,37 +166,28 @@ module.exports.tests.duplicateAllFields = function(test, common) {
 // ref: https://github.com/pelias/openstreetmap/issues/21
 module.exports.tests.semi_colon_street_numbers = function(test, common) {
   test('create: one record per street number', function(t) {
-    t.plan(12);
-    var stream = extractor();
-    var i = 0;
-    stream.pipe( through.obj( function( doc, enc, next ){
-      // first doc
-      if( i === 0 ){
-        t.equal( doc.getId(), 'item:10', 'changed' );
-        t.equal( doc.getType(), 'address', 'changed' );
-        t.equal( doc.getName('default'), '1 Pennine Road', 'changed' );
-      // second doc
-      } else if( i === 1 ){
-        t.equal( doc.getId(), 'item:10:2', 'changed' );
-        t.equal( doc.getType(), 'address', 'changed' );
-        t.equal( doc.getName('default'), '2 Pennine Road', 'changed' );
-      // third doc
-      } else if( i === 2 ){
-        t.equal( doc.getId(), 'item:10:3', 'changed' );
-        t.equal( doc.getType(), 'address', 'changed' );
-        t.equal( doc.getName('default'), '3 Pennine Road', 'changed' );
-      // last doc
-      } else {
-        t.equal( doc.getId(), 'item:10', 'not changed' );
-        t.equal( doc.getType(), 'venue', 'not changed' );
-        t.equal( doc.getName('default'), 'poi10', 'not changed' );
-        t.end(); // test should fail if not called, or called more than twice.
-      }
+    test_stream([fixtures.semicolonStreetNumbers], extractor(), function( err, actual ) {
+      t.equal(actual.length, 4, 'correct number of results');
 
-      i++;
-      next();
-    }));
-    stream.write(fixtures.semicolonStreetNumbers);
+      t.equal(actual[0].getId(), 'item:10', 'changed');
+      t.equal(actual[0].getType(), 'address', 'changed');
+      t.equal(actual[0].getName('default'), '1 Pennine Road', 'changed');
+
+
+      t.equal(actual[1].getId(), 'item:10:2', 'changed');
+      t.equal(actual[1].getType(), 'address', 'changed');
+      t.equal(actual[1].getName('default'), '2 Pennine Road', 'changed');
+
+      t.equal(actual[2].getId(), 'item:10:3', 'changed');
+      t.equal(actual[2].getType(), 'address', 'changed');
+      t.equal(actual[2].getName('default'), '3 Pennine Road', 'changed');
+
+      t.equal(actual[3].getId(), 'item:10', 'not changed');
+      t.equal(actual[3].getType(), 'venue', 'not changed');
+      t.equal(actual[3].getName('default'), 'poi10', 'not changed');
+
+      t.end(); // test should fail if not called, or called more than twice.
+    });
   });
 };
 
@@ -236,14 +202,12 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     // this method will throw a generic Error for testing
     doc.getType = function(){ throw new Error('test'); };
 
-    var stream = extractor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.end(); // test will fail if called (called twice).
-      next();
-    }));
-    stream.write(doc);
-    t.end();
+    test_stream([doc], extractor(), function( err, actual ) {
+      t.equal(actual.length, 0, 'no results');
+      t.end();
+    });
   });
+
   test('errors - passthrough named poi records', function(t) {
     var doc = new Document('a', 'b', 1);
     doc.setName('default','test');
@@ -251,13 +215,10 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     // this method will throw a generic Error for testing
     doc.getType = function(){ throw new Error('test'); };
 
-    var stream = extractor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getName('default'), 'test', 'changed' );
-      t.end(); // test should fail if not called, or called twice.
-      next();
-    }));
-    stream.write(doc);
+    test_stream([doc], extractor(), function( err, actual ) {
+      t.equal(actual[0].getName('default'), 'test', 'changed');
+      t.end();
+    });
   });
 };
 
