@@ -20,7 +20,7 @@ docs.namedWithAddress.address_parts = {
   number: '11', street: 'Sesame st'
 };
 
-docs.completeDoc = new Document('osm','address','item:6');
+docs.completeDoc = new Document('osm','venue','item:6');
 docs.completeDoc.address_parts = {
   number: '13', street: 'Goldsmiths row', test: 'prop'
 };
@@ -28,14 +28,6 @@ docs.completeDoc
   .setName('default','item6')
   .setName('alt','item six')
   .setCentroid({lat:6,lon:6})
-  .setAlpha3('FOO')
-  .setAdmin('admin0','country')
-  .setAdmin('admin1','state')
-  .setAdmin('admin1_abbr','STA')
-  .setAdmin('admin2','city')
-  .setAdmin('local_admin','borough')
-  .setAdmin('locality','town')
-  .setAdmin('neighborhood','hood')
   .setMeta('foo','bar')
   .setMeta('bing','bang');
 

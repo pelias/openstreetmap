@@ -113,23 +113,12 @@ module.exports = function(){
 
 // properties to map from the osm record to the pelias doc
 var addrProps = [ 'name', 'number', 'street', 'zip' ];
-var adminProps = [ 'admin0', 'admin1', 'admin1_abbr', 'admin2', 'local_admin', 'locality', 'neighborhood' ];
 
 // call document setters and ignore non-fatal errors
 function setProperties( record, doc ){
   addrProps.forEach( function ( prop ){
     try {
       record.setAddress( prop, doc.getAddress( prop ) );
-    } catch ( ex ) {}
-  });
-
-  try {
-    record.setAlpha3( doc.getAlpha3() );
-  } catch ( ex ) {}
-
-  adminProps.forEach( function ( level ){
-    try {
-      record.setAdmin( level, doc.getAdmin( level ) );
     } catch ( ex ) {}
   });
 }
