@@ -69,6 +69,38 @@ module.exports.tests.enabled = function(test, common) {
 
 };
 
+module.exports.tests.enabled_without_admin_lookup_config = function(test, common) {
+  var config = {
+    imports: {
+      openstreetmap: {
+        adminLookup: true
+      }
+    }
+  };
+
+  /*
+   * There was a bug (https://github.com/pelias/wof-admin-lookup/issues/51) where admin lookup could
+   * not be enabled without the adminLookup config section
+   */
+  test('enabled without any special adminLookup config: return pip stream', function (t) {
+    t.plan(1);
+
+    var streamMock = {madeBy: 'mock'};
+
+    var wofAdminLookup = {
+      createLocalWofPipResolver: function() {
+      },
+      createLookupStream: function() {
+        return streamMock;
+      }
+    };
+
+    var stream = adminLookup(config, wofAdminLookup);
+    t.equal(stream, streamMock, 'stream created');
+    t.end();
+  });
+};
+
 module.exports.tests.disabled = function (test, common) {
   var config = {
     imports: {
