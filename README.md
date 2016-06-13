@@ -12,13 +12,14 @@ official user documentation is [here](https://mapzen.com/documentation/search/).
 
 ## Prerequisites
 
-In order to use the importer you must first install and configure `elasticsearch` and `nodejs`.
 
-You can follow the instructions here: https://github.com/pelias/pelias/blob/master/INSTALL.md to get set up.
+Since this module is just one part of our geocoder, we'd recommend starting [here](https://github.com/pelias/pelias-doc/blob/master/installing.md) to follow the guide for seeing up your own pelias instance. 
 
-The recommended version for nodejs is `0.12` and elasticsearch is `1.7`. We support Nodejs 4 and 5, but not Elasticsearch 2 (yet).
+The recommended version for nodejs is at least `0.12` and elasticsearch is `1.7`. We support Nodejs 4 and 5, but not Elasticsearch 2 (yet).
 
 Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
+
+If you plan on using the admin-lookup feature, you will also need  [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) installed. 
 
 ## Clone and Install dependencies
 
@@ -29,40 +30,27 @@ $ npm install
 
 ## Download data
 
-You will need to download quattroshapes in order to build an admin hierarchy for each record, you can pull-down a tarball from [here](http://quattroshapes.mapzen.com/quattroshapes/quattroshapes-simplified.tar.gz) (537MB) which you will need to extract, preferably to an SSD if you have one.
+In order to build an administrative hierachy for each record, you will need [Who's On First](https://github.com/pelias/whosonfirst) data downloaded and imported into the whosonfirst module. 
 
 The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
+
+> __PRO-TIP:__ *Currently, this module only supports the input of a single pbf file.*
 
 ## Configuration
 
 In order to tell the importer the location of your downloads, temp space and enviromental settings you will first need to create a `~/pelias.json` file.
 
-As a minimum, it should be valid json and contain the following:
+See [the config](https://github.com/pelias/config) documentation for details on the structure of this file. Your relevant config info for the openstreetmap module might look something like this:
 
 ```javascript
-{
-  "logger": {
-    "level": "debug"
-  },
-  "esclient": {
-    "hosts": [{
-      "env": "development",
-      "protocol": "http",
-      "host": "localhost",
-      "port": 9200
-    }]
-  },
-  "imports": {
     "openstreetmap": {
+      "datapath": "/mnt/pelias/openstreetmap",
       "adminLookup": false,
       "leveldbpath": "/tmp",
-      "datapath": "/data/pbf",
       "import": [{
-        "filename": "london_england.osm.pbf"
+        "filename": "planet.osm.pbf"
       }]
     }
-  }
-}
 ```
 
 ### Environment Settings
@@ -79,7 +67,7 @@ As a minimum, it should be valid json and contain the following:
 - `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
   county, etc. names), but you can optionally create it via the
   [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) module; just set this property to `true`.  Consult
-  the `wof-admin-lookup` README for setup documentation. You'll need a WOF point-in-polygon service running to query against.
+  the `wof-admin-lookup` README for setup documentation. 
 - `imports.adminLookup.url` - this is the endpoint to query for admin hierarchy lookups, currently the code only supports usage of WOF admin lookup module.
 - `imports.adminLookup.maxConcurrentReqs` - this is the number of concurrent requests your setup will support to the admin lookup service. The bigger this number, the faster the import process.
 
