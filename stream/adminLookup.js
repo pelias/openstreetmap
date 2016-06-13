@@ -26,14 +26,8 @@ function createStream(config, adminLookup) {
     return sendPassthroughStream();
   }
 
-  // admin lookup disabled
-  if (!config.imports.openstreetmap.adminLookup) {
-    return sendPassthroughStream();
-  }
-
   // admin lookup enabled
-  if (config.imports.adminLookup) {
-    //var pipResolver = adminLookup.createWofPipResolver(config.imports.adminLookup.url);
+  if (config.imports.openstreetmap.adminLookup) {
     var pipResolver = adminLookup.createLocalWofPipResolver();
     return adminLookup.createLookupStream(pipResolver);
   } else {
