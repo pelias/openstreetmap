@@ -26,8 +26,6 @@ $ npm install
 
 ## Download data
 
-In order to build an administrative hierachy for each record, you will need [Who's On First](https://github.com/pelias/whosonfirst) data downloaded and imported into the whosonfirst module.
-
 The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
 
 > __PRO-TIP:__ *Currently, this module only supports the input of a [single pbf file at a time, but we wish to support multiple files](https://github.com/pelias/openstreetmap/issues/55).*
