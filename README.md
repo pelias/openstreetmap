@@ -12,16 +12,12 @@
 
 ## Prerequisites
 
-
-Since this module is just one part of our geocoder, we'd recommend starting [here](https://github.com/pelias/pelias-doc/blob/master/installing.md) to follow the guide for seeing up your own pelias instance. 
-
-The recommended version for nodejs is at least `0.12` and elasticsearch is `1.7`. We support Nodejs 4 and 5, but not Elasticsearch 2 (yet).
-
-Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
-
-If you plan on using the admin-lookup feature, you will also need  [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) installed. 
+* NodeJS `0.12` or newer (the latest in the Node 4 series is currently recommended)
+* Elasticsearch 1.7 (support for version 2 and above is not here, yet).
 
 ## Clone and Install dependencies
+
+Since this module is just one part of our geocoder, we'd recommend starting with our [Vagrant image](https://github.com/pelias/vagrant) for quick setup, or our [full installation docs](https://github.com/pelias/pelias-doc/blob/master/installing.md) to use this module.
 
 ```bash
 $ git clone https://github.com/pelias/openstreetmap.git && cd openstreetmap;
