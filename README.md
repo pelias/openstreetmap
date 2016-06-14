@@ -75,10 +75,6 @@ This will start the import process, it will take around 30 seconds to prime it's
 $ PELIAS_CONFIG=<path_to_config_json> npm start
 ```
 
-You should now be able to retrieve the OSM data directly from `elasticsearch`:
-- http://localhost:9200/pelias/address/\_search
-- http://localhost:9200/pelias/venue/\_search
-
 ## How long does it take?
 
 Ingestion time varies from machine-to-machine but as a general guide it takes about 7 minutes to import 125,000 points-of-interest & 140,000 street addresses covering the city of London on a quad-core 2.x GHZ machine with an SSD.
@@ -86,13 +82,6 @@ Ingestion time varies from machine-to-machine but as a general guide it takes ab
 These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
 
 If you are looking to run a planet-wide cluster like the one we provide at https://search.mapzen.com/ please get in contact for more information from our ops team.
-
-## Querying the data and running a service
-
-Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
-
-To perform a very basic URI search you can execute a query such as:
-- http://localhost:9200/pelias/venue/\_search?df=name.default&q=hackney%20city%20farm
 
 ## Issues
 
