@@ -44,7 +44,7 @@ See [the config](https://github.com/pelias/config) documentation for details on 
       "adminLookup": false,
       "leveldbpath": "/tmp",
       "import": [{
-        "filename": "planet.osm.pbf"
+        "filename": "london_england.osm.pbf"
       }]
     }
 ```
