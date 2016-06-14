@@ -34,7 +34,7 @@ The importer will accept any valid `pbf` extract you have, this can be a full pl
 
 ## Configuration
 
-In order to tell the importer the location of your downloads, temp space and enviromental settings you will first need to create a `~/pelias.json` file.
+In order to tell the importer the location of your downloads, temp space and environmental settings you will first need to create a `~/pelias.json` file.
 
 See [the config](https://github.com/pelias/config) documentation for details on the structure of this file. Your relevant config info for the openstreetmap module might look something like this:
 
@@ -97,7 +97,7 @@ Pretty please; provide unit tests and script fixtures in the `test` directory.
 
 A `.jshintrc` file is provided which contains a linting config, usually your text editor will understand this config and give you inline hints on code style and readability.
 
-These settings are strictly inforced when you do a `git commit`, you can execute `git commit` at any time to run the linter against your code.
+These settings are strictly enforced when you do a `git commit`, you can execute `git commit` at any time to run the linter against your code.
 
 ### Running Unit Tests
 
