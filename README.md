@@ -1,9 +1,7 @@
+> This repository is part of the [Pelias](https://github.com/pelias/pelias) project. Pelias is an open-source, open-data geocoder built by [Mapzen](https://www.mapzen.com/) that also powers [Mapzen Search](https://mapzen.com/projects/search). Our official user documentation is [here](https://mapzen.com/documentation/search/).
+
 # Pelias OpenStreetMap importer
 
-This repository is part of the [Pelias](https://github.com/pelias/pelias)
-project. Pelias is an open-source, open-data geocoder built by
-[Mapzen](https://www.mapzen.com/) that also powers [Mapzen Search](https://mapzen.com/projects/search). Our
-official user documentation is [here](https://mapzen.com/documentation/search/).
 
 ## Overview
 
@@ -156,5 +154,3 @@ $ npm run coverage
 ### Continuous Integration
 
 Travis tests every change against node version `0.10`, `0.12`, `4.x`, and `5.x`.
-
-[![Build Status](https://travis-ci.org/pelias/openstreetmap.png?branch=master)](https://travis-ci.org/pelias/openstreetmap)
