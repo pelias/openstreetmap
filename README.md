@@ -60,25 +60,12 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 
 ### Administrative Hierarchy Lookup
 
-- `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
-  county, etc. names), but you can optionally create it via the
-  [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) module; just set this property to `true`.  Consult
-  the `wof-admin-lookup` README for setup documentation. 
-- `imports.adminLookup.url` - this is the endpoint to query for admin hierarchy lookups, currently the code only supports usage of WOF admin lookup module.
-- `imports.adminLookup.maxConcurrentReqs` - this is the number of concurrent requests your setup will support to the admin lookup service. The bigger this number, the faster the import process.
+Most OSM data doesn't have a full administrative hierarchy (ie, country, state,
+county, etc. names), but it can be calculated using data from [Who's on
+First](http://whosonfirst.mapzen.com/). See the [readme](https://github.com/pelias/wof-admin-lookup/blob/master/README.md)
+for [pelias/wof-admin-lookup](https://github.com/pelias/wof-admin-lookup) for more information.
 
-
-## Setting up Elasticsearch Mappings
-
-While `elasticsearch` is technically schema-less, the data will not be correctly stored unless you first tell it how the data is to be indexed.
-
-```bash
-$ git clone https://github.com/pelias/schema.git && cd schema;
-$ npm install
-$ node scripts/create_index.js
-```
-
-In order to confirm that the mappings have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/\_mapping
+Set the `imports.openstreetmap.adminLookup` property in `pelias.json` to true to enable admin lookup.
 
 ## Running an import
 
