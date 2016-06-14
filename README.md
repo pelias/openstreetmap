@@ -94,12 +94,6 @@ Once you're all set up you can clone and install https://github.com/pelias/api w
 To perform a very basic URI search you can execute a query such as:
 - http://localhost:9200/pelias/venue/\_search?df=name.default&q=hackney%20city%20farm
 
-## More open data sets
-
-- https://github.com/pelias/geonames
-- https://github.com/pelias/openaddresses
-- https://github.com/pelias/whosonfirst
-
 ## Issues
 
 If you have any issues getting set up or the documentation is missing something, please open an issue here: https://github.com/pelias/openstreetmap/issues
