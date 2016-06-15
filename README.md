@@ -1,9 +1,9 @@
+> This repository is part of the [Pelias](https://github.com/pelias/pelias) project. Pelias is an open-source, open-data geocoder built by [Mapzen](https://www.mapzen.com/) that also powers [Mapzen Search](https://mapzen.com/projects/search). Our official user documentation is [here](https://mapzen.com/documentation/search/).
+
 # Pelias OpenStreetMap importer
 
-This repository is part of the [Pelias](https://github.com/pelias/pelias)
-project. Pelias is an open-source, open-data geocoder built by
-[Mapzen](https://www.mapzen.com/) that also powers [Mapzen Search](https://mapzen.com/projects/search). Our
-official user documentation is [here](https://mapzen.com/documentation/search/).
+![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+[![Gitter Chat](https://badges.gitter.im/pelias/pelias.svg)](https://gitter.im/pelias/pelias?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Overview
 
@@ -12,15 +12,12 @@ official user documentation is [here](https://mapzen.com/documentation/search/).
 
 ## Prerequisites
 
-In order to use the importer you must first install and configure `elasticsearch` and `nodejs`.
-
-You can follow the instructions here: https://github.com/pelias/pelias/blob/master/INSTALL.md to get set up.
-
-The recommended version for nodejs is `0.12` and elasticsearch is `1.7`. We support Nodejs 4 and 5, but not Elasticsearch 2 (yet).
-
-Before continuing you should confirm that you have these tools correctly installed and elasticsearch is running on port `9200`.
+* NodeJS `0.12` or newer (the latest in the Node 4 series is currently recommended)
+* Elasticsearch 1.7 (support for version 2 and above is not here, yet).
 
 ## Clone and Install dependencies
+
+Since this module is just one part of our geocoder, we'd recommend starting with our [Vagrant image](https://github.com/pelias/vagrant) for quick setup, or our [full installation docs](https://github.com/pelias/pelias-doc/blob/master/installing.md) to use this module.
 
 ```bash
 $ git clone https://github.com/pelias/openstreetmap.git && cd openstreetmap;
@@ -29,40 +26,25 @@ $ npm install
 
 ## Download data
 
-You will need to download quattroshapes in order to build an admin hierarchy for each record, you can pull-down a tarball from [here](http://quattroshapes.mapzen.com/quattroshapes/quattroshapes-simplified.tar.gz) (537MB) which you will need to extract, preferably to an SSD if you have one.
-
 The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
+
+> __PRO-TIP:__ *Currently, this module only supports the input of a [single pbf file at a time, but we wish to support multiple files](https://github.com/pelias/openstreetmap/issues/55).*
 
 ## Configuration
 
-In order to tell the importer the location of your downloads, temp space and enviromental settings you will first need to create a `~/pelias.json` file.
+In order to tell the importer the location of your downloads, temp space and environmental settings you will first need to create a `~/pelias.json` file.
 
-As a minimum, it should be valid json and contain the following:
+See [the config](https://github.com/pelias/config) documentation for details on the structure of this file. Your relevant config info for the openstreetmap module might look something like this:
 
 ```javascript
-{
-  "logger": {
-    "level": "debug"
-  },
-  "esclient": {
-    "hosts": [{
-      "env": "development",
-      "protocol": "http",
-      "host": "localhost",
-      "port": 9200
-    }]
-  },
-  "imports": {
     "openstreetmap": {
+      "datapath": "/mnt/pelias/openstreetmap",
       "adminLookup": false,
       "leveldbpath": "/tmp",
-      "datapath": "/data/pbf",
       "import": [{
         "filename": "london_england.osm.pbf"
       }]
     }
-  }
-}
 ```
 
 ### Environment Settings
@@ -76,25 +58,12 @@ As a minimum, it should be valid json and contain the following:
 
 ### Administrative Hierarchy Lookup
 
-- `import.openstreetmap.adminLookup` - most OSM data doesn't have a full administrative hierarchy (ie, country, state,
-  county, etc. names), but you can optionally create it via the
-  [`pelias/wof-admin-lookup`](https://github.com/pelias/wof-admin-lookup) module; just set this property to `true`.  Consult
-  the `wof-admin-lookup` README for setup documentation. You'll need a WOF point-in-polygon service running to query against.
-- `imports.adminLookup.url` - this is the endpoint to query for admin hierarchy lookups, currently the code only supports usage of WOF admin lookup module.
-- `imports.adminLookup.maxConcurrentReqs` - this is the number of concurrent requests your setup will support to the admin lookup service. The bigger this number, the faster the import process.
+Most OSM data doesn't have a full administrative hierarchy (ie, country, state,
+county, etc. names), but it can be calculated using data from [Who's on
+First](http://whosonfirst.mapzen.com/). See the [readme](https://github.com/pelias/wof-admin-lookup/blob/master/README.md)
+for [pelias/wof-admin-lookup](https://github.com/pelias/wof-admin-lookup) for more information.
 
-
-## Setting up Elasticsearch Mappings
-
-While `elasticsearch` is technically schema-less, the data will not be correctly stored unless you first tell it how the data is to be indexed.
-
-```bash
-$ git clone https://github.com/pelias/schema.git && cd schema;
-$ npm install
-$ node scripts/create_index.js
-```
-
-In order to confirm that the mappings have been correctly inserted in to elasticsearch you can now query http://localhost:9200/pelias/\_mapping
+Set the `imports.openstreetmap.adminLookup` property in `pelias.json` to true to enable admin lookup.
 
 ## Running an import
 
@@ -104,10 +73,6 @@ This will start the import process, it will take around 30 seconds to prime it's
 $ PELIAS_CONFIG=<path_to_config_json> npm start
 ```
 
-You should now be able to retrieve the OSM data directly from `elasticsearch`:
-- http://localhost:9200/pelias/address/\_search
-- http://localhost:9200/pelias/venue/\_search
-
 ## How long does it take?
 
 Ingestion time varies from machine-to-machine but as a general guide it takes about 7 minutes to import 125,000 points-of-interest & 140,000 street addresses covering the city of London on a quad-core 2.x GHZ machine with an SSD.
@@ -115,19 +80,6 @@ Ingestion time varies from machine-to-machine but as a general guide it takes ab
 These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
 
 If you are looking to run a planet-wide cluster like the one we provide at https://search.mapzen.com/ please get in contact for more information from our ops team.
-
-## Querying the data and running a service
-
-Once you're all set up you can clone and install https://github.com/pelias/api which provides a RESTful webserver and the query logic required to control what information gets retrieved from the indeces and how it's formatted for the end user.
-
-To perform a very basic URI search you can execute a query such as:
-- http://localhost:9200/pelias/venue/\_search?df=name.default&q=hackney%20city%20farm
-
-## More open data sets
-
-- https://github.com/pelias/geonames
-- https://github.com/pelias/openaddresses
-- https://github.com/pelias/whosonfirst
 
 ## Issues
 
@@ -143,7 +95,7 @@ Pretty please; provide unit tests and script fixtures in the `test` directory.
 
 A `.jshintrc` file is provided which contains a linting config, usually your text editor will understand this config and give you inline hints on code style and readability.
 
-These settings are strictly inforced when you do a `git commit`, you can execute `git commit` at any time to run the linter against your code.
+These settings are strictly enforced when you do a `git commit`, you can execute `git commit` at any time to run the linter against your code.
 
 ### Running Unit Tests
 
@@ -168,5 +120,3 @@ $ npm run coverage
 ### Continuous Integration
 
 Travis tests every change against node version `0.10`, `0.12`, `4.x`, and `5.x`.
-
-[![Build Status](https://travis-ci.org/pelias/openstreetmap.png?branch=master)](https://travis-ci.org/pelias/openstreetmap)
