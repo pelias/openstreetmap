@@ -7,13 +7,13 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "npm run units",
-    "units": "node test/run.js | tap-spec",
-    "pretest": "test/pretest.sh",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "npm run pretest && node test/end-to-end.js;",
     "lint": "jshint .",
+    "pretest": "test/pretest.sh",
+    "start": "node index.js",
+    "test": "npm run units",
+    "units": "node test/run.js | tap-spec",
     "validate": "npm ls"
   },
   "repository": {
