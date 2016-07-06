@@ -13,7 +13,7 @@
     "pretest": "test/pretest.sh",
     "start": "node index.js",
     "test": "npm run units",
-    "travis": "npm test && npm run end-to-end",
+    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
     "validate": "npm ls"
   },
