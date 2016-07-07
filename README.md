@@ -13,7 +13,7 @@
 ## Prerequisites
 
 * NodeJS `0.12` or newer (the latest in the Node 4 series is currently recommended)
-* Elasticsearch 1.7 (support for version 2 and above is not here, yet).
+* Elasticsearch 2.3+ (support for version 1.x has been deprecated).
 
 ## Clone and Install dependencies
 
