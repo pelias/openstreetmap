@@ -26,7 +26,7 @@ function createPbfStream( opts ){
 function config( opts ){
 
   if( !opts ){ opts = {}; }
-  
+
   // Use datapath setting from your config file
   // @see: github://pelias/config for more info.
   if( !opts.hasOwnProperty('file') ){
@@ -49,7 +49,7 @@ function config( opts ){
 }
 
 // Check path exists
-function validatePath( path, message ){  
+function validatePath( path, message ){
   try {
     fs.statSync( path );
   } catch( e ){
@@ -58,7 +58,7 @@ function validatePath( path, message ){
 }
 
 // Validate the tag list
-function validateTags( tags ){  
+function validateTags( tags ){
   if( !Array.isArray(tags) || !tags.length ) {
     throw new Error( 'invalid tags' );
   }
