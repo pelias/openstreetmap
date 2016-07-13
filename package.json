@@ -55,7 +55,7 @@
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
-    "async": "^1.2.1",
+    "async": "^2.0.0",
     "colors": "^1.1.2",
     "deep-diff": "^0.3.2",
     "event-stream": "^3.3.2",
