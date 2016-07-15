@@ -1,5 +1,4 @@
-
-var osm = require('../index');
+var importPipeline = require('../../stream/importPipeline');
 var isObject = require('is-object');
 
 module.exports.tests = {};
@@ -23,18 +22,18 @@ module.exports.tests.interface = function(test, common) {
 
   streams.forEach(function (stream) {
     test('interface: ' + stream, function(t) {
-      t.equal(typeof osm[stream], 'function', 'stream factory');
+      t.equal(typeof importPipeline[stream], 'function', 'stream factory');
       t.end();
     });
   });
 
   test('interface: stream count', function(t) {
-    t.equal( Object.keys(osm).length, streams.length + 1, 'correct number of streams');
+    t.equal( Object.keys(importPipeline).length, streams.length + 1, 'correct number of streams');
     t.end();
   });
 
-  test('interface: osm.config.categoryDefaults', function(t) {
-    t.true(isObject( osm.config.categoryDefaults ), 'default mapping object');
+  test('interface: importPipeline.config.categoryDefaults', function(t) {
+    t.true(isObject( importPipeline.config.categoryDefaults ), 'default mapping object');
     t.end();
   });
 };
@@ -42,7 +41,7 @@ module.exports.tests.interface = function(test, common) {
 module.exports.all = function (tape, common) {
 
   function test(name, testFunction) {
-    return tape('index: ' + name, testFunction);
+    return tape('importPipeline: ' + name, testFunction);
   }
 
   for( var testCase in module.exports.tests ){

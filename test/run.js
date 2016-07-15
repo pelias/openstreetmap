@@ -3,7 +3,7 @@ var tape = require('tape');
 var common = {};
 
 var tests = [
-  require('./index'),
+  require('./stream/importPipeline'),
   require('./config/features'),
   require('./config/localized_name_keys'),
   require('./stream/address_extractor'),
