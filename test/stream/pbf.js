@@ -1,9 +1,8 @@
-
-var path = require('path'),
-    through = require('through2'),
-    settings = require('pelias-config').generate(),
-    pbf = require('../../stream/pbf'),
-    features = require('../../config/features');
+var path = require('path');
+var through = require('through2');
+var settings = require('pelias-config').generate();
+var pbf = require('../../stream/pbf');
+var features = require('../../config/features');
 
 module.exports.tests = {};
 
