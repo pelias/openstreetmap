@@ -57,6 +57,7 @@ module.exports.tests.validate = function(test, common) {
     var conf = pbf.config({ file: '/tmp/noexist.pbf' });
     t.throws(function(){
       var stream = pbf.parser(conf);
+      stream.kill();
     });
     t.end();
   });
@@ -64,6 +65,7 @@ module.exports.tests.validate = function(test, common) {
     var conf = pbf.config({ leveldb: '/tmp/noexist.pbf' });
     t.throws(function(){
       var stream = pbf.parser(conf);
+      stream.kill();
     });
     t.end();
   });
@@ -71,6 +73,7 @@ module.exports.tests.validate = function(test, common) {
     var conf = pbf.config({ tags: [] });
     t.throws(function(){
       var stream = pbf.parser(conf);
+      stream.kill();
     });
     t.end();
   });
