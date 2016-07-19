@@ -20,8 +20,8 @@ streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
 
 // default import pipeline
-streams.import = function(opts){
-  streams.pbfParser(opts)
+streams.import = function(){
+  streams.pbfParser()
     .pipe( streams.docConstructor() )
     .pipe( streams.tagMapper() )
     .pipe( streams.docDenormalizer() )
