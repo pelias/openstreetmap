@@ -45,7 +45,7 @@
     "merge": "^1.2.0",
     "pbf2json": "^3.0.0",
     "pelias-address-deduplicator": "1.1.0",
-    "pelias-config": "2.0.0",
+    "pelias-config": "2.1.0",
     "pelias-dbclient": "2.0.0",
     "pelias-logger": "0.0.8",
     "pelias-model": "4.0.0",
