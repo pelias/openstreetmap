@@ -7,13 +7,14 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "npm run units",
-    "units": "node test/run.js | tap-spec",
-    "pretest": "test/pretest.sh",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "npm run pretest && node test/end-to-end.js;",
     "lint": "jshint .",
+    "pretest": "test/pretest.sh",
+    "start": "node index.js",
+    "test": "npm run units",
+    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
+    "units": "node test/run.js | tap-spec",
     "validate": "npm ls"
   },
   "repository": {
@@ -35,27 +36,27 @@
     "elasticsearch": ">=1.3.4"
   },
   "dependencies": {
-    "extend": "^2.0.1",
+    "extend": "^3.0.0",
     "geolib": "^2.0.17",
-    "gjtk": "^1.0.0-b",
+    "gjtk": "^2.0.0",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
     "lodash": "^4.0.0",
     "merge": "^1.2.0",
     "pbf2json": "^3.0.0",
-    "pelias-address-deduplicator": "^1.x.x",
-    "pelias-config": "latest",
-    "pelias-dbclient": "^2.0.0",
-    "pelias-logger": "^0.0.8",
-    "pelias-model": "4.0.0",
-    "pelias-wof-admin-lookup": "^2.0.0",
+    "pelias-address-deduplicator": "1.1.0",
+    "pelias-config": "2.1.0",
+    "pelias-dbclient": "2.0.0",
+    "pelias-logger": "0.0.8",
+    "pelias-model": "4.1.0",
+    "pelias-wof-admin-lookup": "2.1.0",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0",
     "through2-spy": "^2.0.0",
     "trimmer": "^1.0.0"
   },
   "devDependencies": {
-    "async": "^1.2.1",
+    "async": "^2.0.0",
     "colors": "^1.1.2",
     "deep-diff": "^0.3.2",
     "event-stream": "^3.3.2",
@@ -66,7 +67,7 @@
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
-    "tmp": "0.0.26"
+    "tmp": "0.0.28"
   },
   "pre-commit": [
     "lint",

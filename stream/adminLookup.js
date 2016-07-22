@@ -1,13 +1,7 @@
 var through = require('through2');
 var peliasConfig = require( 'pelias-config' ).generate();
 var wofAdminLookup = require('pelias-wof-admin-lookup');
-
-
-function sendPassthroughStream() {
-  return through.obj(function (doc, enc, next) {
-    next(null, doc);
-  });
-}
+var sendPassthroughStream = require('../util/sendPassthroughStream');
 
 /**
  * Generate a stream object that will handle the adminLookup when enabled.
@@ -17,6 +11,7 @@ function sendPassthroughStream() {
  * @param {object} [adminLookup]
  * @returns {Stream}
  */
+
 function createStream(config, adminLookup) {
   config = config || peliasConfig;
   adminLookup = adminLookup || wofAdminLookup;

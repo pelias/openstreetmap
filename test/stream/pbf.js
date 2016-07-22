@@ -1,5 +1,6 @@
 
-var through = require('through2'),
+var path = require('path'),
+    through = require('through2'),
     settings = require('pelias-config').generate(),
     pbf = require('../../stream/pbf'),
     features = require('../../config/features');
@@ -78,7 +79,8 @@ module.exports.tests.validate = function(test, common) {
 // Create a new streaming pbf parser based on your config
 module.exports.tests.parser = function(test, common) {
   test('parser: create parser', function(t) {
-    var stream = pbf.parser();
+    var config = { file: path.resolve(__dirname + '/../vancouver_canada.osm.pbf') };
+    var stream = pbf.parser(config);
     t.equal(typeof stream, 'object', 'valid stream');
     t.equal(typeof stream._read, 'function', 'valid readable');
     t.equal(typeof stream._write, 'function', 'valid writeable');
