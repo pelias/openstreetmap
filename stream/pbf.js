@@ -26,7 +26,7 @@ function createPbfStream(opts){
 // configurations where not explicitly specified.
 function config(opts){
   if (!opts){
-    var opts = {};
+    opts = {};
   }
 
   // Use datapath setting from your config file

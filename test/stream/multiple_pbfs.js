@@ -16,13 +16,13 @@ var fakeGeneratedConfig = {
       'leveldbpath' : '/tmp'
     }
   }
-}
+};
 
 var fakeConfig = {
   generate: function fakeGenerate(){
     return fakeGeneratedConfig;
   }
-}
+};
 
 function testStream(input, testedStream, callback){
   var inputStream = eventStream.readArray(input);
@@ -36,7 +36,7 @@ module.exports.tests = {};
 
 module.exports.tests.combinedStream = function (test,common){
   test('multiple pbfs: one input stream', function(t){
-    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig})
+    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig});
     var stream = mpbfParser.create();
     t.ok(stream.readable, 'stream is readable');
     var recordCount = 0;
@@ -49,8 +49,8 @@ module.exports.tests.combinedStream = function (test,common){
     });
   });
   test('multiple pbfs: two identical input streams', function(t){
-    fakeGeneratedConfig.imports.openstreetmap.import.push({filename: '/../vancouver_canada.osm.pbf'})
-    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig})
+    fakeGeneratedConfig.imports.openstreetmap.import.push({filename: '/../vancouver_canada.osm.pbf'});
+    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig});
     var stream = mpbfParser.create();
     t.ok(stream.readable, 'stream is readable');
     var expected = JSON.parse(fs.readFileSync(path.resolve(__dirname +'/../fixtures/vancouver.extract.expected.json' ) ));
@@ -61,11 +61,11 @@ module.exports.tests.combinedStream = function (test,common){
       //there is no ensuring that this is the right number but its what passes the test and is non zero
       t.equals(recordcount, 2*4571);
       t.end();
-    })
+    });
   });
   test('multiple pbfs: two identical input streams and a third different one', function(t){
-    fakeGeneratedConfig.imports.openstreetmap.import.push({filename: '/../queens_village_ny.osm.pbf'})
-    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig})
+    fakeGeneratedConfig.imports.openstreetmap.import.push({filename: '/../queens_village_ny.osm.pbf'});
+    var mpbfParser = proxyquire('../../stream/multiple_pbfs',{'pelias-config': fakeConfig});
     var stream = mpbfParser.create();
     t.ok(stream.readable, 'stream is readable');
     var recordcount = 0;
@@ -75,9 +75,9 @@ module.exports.tests.combinedStream = function (test,common){
       //there is no ensuring that this is the right number but its what passes the test and is non zero
       t.equals(recordcount, 41638);
       t.end();
-    })
+    });
   });
-}
+};
 
 module.exports.all = function(tape, common){
 
@@ -88,4 +88,4 @@ module.exports.all = function(tape, common){
   for(var testCase in module.exports.tests){
     module.exports.tests[testCase](tape,common);
   }
-}
+};
