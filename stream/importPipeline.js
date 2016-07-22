@@ -8,7 +8,7 @@ streams.config = {
   categoryDefaults: categoryDefaults
 };
 
-streams.pbfParser = require('./pbf').parser;
+streams.pbfParser = require('./multiple_pbfs').create;
 streams.docConstructor = require('./document_constructor');
 streams.docDenormalizer = require('./denormalizer');
 streams.tagMapper = require('./tag_mapper');

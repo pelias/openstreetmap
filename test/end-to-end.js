@@ -22,7 +22,10 @@ var fakeGeneratedConfig = {
     openstreetmap: {
       datapath: path.resolve(__dirname),
       import: [{
-        filename: '/vancouver_canada.osm.pbf'
+        filename: 'vancouver_canada.osm.pbf'
+      },
+      {
+        filename: 'queens_village_ny.osm.pbf'
       }],
       leveldbpath: '/tmp'
     }
@@ -35,16 +38,13 @@ var fakePeliasConfig = {
   }
 };
 
-var proxiedPbf = proxyquire('../stream/pbf', {'pelias-config' : fakePeliasConfig});
+var proxiedPbf = proxyquire('../stream/multiple_pbfs', {'pelias-config' : fakePeliasConfig});
 
-streams = proxyquire('../stream/importPipeline', {'./pbf': proxiedPbf});
+streams = proxyquire('../stream/importPipeline', {'./multiple_pbfs': proxiedPbf});
 
-var pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
-    expectedPath = path.resolve(__dirname) + '/fixtures/vancouver.extract.expected.json';
+var expectedPath = path.resolve(__dirname) + '/fixtures/combined_vancouver_queens.json';
 
 var results = [];
-
-console.log(pbfPath);
 
 streams.pbfParser()
   .pipe( streams.docConstructor() )

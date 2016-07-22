@@ -59,6 +59,7 @@
   "devDependencies": {
     "async": "^2.0.0",
     "colors": "^1.1.2",
+    "combined-stream": "^1.0.5",
     "deep-diff": "^0.3.2",
     "event-stream": "^3.3.2",
     "istanbul": "^0.4.3",

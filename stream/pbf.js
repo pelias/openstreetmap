@@ -7,12 +7,13 @@
 var fs = require('fs'),
     pbf2json = require('pbf2json'),
     settings = require('pelias-config').generate(),
-    features = require('../config/features');
+    features = require('../config/features'),
+    path = require('path');
 
 // Create a new pbf parser stream
-function createPbfStream(){
+function createPbfStream(opts){
 
-  var conf = config();
+  var conf = config(opts);
 
   validatePath( conf.file, 'failed to stat pbf file: ' + conf.file );
   validatePath( conf.leveldb, 'failed to stat leveldb path: ' + conf.leveldb );
@@ -23,22 +24,28 @@ function createPbfStream(){
 
 // Generate configuration options for pbf2json, apply default
 // configurations where not explicitly specified.
-function config(){
-
-  var opts = {};
+function config(opts){
+  if (!opts){
+    opts = {};
+  }
 
   // Use datapath setting from your config file
   // @see: github://pelias/config for more info.
-  var filename = settings.imports.openstreetmap.import[0].filename;
-  opts.file = settings.imports.openstreetmap.datapath + '/' + filename;
+  if(!opts.file){
+     var filename = settings.imports.openstreetmap.import[0].filename;
+     opts.file = path.join(settings.imports.openstreetmap.datapath, filename);
+  }
 
   // Use leveldb setting from your config file
   // @see: github://pelias/config for more info.
-  opts.leveldb = settings.imports.openstreetmap.leveldbpath;
+  if(!opts.leveldb){
+    opts.leveldb = settings.imports.openstreetmap.leveldbpath;
+  }
 
   // Use default parser tags
-  opts.tags = features;
-
+  if(!opts.tags){
+    opts.tags = features;
+  }
   return opts;
 }
 
