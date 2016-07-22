@@ -13,6 +13,7 @@ var tests = [
   require('./stream/denormalizer'),
   require('./stream/document_constructor'),
   require('./stream/importPipeline'),
+  require('./stream/multiple_pbfs'),
   require('./stream/pbf'),
   require('./stream/stats'),
   require('./stream/tag_mapper')
