@@ -119,4 +119,4 @@ $ npm run coverage
 
 ### Continuous Integration
 
-Travis tests every change against node version `0.10`, `0.12`, `4.x`, and `5.x`.
+Travis tests every change against node version `0.12`, `4`, `5` and `6`.
