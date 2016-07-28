@@ -94,7 +94,7 @@ streams.pbfParser()
     }
 
     if( diff ){
-      //console.log( JSON.stringify(diff, null, 2) );
+      console.log( JSON.stringify(diff, null, 2) );
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
       console.log('matching count:', colors.green(countSame));
