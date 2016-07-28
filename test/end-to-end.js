@@ -93,6 +93,10 @@ streams.pbfParser()
     }
 
     if( diff ){
+      //added for clarification because apparently understanding the deep diff output is hard
+      console.log('actual:', JSON.stringify(actual[0], null, 2));
+      console.log('expected:', JSON.stringify(expected[0], null, 2));
+
       console.log( JSON.stringify(diff, null, 2) );
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
