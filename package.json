@@ -1,7 +1,6 @@
 {
   "name": "pelias-openstreetmap",
   "author": "mapzen",
-  "version": "4.0.0",
   "description": "Pelias openstreetmap utilities",
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
   "license": "MIT",
@@ -15,11 +14,12 @@
     "test": "npm run units",
     "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mapzen/pelias-openstreetmap.git"
+    "url": "https://github.com/mapzen/pelias-openstreetmap.git"
   },
   "keywords": [
     "pelias",
@@ -67,7 +67,8 @@
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
-    "tmp": "0.0.28"
+    "tmp": "0.0.28",
+    "semantic-release": "^4.3.5"
   },
   "pre-commit": [
     "lint",
