@@ -1,5 +1,6 @@
 {
   "name": "pelias-openstreetmap",
+  "version": "0.0.0-semantic-release",
   "author": "mapzen",
   "description": "Pelias openstreetmap utilities",
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
