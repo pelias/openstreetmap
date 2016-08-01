@@ -47,6 +47,6 @@ async.parallel( requests, function( err, res ){
     }));
   });
 
-  // print out
+  // print out (if need be this can be changed to the logger)
   console.log( JSON.stringify( tags, null, 2 ) );
 });

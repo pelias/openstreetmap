@@ -93,7 +93,7 @@ streams.pbfParser()
     }
 
     if( diff ){
-      //added for clarification because apparently understanding the deep diff output is hard
+      //added for clarification because understanding the deep diff output is hard
       console.log('actual:', JSON.stringify(actual[0], null, 2));
       console.log('expected:', JSON.stringify(expected[0], null, 2));
 
