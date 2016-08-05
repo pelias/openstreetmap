@@ -16,8 +16,7 @@ var fs = require('fs'),
     sink = require('through2-sink'),
     _ = require('lodash');
 
-var tmpfile = tmp.fileSync({ postfix: '.json' }).name,
-    pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
+var pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
     expectedPath = path.resolve(__dirname) + '/fixtures/vancouver.extract.expected.json';
 
 var results = [];
@@ -77,7 +76,6 @@ streams.pbfParser({ file: pbfPath })
       console.log('matching count:', colors.green(countSame));
       console.log('difference count:', colors.red(countDiff));
       console.error( colors.red( 'end-to-end tests failed :(' ) );
-      console.error( 'contents of', tmpfile, 'do not match expected:', expectedPath );
       process.exit(1);
     }
 
