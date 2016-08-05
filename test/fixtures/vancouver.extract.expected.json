@@ -93663,7 +93663,7 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.215607,
+        "lon": -123.215608,
         "lat": 49.239204
       },
       "source": "openstreetmap",
@@ -93685,8 +93685,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.214933,
-        "lat": 49.238113
+        "lon": -123.214944,
+        "lat": 49.238198
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -99182,8 +99182,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.04088,
-        "lat": 49.242098
+        "lon": -123.040881,
+        "lat": 49.242097
       },
       "category": [
         "transport",
@@ -99208,8 +99208,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.047311,
-        "lat": 49.244749
+        "lon": -123.048036,
+        "lat": 49.245049
       },
       "category": [
         "transport",
@@ -106405,8 +106405,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.079503,
-        "lat": 49.31087
+        "lon": -123.079316,
+        "lat": 49.311039
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -106614,8 +106614,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.114296,
-        "lat": 49.287033
+        "lon": -123.114292,
+        "lat": 49.28704
       },
       "category": [
         "retail"
@@ -106762,8 +106762,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.077109,
-        "lat": 49.265587
+        "lon": -123.077132,
+        "lat": 49.265593
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -107214,8 +107214,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.0812,
-        "lat": 49.266182
+        "lon": -123.081215,
+        "lat": 49.266184
       },
       "category": [
         "transport",
@@ -107825,8 +107825,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.048546,
-        "lat": 49.307866
+        "lon": -123.046507,
+        "lat": 49.307959
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -108967,8 +108967,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.035426,
-        "lat": 49.259758
+        "lon": -123.035285,
+        "lat": 49.259873
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -108989,8 +108989,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.037352,
-        "lat": 49.259534
+        "lon": -123.037372,
+        "lat": 49.259565
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -109011,8 +109011,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.040523,
-        "lat": 49.258394
+        "lon": -123.040519,
+        "lat": 49.258402
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -109033,8 +109033,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.040992,
-        "lat": 49.258131
+        "lon": -123.040979,
+        "lat": 49.258157
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -110111,8 +110111,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120073,
-        "lat": 49.19684
+        "lon": -123.120115,
+        "lat": 49.197012
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -110133,8 +110133,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.123297,
-        "lat": 49.196396
+        "lon": -123.123355,
+        "lat": 49.196133
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -110156,7 +110156,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.117909,
-        "lat": 49.195809
+        "lat": 49.195808
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -110177,8 +110177,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119058,
-        "lat": 49.19729
+        "lon": -123.119224,
+        "lat": 49.197639
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -110221,8 +110221,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119175,
-        "lat": 49.199399
+        "lon": -123.119151,
+        "lat": 49.199586
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -115582,8 +115582,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.219344,
-        "lat": 49.24793
+        "lon": -123.219168,
+        "lat": 49.248205
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -117862,8 +117862,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.141316,
-        "lat": 49.270015
+        "lon": -123.140563,
+        "lat": 49.270046
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123108,8 +123108,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.151405,
-        "lat": 49.237597
+        "lon": -123.155175,
+        "lat": 49.237677
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123130,8 +123130,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.152517,
-        "lat": 49.260498
+        "lon": -123.152498,
+        "lat": 49.261009
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123152,8 +123152,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.145849,
-        "lat": 49.266488
+        "lon": -123.146105,
+        "lat": 49.266492
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123174,8 +123174,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.15138,
-        "lat": 49.265997
+        "lon": -123.151524,
+        "lat": 49.266158
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123221,8 +123221,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.123557,
-        "lat": 49.316783
+        "lon": -123.124394,
+        "lat": 49.316367
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123243,8 +123243,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.129899,
-        "lat": 49.31786
+        "lon": -123.129641,
+        "lat": 49.317745
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123265,8 +123265,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121652,
-        "lat": 49.314907
+        "lon": -123.121239,
+        "lat": 49.314796
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123287,8 +123287,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121493,
-        "lat": 49.314833
+        "lon": -123.120907,
+        "lat": 49.314711
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123309,8 +123309,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.125309,
-        "lat": 49.315905
+        "lon": -123.12526,
+        "lat": 49.31589
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123331,8 +123331,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.11524,
-        "lat": 49.3157
+        "lon": -123.11522,
+        "lat": 49.31571
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123375,8 +123375,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120063,
-        "lat": 49.315731
+        "lon": -123.118686,
+        "lat": 49.315744
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123419,8 +123419,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119611,
-        "lat": 49.313031
+        "lon": -123.119668,
+        "lat": 49.313078
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123441,8 +123441,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.074729,
-        "lat": 49.308607
+        "lon": -123.074751,
+        "lat": 49.308563
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123463,8 +123463,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.055097,
-        "lat": 49.307173
+        "lon": -123.054726,
+        "lat": 49.307237
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123485,8 +123485,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.045906,
-        "lat": 49.307127
+        "lon": -123.046185,
+        "lat": 49.307289
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123529,8 +123529,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.050042,
-        "lat": 49.307929
+        "lon": -123.050014,
+        "lat": 49.307931
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123573,8 +123573,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120277,
-        "lat": 49.314229
+        "lon": -123.120071,
+        "lat": 49.314407
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123618,7 +123618,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.122371,
-        "lat": 49.312761
+        "lat": 49.31276
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -123639,7 +123639,7 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121924,
+        "lon": -123.121923,
         "lat": 49.313264
       },
       "source": "openstreetmap",
@@ -123786,8 +123786,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.02458,
-        "lat": 49.269182
+        "lon": -123.024849,
+        "lat": 49.269627
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -124829,8 +124829,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.249431,
-        "lat": 49.266863
+        "lon": -123.249612,
+        "lat": 49.2669
       },
       "category": [
         "education"
@@ -124854,8 +124854,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.249086,
-        "lat": 49.267149
+        "lon": -123.249053,
+        "lat": 49.26715
       },
       "category": [
         "education"
@@ -124879,8 +124879,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.248702,
-        "lat": 49.267097
+        "lon": -123.248712,
+        "lat": 49.267095
       },
       "category": [
         "education"
@@ -124904,8 +124904,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.248798,
-        "lat": 49.266805
+        "lon": -123.248805,
+        "lat": 49.266794
       },
       "category": [
         "education"
@@ -125055,8 +125055,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.249217,
-        "lat": 49.266552
+        "lon": -123.249226,
+        "lat": 49.266517
       },
       "category": [
         "education"
@@ -125181,8 +125181,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.117823,
-        "lat": 49.286556
+        "lon": -123.119493,
+        "lat": 49.285465
       },
       "category": [
         "transport",
@@ -125308,8 +125308,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.082741,
-        "lat": 49.266185
+        "lon": -123.078898,
+        "lat": 49.266808
       },
       "category": [
         "transport",
@@ -125334,8 +125334,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.111396,
-        "lat": 49.285863
+        "lon": -123.110928,
+        "lat": 49.285672
       },
       "category": [
         "transport",
@@ -125360,8 +125360,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.079776,
-        "lat": 49.26593
+        "lon": -123.079779,
+        "lat": 49.26594
       },
       "category": [
         "transport",
@@ -125866,8 +125866,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.265557,
-        "lat": 49.256821
+        "lon": -123.265629,
+        "lat": 49.257654
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -127754,8 +127754,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.025926,
-        "lat": 49.262473
+        "lon": -123.025702,
+        "lat": 49.262487
       },
       "category": [
         "transport",
@@ -127780,8 +127780,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.041272,
-        "lat": 49.259624
+        "lon": -123.040044,
+        "lat": 49.259541
       },
       "category": [
         "transport",
@@ -127806,8 +127806,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.118132,
-        "lat": 49.256101
+        "lon": -123.115213,
+        "lat": 49.253579
       },
       "category": [
         "transport",
@@ -127832,8 +127832,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.117189,
-        "lat": 49.208183
+        "lon": -123.11724,
+        "lat": 49.208337
       },
       "category": [
         "transport",
@@ -127858,8 +127858,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.117734,
-        "lat": 49.202431
+        "lon": -123.117727,
+        "lat": 49.202459
       },
       "category": [
         "transport",
@@ -127884,8 +127884,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.118831,
-        "lat": 49.199308
+        "lon": -123.118984,
+        "lat": 49.199044
       },
       "category": [
         "transport",
@@ -131519,8 +131519,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.037098,
-        "lat": 49.24054
+        "lon": -123.037012,
+        "lat": 49.240502
       },
       "category": [
         "transport",
@@ -131545,8 +131545,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.146578,
-        "lat": 49.196418
+        "lon": -123.147182,
+        "lat": 49.196543
       },
       "category": [
         "transport",
@@ -131571,8 +131571,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.126634,
-        "lat": 49.266759
+        "lon": -123.127166,
+        "lat": 49.266177
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -131698,7 +131698,7 @@
         "street": "East Boulevard"
       },
       "center_point": {
-        "lon": -123.145842,
+        "lon": -123.145783,
         "lat": 49.216438
       },
       "source": "openstreetmap",
@@ -133354,8 +133354,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.231281,
-        "lat": 49.275967
+        "lon": -123.231603,
+        "lat": 49.27639
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -134870,8 +134870,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.054426,
-        "lat": 49.257865
+        "lon": -123.05439,
+        "lat": 49.257849
       },
       "category": [
         "transport",
@@ -135408,8 +135408,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.137098,
-        "lat": 49.306041
+        "lon": -123.137028,
+        "lat": 49.306205
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135430,8 +135430,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.090666,
-        "lat": 49.316121
+        "lon": -123.089319,
+        "lat": 49.316089
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135452,8 +135452,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.04403,
-        "lat": 49.255384
+        "lon": -123.044024,
+        "lat": 49.255313
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135474,8 +135474,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.043847,
-        "lat": 49.250365
+        "lon": -123.04384,
+        "lat": 49.250469
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135496,8 +135496,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.044224,
-        "lat": 49.24725
+        "lon": -123.043874,
+        "lat": 49.247245
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135518,8 +135518,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.091847,
-        "lat": 49.205464
+        "lon": -123.091992,
+        "lat": 49.205011
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135540,8 +135540,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.043497,
-        "lat": 49.252182
+        "lon": -123.043069,
+        "lat": 49.252242
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -135562,8 +135562,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.042252,
-        "lat": 49.257422
+        "lon": -123.042436,
+        "lat": 49.257273
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -136210,8 +136210,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.032828,
-        "lat": 49.259724
+        "lon": -123.032263,
+        "lat": 49.259909
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -136232,8 +136232,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.028213,
-        "lat": 49.261218
+        "lon": -123.02806,
+        "lat": 49.261419
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -136254,8 +136254,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.039622,
-        "lat": 49.258676
+        "lon": -123.039645,
+        "lat": 49.25868
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -136276,8 +136276,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.038408,
-        "lat": 49.259049
+        "lon": -123.03839,
+        "lat": 49.259051
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -136990,8 +136990,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.073562,
-        "lat": 49.264437
+        "lon": -123.073547,
+        "lat": 49.264426
       },
       "category": [
         "transport",
@@ -137016,8 +137016,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.061128,
-        "lat": 49.26
+        "lon": -123.062327,
+        "lat": 49.260418
       },
       "category": [
         "transport",
@@ -137140,8 +137140,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.090071,
-        "lat": 49.26799
+        "lon": -123.088765,
+        "lat": 49.267726
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -137162,8 +137162,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.090025,
-        "lat": 49.26917
+        "lon": -123.088637,
+        "lat": 49.268885
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -137184,8 +137184,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.081246,
-        "lat": 49.27577
+        "lon": -123.081128,
+        "lat": 49.275686
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139201,8 +139201,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.045566,
-        "lat": 49.307279
+        "lon": -123.044693,
+        "lat": 49.307294
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139223,8 +139223,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.045502,
-        "lat": 49.30741
+        "lon": -123.045186,
+        "lat": 49.307471
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139245,8 +139245,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.050021,
-        "lat": 49.307971
+        "lon": -123.050002,
+        "lat": 49.307974
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139267,8 +139267,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.050408,
-        "lat": 49.307979
+        "lon": -123.050393,
+        "lat": 49.307982
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139289,8 +139289,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.047141,
-        "lat": 49.307924
+        "lon": -123.045406,
+        "lat": 49.307767
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139311,8 +139311,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.058906,
-        "lat": 49.306402
+        "lon": -123.057923,
+        "lat": 49.306377
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139333,8 +139333,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.070894,
-        "lat": 49.3056
+        "lon": -123.071487,
+        "lat": 49.305544
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139355,8 +139355,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.062629,
-        "lat": 49.305322
+        "lon": -123.062573,
+        "lat": 49.30532
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139377,7 +139377,7 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068051,
+        "lon": -123.068029,
         "lat": 49.305317
       },
       "source": "openstreetmap",
@@ -139399,8 +139399,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.06263,
-        "lat": 49.305402
+        "lon": -123.062541,
+        "lat": 49.305405
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139421,8 +139421,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.060273,
-        "lat": 49.306139
+        "lon": -123.059577,
+        "lat": 49.306236
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139443,8 +139443,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.057175,
-        "lat": 49.306685
+        "lon": -123.056994,
+        "lat": 49.306666
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139465,8 +139465,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.07069,
-        "lat": 49.305464
+        "lon": -123.070795,
+        "lat": 49.305229
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139487,8 +139487,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068687,
-        "lat": 49.305219
+        "lon": -123.069041,
+        "lat": 49.305201
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139509,8 +139509,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.064883,
-        "lat": 49.305516
+        "lon": -123.064227,
+        "lat": 49.305609
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139531,8 +139531,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.0635,
-        "lat": 49.305657
+        "lon": -123.06298,
+        "lat": 49.305691
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139553,8 +139553,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.054283,
-        "lat": 49.307296
+        "lon": -123.054345,
+        "lat": 49.307273
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139575,8 +139575,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.0636,
-        "lat": 49.306534
+        "lon": -123.062684,
+        "lat": 49.306013
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139597,8 +139597,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.067306,
-        "lat": 49.305383
+        "lon": -123.067322,
+        "lat": 49.305391
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139619,8 +139619,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.061556,
-        "lat": 49.306152
+        "lon": -123.061544,
+        "lat": 49.306155
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139641,8 +139641,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.06869,
-        "lat": 49.305426
+        "lon": -123.069964,
+        "lat": 49.305401
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139663,8 +139663,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068172,
-        "lat": 49.305261
+        "lon": -123.068937,
+        "lat": 49.305248
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139685,8 +139685,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068441,
-        "lat": 49.305311
+        "lon": -123.068981,
+        "lat": 49.305286
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139707,8 +139707,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.057253,
-        "lat": 49.306621
+        "lon": -123.056968,
+        "lat": 49.306587
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139729,8 +139729,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.062878,
-        "lat": 49.30535
+        "lon": -123.062677,
+        "lat": 49.305355
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139751,8 +139751,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063694,
-        "lat": 49.305605
+        "lon": -123.063127,
+        "lat": 49.305643
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139773,8 +139773,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.064892,
-        "lat": 49.305294
+        "lon": -123.066275,
+        "lat": 49.305257
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139795,8 +139795,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063902,
-        "lat": 49.305554
+        "lon": -123.063237,
+        "lat": 49.305595
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139817,8 +139817,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.071189,
-        "lat": 49.305502
+        "lon": -123.071576,
+        "lat": 49.305415
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139839,8 +139839,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.064951,
-        "lat": 49.305379
+        "lon": -123.065129,
+        "lat": 49.305385
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139861,8 +139861,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.069623,
-        "lat": 49.305561
+        "lon": -123.070594,
+        "lat": 49.305504
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139883,8 +139883,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.057259,
-        "lat": 49.307003
+        "lon": -123.057081,
+        "lat": 49.306852
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139905,8 +139905,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.066432,
-        "lat": 49.306114
+        "lon": -123.065093,
+        "lat": 49.305607
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139927,8 +139927,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.049273,
-        "lat": 49.307691
+        "lon": -123.046862,
+        "lat": 49.307923
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139949,8 +139949,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068437,
-        "lat": 49.305522
+        "lon": -123.068442,
+        "lat": 49.305523
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139971,8 +139971,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.070148,
-        "lat": 49.305668
+        "lon": -123.070758,
+        "lat": 49.305588
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -139993,8 +139993,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.059707,
-        "lat": 49.306184
+        "lon": -123.059383,
+        "lat": 49.306224
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140015,8 +140015,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.06293,
-        "lat": 49.305402
+        "lon": -123.062697,
+        "lat": 49.305433
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140037,8 +140037,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063587,
-        "lat": 49.305467
+        "lon": -123.06314,
+        "lat": 49.30545
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140059,8 +140059,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.068787,
-        "lat": 49.305316
+        "lon": -123.068808,
+        "lat": 49.305317
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140081,8 +140081,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.064108,
-        "lat": 49.305713
+        "lon": -123.064098,
+        "lat": 49.305714
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140103,8 +140103,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.054046,
-        "lat": 49.307425
+        "lon": -123.054035,
+        "lat": 49.307426
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140125,8 +140125,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063151,
-        "lat": 49.305492
+        "lon": -123.062757,
+        "lat": 49.305513
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140147,8 +140147,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.070704,
-        "lat": 49.305553
+        "lon": -123.07133,
+        "lat": 49.30546
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140169,8 +140169,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063359,
-        "lat": 49.305754
+        "lon": -123.063097,
+        "lat": 49.305771
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140191,8 +140191,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063855,
-        "lat": 49.30552
+        "lon": -123.063286,
+        "lat": 49.305552
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140213,8 +140213,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.070364,
-        "lat": 49.305433
+        "lon": -123.070996,
+        "lat": 49.305275
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140235,8 +140235,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.064666,
-        "lat": 49.305448
+        "lon": -123.064641,
+        "lat": 49.305457
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140257,8 +140257,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.063196,
-        "lat": 49.305839
+        "lon": -123.063203,
+        "lat": 49.30584
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140279,8 +140279,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.070896,
-        "lat": 49.305686
+        "lon": -123.071471,
+        "lat": 49.305633
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140302,7 +140302,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.089321,
-        "lat": 49.316075
+        "lat": 49.316074
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140323,8 +140323,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.094578,
-        "lat": 49.317035
+        "lon": -123.096188,
+        "lat": 49.317262
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140345,8 +140345,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.088058,
-        "lat": 49.314876
+        "lon": -123.08804,
+        "lat": 49.31486
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140389,8 +140389,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.10508,
-        "lat": 49.316943
+        "lon": -123.105002,
+        "lat": 49.316971
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140411,8 +140411,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.084869,
-        "lat": 49.312588
+        "lon": -123.084849,
+        "lat": 49.312471
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140433,8 +140433,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.094562,
-        "lat": 49.317077
+        "lon": -123.096168,
+        "lat": 49.317305
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140456,7 +140456,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.103329,
-        "lat": 49.317269
+        "lat": 49.317268
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140477,8 +140477,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.087554,
-        "lat": 49.314498
+        "lon": -123.087826,
+        "lat": 49.314741
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140521,8 +140521,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.087676,
-        "lat": 49.314497
+        "lon": -123.087912,
+        "lat": 49.314676
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140543,8 +140543,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.104778,
-        "lat": 49.31693
+        "lon": -123.105006,
+        "lat": 49.31689
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140565,8 +140565,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.094472,
-        "lat": 49.316978
+        "lon": -123.096212,
+        "lat": 49.317224
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140609,7 +140609,7 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.08938,
+        "lon": -123.089381,
         "lat": 49.31605
       },
       "source": "openstreetmap",
@@ -140631,8 +140631,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.118378,
-        "lat": 49.314822
+        "lon": -123.118122,
+        "lat": 49.314658
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140653,8 +140653,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.112126,
-        "lat": 49.314013
+        "lon": -123.112408,
+        "lat": 49.313813
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140675,8 +140675,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.116729,
-        "lat": 49.312547
+        "lon": -123.117847,
+        "lat": 49.310269
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140697,8 +140697,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.116082,
-        "lat": 49.31567
+        "lon": -123.115869,
+        "lat": 49.315676
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140719,8 +140719,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.11585,
-        "lat": 49.312501
+        "lon": -123.115026,
+        "lat": 49.311483
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140741,8 +140741,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.117768,
-        "lat": 49.313787
+        "lon": -123.117968,
+        "lat": 49.314274
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140763,8 +140763,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119274,
-        "lat": 49.311494
+        "lon": -123.119291,
+        "lat": 49.311539
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140785,8 +140785,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119209,
-        "lat": 49.311524
+        "lon": -123.119208,
+        "lat": 49.311523
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140829,8 +140829,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.11685,
-        "lat": 49.312354
+        "lon": -123.118935,
+        "lat": 49.31371
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140851,8 +140851,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120857,
-        "lat": 49.314884
+        "lon": -123.120509,
+        "lat": 49.314823
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140873,8 +140873,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.115321,
-        "lat": 49.314951
+        "lon": -123.115621,
+        "lat": 49.314809
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140895,8 +140895,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.12136,
-        "lat": 49.315794
+        "lon": -123.124065,
+        "lat": 49.315985
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140917,8 +140917,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.127894,
-        "lat": 49.316935
+        "lon": -123.126748,
+        "lat": 49.316491
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140939,8 +140939,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.123197,
-        "lat": 49.316572
+        "lon": -123.124397,
+        "lat": 49.315877
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140961,8 +140961,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.125806,
-        "lat": 49.315376
+        "lon": -123.125852,
+        "lat": 49.315664
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -140983,8 +140983,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.122931,
-        "lat": 49.31583
+        "lon": -123.124483,
+        "lat": 49.316049
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141005,8 +141005,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120549,
-        "lat": 49.316257
+        "lon": -123.118751,
+        "lat": 49.3165
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141027,8 +141027,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121281,
-        "lat": 49.315733
+        "lon": -123.123838,
+        "lat": 49.315764
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141049,8 +141049,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119648,
-        "lat": 49.314426
+        "lon": -123.119496,
+        "lat": 49.314504
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141072,7 +141072,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.129632,
-        "lat": 49.31772
+        "lat": 49.317719
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141093,8 +141093,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.123553,
-        "lat": 49.315234
+        "lon": -123.123564,
+        "lat": 49.315239
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141115,8 +141115,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.11925,
-        "lat": 49.315636
+        "lon": -123.119087,
+        "lat": 49.315637
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141138,7 +141138,7 @@
       "parent": {},
       "center_point": {
         "lon": -123.132598,
-        "lat": 49.31896
+        "lat": 49.318959
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141159,8 +141159,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.131501,
-        "lat": 49.318543
+        "lon": -123.131274,
+        "lat": 49.318381
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141203,8 +141203,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.126235,
-        "lat": 49.316235
+        "lon": -123.125674,
+        "lat": 49.316001
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141225,8 +141225,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.131212,
-        "lat": 49.318282
+        "lon": -123.131213,
+        "lat": 49.318281
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141247,8 +141247,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121288,
-        "lat": 49.31473
+        "lon": -123.121412,
+        "lat": 49.314639
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141269,8 +141269,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.123293,
-        "lat": 49.315997
+        "lon": -123.124461,
+        "lat": 49.316086
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141291,8 +141291,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.126953,
-        "lat": 49.31565
+        "lon": -123.12735,
+        "lat": 49.316582
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141313,8 +141313,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119851,
-        "lat": 49.314248
+        "lon": -123.119777,
+        "lat": 49.314396
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141335,8 +141335,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119127,
-        "lat": 49.315524
+        "lon": -123.119396,
+        "lat": 49.315505
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141357,8 +141357,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120343,
-        "lat": 49.316066
+        "lon": -123.118152,
+        "lat": 49.316099
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141379,8 +141379,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121545,
-        "lat": 49.31485
+        "lon": -123.121574,
+        "lat": 49.314772
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141401,8 +141401,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.119046,
-        "lat": 49.315598
+        "lon": -123.119203,
+        "lat": 49.315578
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141423,8 +141423,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.125206,
-        "lat": 49.314084
+        "lon": -123.125091,
+        "lat": 49.313792
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141445,8 +141445,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.122049,
-        "lat": 49.315991
+        "lon": -123.124471,
+        "lat": 49.316197
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141467,8 +141467,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.121707,
-        "lat": 49.315732
+        "lon": -123.123786,
+        "lat": 49.3157
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141489,8 +141489,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.12144,
-        "lat": 49.314692
+        "lon": -123.121491,
+        "lat": 49.314604
       },
       "source": "openstreetmap",
       "layer": "venue",
@@ -141511,7 +141511,7 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.120069,
+        "lon": -123.117982,
         "lat": 49.316032
       },
       "source": "openstreetmap",
@@ -141659,8 +141659,8 @@
       },
       "parent": {},
       "center_point": {
-        "lon": -123.081089,
-        "lat": 49.266187
+        "lon": -123.081238,
+        "lat": 49.266231
       },
       "category": [
         "transport",
