@@ -11,19 +11,42 @@ var fs = require('fs'),
     colors = require('colors'),
     tmp = require('tmp'),
     deep = require('deep-diff'),
-    streams = require('../'),
+    streams = require('../stream/importPipeline'),
     model = require('pelias-model'),
     sink = require('through2-sink'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    proxyquire = require('proxyquire');
 
-var pbfPath = path.resolve(__dirname) + '/vancouver_canada.osm.pbf',
-    expectedPath = path.resolve(__dirname) + '/fixtures/vancouver.extract.expected.json';
+var fakeGeneratedConfig = {
+  imports:{
+    openstreetmap: {
+      datapath: path.resolve(__dirname),
+      import: [{
+        filename: 'vancouver_canada.osm.pbf'
+      },
+      {
+        filename: 'queens_village_ny.osm.pbf'
+      }],
+      leveldbpath: '/tmp'
+    }
+  }
+};
+
+var fakePeliasConfig = {
+  generate: function fakeGenerate(){
+    return fakeGeneratedConfig;
+  }
+};
+
+var proxiedPbf = proxyquire('../stream/multiple_pbfs', {'pelias-config' : fakePeliasConfig});
+
+streams = proxyquire('../stream/importPipeline', {'./multiple_pbfs': proxiedPbf});
+
+var expectedPath = path.resolve(__dirname) + '/fixtures/combined_vancouver_queens.json';
 
 var results = [];
 
-console.log(pbfPath);
-
-streams.pbfParser({ file: pbfPath })
+streams.pbfParser()
   .pipe( streams.docConstructor() )
   .pipe( streams.tagMapper() )
   .pipe( streams.docDenormalizer() )
@@ -70,7 +93,11 @@ streams.pbfParser({ file: pbfPath })
     }
 
     if( diff ){
-      //console.log( JSON.stringify(diff, null, 2) );
+      //added for clarification because understanding the deep diff output is hard
+      console.log('actual:', JSON.stringify(actual[0], null, 2));
+      console.log('expected:', JSON.stringify(expected[0], null, 2));
+
+      console.log( JSON.stringify(diff, null, 2) );
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
       console.log('matching count:', colors.green(countSame));

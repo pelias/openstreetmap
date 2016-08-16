@@ -1,14 +1,32 @@
+var path = require('path');
+var through = require('through2');
+var settings = require('pelias-config').generate();
+var features = require('../../config/features');
+var proxyquire = require('proxyquire');
 
-var path = require('path'),
-    through = require('through2'),
-    settings = require('pelias-config').generate(),
-    pbf = require('../../stream/pbf'),
-    features = require('../../config/features');
+var fakeGeneratedConfig = {
+  imports: {
+    openstreetmap: {
+      datapath: 'defaultDataPath',
+      leveldbpath: 'defaultLevelDBPath',
+      'import': [{
+          filename: 'defaultFileName'
+      }]
+    }
+  }
+};
+
+var fakeConfig = {
+  generate: function fakeGenerate() {
+    return fakeGeneratedConfig;
+  }
+};
 
 module.exports.tests = {};
 
 // Test exports
 module.exports.tests.interface = function(test, common) {
+  var pbf = require('../../stream/pbf');
   test('interface: config', function(t) {
     t.equal(typeof pbf.config, 'function', 'config function');
     t.end();
@@ -23,30 +41,14 @@ module.exports.tests.interface = function(test, common) {
 // specified then the defaults are used from your pelias/config
 module.exports.tests.config = function(test, common) {
   test('config: load defaults', function(t) {
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
     var defaults = pbf.config();
     var expected = {
-      file: settings.imports.openstreetmap.datapath + '/' + settings.imports.openstreetmap.import[0].filename,
-      leveldb: settings.imports.openstreetmap.leveldbpath,
-      tags: features
+      file: 'defaultDataPath/defaultFileName',
+      leveldb: 'defaultLevelDBPath'
     };
     t.equal(defaults.file, expected.file, 'load from settings');
     t.equal(defaults.leveldb, expected.leveldb, 'load from settings');
-    t.deepEqual(defaults.tags, expected.tags, 'load from settings');
-    t.end();
-  });
-  test('config: override pbf path', function(t) {
-    var conf = pbf.config({ file: '/tmp/foo' });
-    t.equal(conf.file, '/tmp/foo', 'override defaults');
-    t.end();
-  });
-  test('config: override leveldb path', function(t) {
-    var conf = pbf.config({ leveldb: '/tmp/foo' });
-    t.equal(conf.leveldb, '/tmp/foo', 'override defaults');
-    t.end();
-  });
-  test('config: override tags', function(t) {
-    var conf = pbf.config({ tags: ['foo+bar'] });
-    t.deepEqual(conf.tags, ['foo+bar'], 'override defaults');
     t.end();
   });
 };
@@ -54,33 +56,36 @@ module.exports.tests.config = function(test, common) {
 // Validate configuration options
 module.exports.tests.validate = function(test, common) {
   test('validate: pbf path', function(t) {
-    var conf = pbf.config({ file: '/tmp/noexist.pbf' });
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
+    fakeGeneratedConfig.imports.openstreetmap.import[0].filename = 'the/file/does/not/exist.pbf';
+    var conf = pbf.config();
     t.throws(function(){
       var stream = pbf.parser(conf);
-    });
+      stream.kill();
+    }, 'failed to stat pbf file: defaultDataPath/the/file/does/not/exist.pbf', 'should fail on missing file');
     t.end();
   });
   test('validate: leveldb path', function(t) {
-    var conf = pbf.config({ leveldb: '/tmp/noexist.pbf' });
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
+    fakeGeneratedConfig.imports.openstreetmap.datapath = '';
+    fakeGeneratedConfig.imports.openstreetmap.import[0].filename = 'dev/null';
+    fakeGeneratedConfig.imports.openstreetmap.leveldbpath = 'path/doesnt/exist';
+    var conf = pbf.config();
     t.throws(function(){
       var stream = pbf.parser(conf);
-    });
-    t.end();
-  });
-  test('validate: tags', function(t) {
-    var conf = pbf.config({ tags: [] });
-    t.throws(function(){
-      var stream = pbf.parser(conf);
-    });
+      stream.kill();
+    }, 'failed to stat leveldb path: path/doesnt/exist', 'should fail on invalid leveldb path');
     t.end();
   });
 };
 
-// Create a new streaming pbf parser based on your config
+//Create a new streaming pbf parser based on your config
 module.exports.tests.parser = function(test, common) {
   test('parser: create parser', function(t) {
-    var config = { file: path.resolve(__dirname + '/../vancouver_canada.osm.pbf') };
-    var stream = pbf.parser(config);
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
+    fakeGeneratedConfig.imports.openstreetmap.import[0].filename =  path.resolve(__dirname + '/../vancouver_canada.osm.pbf');
+    fakeGeneratedConfig.imports.openstreetmap.leveldbpath = '/tmp';
+    var stream = pbf.parser();
     t.equal(typeof stream, 'object', 'valid stream');
     t.equal(typeof stream._read, 'function', 'valid readable');
     t.equal(typeof stream._write, 'function', 'valid writeable');
