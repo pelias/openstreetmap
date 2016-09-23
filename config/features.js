@@ -6,6 +6,7 @@
 
 var tags = [
   'addr:housenumber+addr:street',
+  'place+name',
   'amenity+name',
   'building+name',
   'shop+name',
