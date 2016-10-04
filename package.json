@@ -43,7 +43,7 @@
     "gjtk": "^2.0.0",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
-    "lodash": "^4.0.0",
+    "lodash": "^4.16.0",
     "merge": "^1.2.0",
     "pbf2json": "4.1.0",
     "pelias-address-deduplicator": "1.1.0",
@@ -70,7 +70,7 @@
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
-    "tmp": "0.0.28",
+    "tmp": "0.0.29",
     "semantic-release": "^4.3.5"
   },
   "pre-commit": [

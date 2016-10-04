@@ -279,6 +279,10 @@ var mapping = {
     '*':                        ['professional']
   },
 
+  'place': {
+    '*':                        ['populated area']
+  },
+
   'public_transport': {
     '*':                        ['transport','transport:public'],
     'station':                  ['transport','transport:station']
