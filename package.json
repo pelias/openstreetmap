@@ -3,6 +3,9 @@
   "version": "0.0.0-semantic-release",
   "author": "mapzen",
   "description": "Pelias openstreetmap utilities",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
   "license": "MIT",
   "main": "index.js",
