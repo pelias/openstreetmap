@@ -49,7 +49,7 @@
     "pelias-address-deduplicator": "1.1.0",
     "pelias-config": "2.3.0",
     "pelias-dbclient": "2.0.0",
-    "pelias-logger": "0.0.8",
+    "pelias-logger": "0.1.0",
     "pelias-model": "4.2.0",
     "pelias-wof-admin-lookup": "2.5.0",
     "through2": "^2.0.0",
