@@ -47,7 +47,7 @@
     "merge": "^1.2.0",
     "pbf2json": "4.2.0",
     "pelias-address-deduplicator": "1.1.0",
-    "pelias-config": "2.3.1",
+    "pelias-config": "2.4.0",
     "pelias-dbclient": "2.0.0",
     "pelias-logger": "0.1.0",
     "pelias-model": "4.3.0",
@@ -70,7 +70,7 @@
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
-    "tmp": "0.0.30",
+    "tmp": "0.0.31",
     "semantic-release": "^6.3.2"
   },
   "pre-commit": [
