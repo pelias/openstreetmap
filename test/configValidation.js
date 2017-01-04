@@ -1,14 +1,16 @@
 'use strict';
 
 const tape = require( 'tape' );
-
 const configValidation = require( '../configValidation' );
 
 module.exports.tests = {};
 
-module.exports.tests.interface = function(test, common) {
+module.exports.tests.datapath = function(test, common) {
   test( 'missing datapath should throw error', function(t) {
-    const config = {};
+    const config = {
+      leveldbpath: 'leveldbpath value',
+      import: []
+    };
 
     t.throws(() => {
       configValidation.validate(config);
@@ -20,7 +22,9 @@ module.exports.tests.interface = function(test, common) {
   test( 'non-string datapath should throw error', function(t) {
     [null, 17, {}, [], false].forEach((value) => {
       const config = {
-        datapath: value
+        datapath: value,
+        leveldbpath: 'leveldbpath value',
+        import: []
       };
 
       t.throws(() => {
@@ -31,11 +35,59 @@ module.exports.tests.interface = function(test, common) {
 
     t.end();
   });
+};
+
+module.exports.tests.leveldbpath = function(test, common) {
+  test( 'missing leveldbpath should throw error', function(t) {
+    const config = {
+      datapath: 'datapath value',
+      import: []
+    };
+
+    t.throws(() => {
+      configValidation.validate(config);
+    }, /"leveldbpath" is required/);
+
+    t.end();
+  });
+
+  test( 'non-string leveldbpath should throw error', function(t) {
+    [null, 17, {}, [], false].forEach((value) => {
+      const config = {
+        datapath: 'datapath value',
+        leveldbpath: value
+      };
+
+      t.throws(() => {
+        configValidation.validate(config);
+      }, /"leveldbpath" must be a string/);
+
+    });
+
+    t.end();
+  });
+
+};
+
+module.exports.tests.import = function(test, common) {
+  test( 'missing import should throw error', function(t) {
+    const config = {
+      datapath: 'datapath value',
+      leveldbpath: 'leveldbpath value'
+    };
+
+    t.throws(() => {
+      configValidation.validate(config);
+    }, /"import" is required/);
+
+    t.end();
+  });
 
   test( 'non-array import should throw error', function(t) {
     [null, 17, {}, 'string', false].forEach((value) => {
       const config = {
-        datapath: 'this is the datapath',
+        datapath: 'datapath value',
+        leveldbpath: 'leveldbpath value',
         import: value
       };
 
@@ -50,7 +102,8 @@ module.exports.tests.interface = function(test, common) {
   test( 'non-object elements in import array should throw error', function(t) {
     [null, 17, 'string', [], false].forEach((value) => {
       const config = {
-        datapath: 'this is the datapath',
+        datapath: 'datapath value',
+        leveldbpath: 'leveldbpath value',
         import: [value]
       };
 
@@ -64,7 +117,8 @@ module.exports.tests.interface = function(test, common) {
 
   test( 'object elements in import array missing filename should throw error', function(t) {
     const config = {
-      datapath: 'this is the datapath',
+      datapath: 'datapath value',
+      leveldbpath: 'leveldbpath value',
       import: [{}]
     };
 
@@ -78,7 +132,8 @@ module.exports.tests.interface = function(test, common) {
   test( 'non-string filenames in import array should throw error', function(t) {
     [null, 17, {}, [], false].forEach((value) => {
       const config = {
-        datapath: 'this is the datapath',
+        datapath: 'datapath value',
+        leveldbpath: 'leveldbpath value',
         import: [{
           filename: value
         }]
@@ -92,26 +147,15 @@ module.exports.tests.interface = function(test, common) {
     t.end();
   });
 
-  test( 'non-string leveldbpath should throw error', function(t) {
-    [null, 17, {}, [], false].forEach((value) => {
-      const config = {
-        datapath: 'this is the datapath',
-        leveldbpath: value
-      };
+};
 
-      t.throws(() => {
-        configValidation.validate(config);
-      }, /"leveldbpath" must be a string/);
-
-    });
-
-    t.end();
-  });
-
+module.exports.tests.adminLookup = function(test, common) {
   test( 'non-boolean adminLookup should throw error', function(t) {
     [null, 17, {}, [], 'string'].forEach((value) => {
       const config = {
-        datapath: 'this is the datapath',
+        datapath: 'datapath value',
+        leveldbpath: 'leveldbpath value',
+        import: [],
         adminLookup: value
       };
 
@@ -123,10 +167,15 @@ module.exports.tests.interface = function(test, common) {
     t.end();
   });
 
+};
+
+module.exports.tests.deduplicate = function(test, common) {
   test( 'non-boolean deduplicate should throw error', function(t) {
     [null, 17, {}, [], 'string'].forEach((value) => {
       const config = {
-        datapath: 'this is the datapath',
+        datapath: 'datapath value',
+        leveldbpath: 'leveldbpath value',
+        import: [],
         deduplicate: value
       };
 
@@ -138,9 +187,14 @@ module.exports.tests.interface = function(test, common) {
     t.end();
   });
 
+};
+
+module.exports.tests.unknowns = function(test, common) {
   test( 'unknown config fields should throw error', function(t) {
     const config = {
-      datapath: 'this is the datapath',
+      datapath: 'datapath value',
+      leveldbpath: 'leveldbpath value',
+      import: [],
       unknown: 'value'
     };
 
@@ -151,9 +205,14 @@ module.exports.tests.interface = function(test, common) {
 
   });
 
-  test( 'configuration with only datapath should not throw error', function(t) {
+};
+
+module.exports.tests.valid = function(test, common) {
+  test( 'configuration with only required fields should not throw error', function(t) {
     const config = {
-      datapath: 'this is the datapath'
+      datapath: 'datapath value',
+      leveldbpath: 'leveldbpath value',
+      import: []
     };
 
     t.doesNotThrow(() => {
@@ -165,7 +224,8 @@ module.exports.tests.interface = function(test, common) {
 
   test( 'valid configuration with unknown fields in import objects should not throw error', function(t) {
     const config = {
-      datapath: 'this is the datapath',
+      datapath: 'datapath value',
+      leveldbpath: 'leveldbpath value',
       deduplicate: false,
       adminLookup: false,
       import: [

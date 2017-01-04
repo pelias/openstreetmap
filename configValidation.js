@@ -4,18 +4,19 @@ const Joi = require('joi');
 
 // Schema Configuration
 // datapath: string (required)
-// import: array of objects containing filename
-// deduplicate: boolean
-// adminLookup: boolean
+// leveldbpath: string (required)
+// import: array of objects containing filename (optional)
+// deduplicate: boolean (optional)
+// adminLookup: boolean (optional)
 const schema = Joi.object().keys({
   datapath: Joi.string(),
+  leveldbpath: Joi.string(),
   import: Joi.array().items(Joi.object().keys({
     filename: Joi.string()
   }).requiredKeys('filename').unknown(true)),
-  leveldbpath: Joi.string(),
   deduplicate: Joi.boolean(),
   adminLookup: Joi.boolean()
-}).requiredKeys('datapath').unknown(false);
+}).requiredKeys('datapath', 'leveldbpath', 'import').unknown(false);
 
 module.exports = {
   validate: function validate(config) {
