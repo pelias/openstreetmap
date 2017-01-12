@@ -1,6 +1,3 @@
-var peliasConfig = require('pelias-config').generate();
-require('../configValidation').validate(peliasConfig);
-
 var spy = require('through2-spy');
 var logger = require('pelias-logger').get('openstreetmap-points');
 var categoryDefaults = require('../config/category_map');

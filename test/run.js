@@ -4,6 +4,7 @@ var common = {};
 
 var tests = [
   require('./configValidation'),
+  require('./index'),
   require('./config/category_map'),
   require('./config/features'),
   require('./config/localized_name_keys'),

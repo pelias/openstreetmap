@@ -6,10 +6,72 @@ const configValidation = require( '../configValidation' );
 module.exports.tests = {};
 
 module.exports.tests.datapath = function(test, common) {
+  test('missing imports should throw error', function(t) {
+    [null, 17, 'string', [], true].forEach((value) => {
+      const config = {};
+
+      t.throws(function() {
+        configValidation.validate(config);
+      }, /"imports" is required/);
+    });
+
+    t.end();
+
+  });
+
+  test('non-object imports should throw error', function(t) {
+    [null, 17, 'string', [], true].forEach((value) => {
+      const config = {
+        imports: value
+      };
+
+      t.throws(function() {
+        configValidation.validate(config);
+      }, /"imports" must be an object/);
+    });
+
+    t.end();
+
+  });
+
+  test('missing imports.openstreetmap should throw error', function(t) {
+    const config = {
+      imports: {
+      }
+    };
+
+    t.throws(function() {
+      configValidation.validate(config);
+    }, /"openstreetmap" is required/);
+    t.end();
+
+  });
+
+  test('non-object imports.openstreetmap should throw error', function(t) {
+    [null, 17, 'string', [], true].forEach((value) => {
+      const config = {
+        imports: {
+          openstreetmap: value
+        }
+      };
+
+      t.throws(function() {
+        configValidation.validate(config);
+      }, /"openstreetmap" must be an object/);
+    });
+
+    t.end();
+
+  });
+
   test( 'missing datapath should throw error', function(t) {
     const config = {
-      leveldbpath: 'leveldbpath value',
-      import: []
+      imports: {
+        openstreetmap: {
+          leveldbpath: 'leveldbpath value',
+          import: []
+        }
+      }
     };
 
     t.throws(() => {
@@ -22,9 +84,13 @@ module.exports.tests.datapath = function(test, common) {
   test( 'non-string datapath should throw error', function(t) {
     [null, 17, {}, [], false].forEach((value) => {
       const config = {
-        datapath: value,
-        leveldbpath: 'leveldbpath value',
-        import: []
+        imports: {
+          openstreetmap: {
+            datapath: value,
+            leveldbpath: 'leveldbpath value',
+            import: []
+          }
+        }
       };
 
       t.throws(() => {
@@ -40,8 +106,12 @@ module.exports.tests.datapath = function(test, common) {
 module.exports.tests.leveldbpath = function(test, common) {
   test( 'missing leveldbpath should throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      import: []
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          import: []
+        }
+      }
     };
 
     t.throws(() => {
@@ -54,8 +124,12 @@ module.exports.tests.leveldbpath = function(test, common) {
   test( 'non-string leveldbpath should throw error', function(t) {
     [null, 17, {}, [], false].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: value
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: value
+          }
+        }
       };
 
       t.throws(() => {
@@ -72,8 +146,12 @@ module.exports.tests.leveldbpath = function(test, common) {
 module.exports.tests.import = function(test, common) {
   test( 'missing import should throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      leveldbpath: 'leveldbpath value'
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value'
+        }
+      }
     };
 
     t.throws(() => {
@@ -86,9 +164,13 @@ module.exports.tests.import = function(test, common) {
   test( 'non-array import should throw error', function(t) {
     [null, 17, {}, 'string', false].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: 'leveldbpath value',
-        import: value
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: 'leveldbpath value',
+            import: value
+          }
+        }
       };
 
       t.throws(() => {
@@ -102,9 +184,13 @@ module.exports.tests.import = function(test, common) {
   test( 'non-object elements in import array should throw error', function(t) {
     [null, 17, 'string', [], false].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: 'leveldbpath value',
-        import: [value]
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: 'leveldbpath value',
+            import: [value]
+          }
+        }
       };
 
       t.throws(() => {
@@ -117,9 +203,13 @@ module.exports.tests.import = function(test, common) {
 
   test( 'object elements in import array missing filename should throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      leveldbpath: 'leveldbpath value',
-      import: [{}]
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value',
+          import: [{}]
+        }
+      }
     };
 
     t.throws(() => {
@@ -132,11 +222,15 @@ module.exports.tests.import = function(test, common) {
   test( 'non-string filenames in import array should throw error', function(t) {
     [null, 17, {}, [], false].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: 'leveldbpath value',
-        import: [{
-          filename: value
-        }]
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: 'leveldbpath value',
+            import: [{
+              filename: value
+            }]
+          }
+        }
       };
 
       t.throws(() => {
@@ -153,10 +247,14 @@ module.exports.tests.adminLookup = function(test, common) {
   test( 'non-boolean adminLookup should throw error', function(t) {
     [null, 17, {}, [], 'string'].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: 'leveldbpath value',
-        import: [],
-        adminLookup: value
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: 'leveldbpath value',
+            import: [],
+            adminLookup: value
+          }
+        }
       };
 
       t.throws(() => {
@@ -173,10 +271,14 @@ module.exports.tests.deduplicate = function(test, common) {
   test( 'non-boolean deduplicate should throw error', function(t) {
     [null, 17, {}, [], 'string'].forEach((value) => {
       const config = {
-        datapath: 'datapath value',
-        leveldbpath: 'leveldbpath value',
-        import: [],
-        deduplicate: value
+        imports: {
+          openstreetmap: {
+            datapath: 'datapath value',
+            leveldbpath: 'leveldbpath value',
+            import: [],
+            deduplicate: value
+          }
+        }
       };
 
       t.throws(() => {
@@ -192,10 +294,14 @@ module.exports.tests.deduplicate = function(test, common) {
 module.exports.tests.unknowns = function(test, common) {
   test( 'unknown config fields should throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      leveldbpath: 'leveldbpath value',
-      import: [],
-      unknown: 'value'
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value',
+          import: [],
+          unknown: 'value'
+        }
+      }
     };
 
     t.throws(() => {
@@ -210,9 +316,13 @@ module.exports.tests.unknowns = function(test, common) {
 module.exports.tests.valid = function(test, common) {
   test( 'configuration with only required fields should not throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      leveldbpath: 'leveldbpath value',
-      import: []
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value',
+          import: []
+        }
+      }
     };
 
     t.doesNotThrow(() => {
@@ -224,22 +334,26 @@ module.exports.tests.valid = function(test, common) {
 
   test( 'valid configuration with unknown fields in import objects should not throw error', function(t) {
     const config = {
-      datapath: 'datapath value',
-      leveldbpath: 'leveldbpath value',
-      deduplicate: false,
-      adminLookup: false,
-      import: [
-        {
-          filename: 'file 1',
-          type: {
-            node: 'value 1',
-            way: 'value 2'
-          }
-        },
-        {
-          filename: 'file 2'
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value',
+          deduplicate: false,
+          adminLookup: false,
+          import: [
+            {
+              filename: 'file 1',
+              type: {
+                node: 'value 1',
+                way: 'value 2'
+              }
+            },
+            {
+              filename: 'file 2'
+            }
+          ]
         }
-      ]
+      }
     };
 
     t.doesNotThrow(() => {
