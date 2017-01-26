@@ -3,7 +3,7 @@ var tape = require('tape');
 var common = {};
 
 var tests = [
-  require('./configValidation'),
+  require('./schema'),
   require('./index'),
   require('./config/category_map'),
   require('./config/features'),
