@@ -1,5 +1,4 @@
-var peliasConfig = require('pelias-config').generate();
-require('./configValidation').validate(peliasConfig);
+var peliasConfig = require('pelias-config').generate(require('./schema'));
 
 var importPipeline = require('./stream/importPipeline');
 
