@@ -1,11 +1,12 @@
-var importPipeline = require('../../stream/importPipeline');
+'use strict';
+
 var isObject = require('is-object');
+const importPipeline = require('../../stream/importPipeline');
 
 module.exports.tests = {};
 
 // test exports
 module.exports.tests.interface = function(test, common) {
-
   var streams = [
     'pbfParser',
     'docConstructor',
