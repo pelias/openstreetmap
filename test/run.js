@@ -9,7 +9,6 @@ var tests = [
   require('./config/features'),
   require('./config/localized_name_keys'),
   require('./stream/address_extractor'),
-  require('./stream/adminLookup'),
   require('./stream/category_mapper'),
   require('./stream/deduper'),
   require('./stream/denormalizer'),
