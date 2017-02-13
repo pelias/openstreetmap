@@ -2,7 +2,8 @@
 
 # Pelias OpenStreetMap importer
 
-![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+[![NPM](https://nodei.co/npm/pelias-openstreetmap.png?downloads=true&stars=true)](https://nodei.co/npm/pelias-openstreetmap)
+
 [![Gitter Chat](https://badges.gitter.im/pelias/pelias.svg)](https://gitter.im/pelias/pelias?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Overview
@@ -120,3 +121,13 @@ $ npm run coverage
 ### Continuous Integration
 
 Travis tests every change against Node.js version `4` and `6`.
+
+![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+
+
+### Versioning
+
+We rely on semantic-release and Greenkeeper to maintain our module and dependency versions.
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/pelias/openstreetmap.svg)](https://greenkeeper.io/)
+
