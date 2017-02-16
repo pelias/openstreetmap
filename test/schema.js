@@ -226,28 +226,6 @@ module.exports.tests.import = function(test, common) {
 
 };
 
-module.exports.tests.adminLookup = function(test, common) {
-  test( 'non-boolean adminLookup should throw error', (t) => {
-    [null, 17, {}, [], 'string'].forEach((value) => {
-      const config = {
-        imports: {
-          openstreetmap: {
-            datapath: 'datapath value',
-            leveldbpath: 'leveldbpath value',
-            import: [],
-            adminLookup: value
-          }
-        }
-      };
-
-      t.throws(validate.bind(null, config), /"adminLookup" must be a boolean/);
-    });
-
-    t.end();
-  });
-
-};
-
 module.exports.tests.deduplicate = function(test, common) {
   test( 'non-boolean deduplicate should throw error', (t) => {
     [null, 17, {}, [], 'string'].forEach((value) => {
@@ -271,19 +249,19 @@ module.exports.tests.deduplicate = function(test, common) {
 };
 
 module.exports.tests.unknowns = function(test, common) {
-  test( 'unknown config fields should throw error', (t) => {
+  test( 'imports.openstreetmap.adminLookup should not throw error', (t) => {
     const config = {
       imports: {
         openstreetmap: {
           datapath: 'datapath value',
           leveldbpath: 'leveldbpath value',
           import: [],
-          unknown: 'value'
+          adminLookup: true
         }
       }
     };
 
-    t.throws(validate.bind(null, config), /"unknown" is not allowed/, 'unknown fields should be disallowed');
+    t.doesNotThrow(validate.bind(null, config), 'deprecated adminLookup should be allowed');
     t.end();
 
   });
