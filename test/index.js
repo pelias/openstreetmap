@@ -29,6 +29,40 @@ module.exports.tests.interface = (test, common) => {
 
   });
 
+  test('existence of imports.openstreetmap.adminLookup should log deprecation message and still import', (t) => {
+    let importCalled = false;
+    const logger = require('pelias-mock-logger')();
+
+    proxyquire('../index', {
+      './schema': 'this is the schema',
+      'pelias-config': {
+        generate: (schema) => {
+          // the schema passed to generate should be the require'd schema
+          t.equals(schema, 'this is the schema');
+          return {
+            imports: {
+              openstreetmap: {
+                adminLookup: true
+              }
+            }
+          };
+
+        }
+      },
+      './stream/importPipeline': {
+        import: () => {
+          importCalled = true;
+        }
+      },
+      'pelias-logger': logger
+    });
+
+    t.ok(logger.isInfoMessage(/^imports.openstreetmap.adminLookup has been deprecated/));
+    t.ok(importCalled);
+    t.end();
+
+  });
+
   test('configValidation throwing error should rethrow', (t) => {
     t.throws(() => {
       proxyquire('../index', {
