@@ -56,7 +56,7 @@
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0",
     "through2-spy": "^2.0.0",
-    "trimmer": "^1.0.0"
+    "trimmer": "^2.0.0"
   },
   "devDependencies": {
     "async": "^2.0.0",
