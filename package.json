@@ -51,12 +51,12 @@
     "pelias-config": "2.10.0",
     "pelias-dbclient": "2.0.0",
     "pelias-logger": "0.2.0",
-    "pelias-model": "4.7.1",
-    "pelias-wof-admin-lookup": "3.5.0",
+    "pelias-model": "4.8.1",
+    "pelias-wof-admin-lookup": "3.7.0",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0",
     "through2-spy": "^2.0.0",
-    "trimmer": "^1.0.0"
+    "trimmer": "^2.0.0"
   },
   "devDependencies": {
     "async": "^2.0.0",
