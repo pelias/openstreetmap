@@ -25,7 +25,6 @@ var tags = [
   'craft+name',
   'military+name',
   'aeroway~terminal+name',
-  'aeroway~gate+name',
   'aeroway~aerodrome+name',
   'aeroway~helipad+name',
   'aeroway~airstrip+name',
