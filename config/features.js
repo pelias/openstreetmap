@@ -22,9 +22,18 @@ var tags = [
   'landuse+name',
   'waterway+name',
   'aerialway+name',
-  'aeroway+name',
   'craft+name',
-  'military+name'
+  'military+name',
+  'aeroway~terminal+name',
+  'aeroway~aerodrome+name',
+  'aeroway~helipad+name',
+  'aeroway~airstrip+name',
+  'aeroway~heliport+name',
+  'aeroway~areodrome+name',
+  'aeroway~spaceport+name',
+  'aeroway~landing_strip+name',
+  'aeroway~airfield+name',
+  'aeroway~airport+name'
 ];
 
 module.exports = tags;
