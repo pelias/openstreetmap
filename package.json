@@ -13,10 +13,11 @@
     "pretest": "test/pretest.sh",
     "start": "node index.js",
     "test": "npm run units",
-    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
+    "travis": "npm run check-dependencies && node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
     "validate": "npm ls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "check-dependencies": "node_modules/.bin/npm-check --production"
   },
   "repository": {
     "type": "git",
@@ -40,23 +41,22 @@
     "combined-stream": "^1.0.5",
     "extend": "^3.0.0",
     "geolib": "^2.0.17",
-    "gjtk": "^2.0.0",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
     "joi": "^10.1.0",
     "lodash": "^4.16.0",
     "merge": "^1.2.0",
-    "pbf2json": "4.2.0",
+    "pbf2json": "4.4.0",
     "pelias-address-deduplicator": "1.1.0",
-    "pelias-config": "2.7.1",
+    "pelias-config": "2.11.0",
     "pelias-dbclient": "2.0.0",
-    "pelias-logger": "0.1.0",
-    "pelias-model": "4.4.0",
-    "pelias-wof-admin-lookup": "2.11.0",
+    "pelias-logger": "0.2.0",
+    "pelias-model": "4.8.1",
+    "pelias-wof-admin-lookup": "3.7.0",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0",
     "through2-spy": "^2.0.0",
-    "trimmer": "^1.0.0"
+    "trimmer": "^2.0.0"
   },
   "devDependencies": {
     "async": "^2.0.0",
@@ -66,17 +66,20 @@
     "istanbul": "^0.4.3",
     "jshint": "^2.8.0",
     "naivedb": "^1.0.7",
+    "npm-check": "git://github.com/orangejulius/npm-check.git#disable-update-check",
+    "pelias-mock-logger": "^1.0.1",
     "precommit-hook": "^3.0.0",
     "proxyquire": "^1.7.10",
+    "semantic-release": "^6.3.2",
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
-    "tmp": "0.0.31",
-    "semantic-release": "^6.3.2"
+    "tmp": "0.0.31"
   },
   "pre-commit": [
     "lint",
     "validate",
-    "test"
+    "test",
+    "check-dependencies"
   ]
 }

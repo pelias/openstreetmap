@@ -2,7 +2,8 @@
 
 # Pelias OpenStreetMap importer
 
-![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+[![NPM](https://nodei.co/npm/pelias-openstreetmap.png?downloads=true&stars=true)](https://nodei.co/npm/pelias-openstreetmap)
+
 [![Gitter Chat](https://badges.gitter.im/pelias/pelias.svg)](https://gitter.im/pelias/pelias?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Overview
@@ -39,7 +40,6 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 ```javascript
     "openstreetmap": {
       "datapath": "/mnt/pelias/openstreetmap",
-      "adminLookup": false,
       "leveldbpath": "/tmp",
       "import": [{
         "filename": "london_england.osm.pbf"
@@ -58,12 +58,14 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 
 ### Administrative Hierarchy Lookup
 
-Most OSM data doesn't have a full administrative hierarchy (ie, country, state,
-county, etc. names), but it can be calculated using data from [Who's on
-First](http://whosonfirst.mapzen.com/). See the [readme](https://github.com/pelias/wof-admin-lookup/blob/master/README.md)
-for [pelias/wof-admin-lookup](https://github.com/pelias/wof-admin-lookup) for more information.
+OSM records often do not contain information about which city, state (or
+other region like province), or country that they belong to. Pelias has the
+ability to compute these values from [Who's on First](http://whosonfirst.mapzen.com/) data.
+For more info on how admin lookup works, see the documentation for
+[pelias/wof-admin-lookup](https://github.com/pelias/wof-admin-lookup). By default,
+adminLookup is enabled.  To disable, set `imports.adminLookup.enabled` to `false` in Pelias config.
 
-Set the `imports.openstreetmap.adminLookup` property in `pelias.json` to true to enable admin lookup.
+**Note:** Admin lookup requires loading around 5GB of data into memory.
 
 ## Running an import
 
@@ -120,3 +122,12 @@ $ npm run coverage
 ### Continuous Integration
 
 Travis tests every change against Node.js version `4` and `6`.
+
+![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+
+
+### Versioning
+
+We rely on semantic-release and Greenkeeper to maintain our module and dependency versions.
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/pelias/openstreetmap.svg)](https://greenkeeper.io/)

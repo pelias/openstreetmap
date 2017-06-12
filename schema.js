@@ -7,8 +7,7 @@ const Joi = require('joi');
 // leveldbpath: string (required)
 // import: array of objects containing filename (optional)
 // deduplicate: boolean (optional)
-// adminLookup: boolean (optional)
-const schema = Joi.object().keys({
+module.exports = Joi.object().keys({
   imports: Joi.object().keys({
     openstreetmap: Joi.object().keys({
       datapath: Joi.string(),
@@ -16,19 +15,7 @@ const schema = Joi.object().keys({
       import: Joi.array().items(Joi.object().keys({
         filename: Joi.string()
       }).requiredKeys('filename').unknown(true)),
-      deduplicate: Joi.boolean(),
-      adminLookup: Joi.boolean()
-    }).requiredKeys('datapath', 'leveldbpath', 'import').unknown(false)
+      deduplicate: Joi.boolean()
+    }).requiredKeys('datapath', 'leveldbpath', 'import').unknown(true)
   }).requiredKeys('openstreetmap').unknown(true)
 }).requiredKeys('imports').unknown(true);
-
-module.exports = {
-  validate: function validate(config) {
-    Joi.validate(config, schema, (err) => {
-      if (err) {
-        throw new Error(err.details[0].message);
-      }
-    });
-  }
-
-};
