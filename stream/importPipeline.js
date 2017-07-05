@@ -30,7 +30,7 @@ streams.import = function(){
     .pipe( streams.adminLookup() )
     .pipe( streams.deduper() )
     .pipe( spy.obj(function (doc) {
-        logger.info(doc.getGid(), doc.getName('default'), doc.getCentroid());
+        logger.verbose(doc.getGid(), doc.getName('default'), doc.getCentroid());
       })
     )
     .pipe( streams.dbMapper() )
