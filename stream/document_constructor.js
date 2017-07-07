@@ -7,7 +7,6 @@
 var through = require('through2');
 var Document = require('pelias-model').Document;
 var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
-var _ = require('lodash');
 
 module.exports = function(){
 
@@ -38,11 +37,6 @@ module.exports = function(){
             lon: item.centroid.lon
           });
         }
-      }
-
-      // Set noderefs (for ways)
-      if( item.hasOwnProperty('nodes') ){
-        doc.setMeta( 'nodes', item.nodes );
       }
 
       // Store osm tags as a property inside _meta

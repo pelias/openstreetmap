@@ -111,16 +111,10 @@ module.exports = function(){
   return stream;
 };
 
-// properties to map from the osm record to the pelias doc
-var addrProps = [ 'name', 'number', 'street', 'zip' ];
-
 // call document setters and ignore non-fatal errors
 function setProperties( record, doc ){
-  addrProps.forEach( function ( prop ){
-    try {
-      record.setAddress( prop, doc.getAddress( prop ) );
-    } catch ( ex ) {}
-  });
+  record.address_parts = doc.address_parts;
+  record.parent = doc.parent;
 }
 
 // export for testing

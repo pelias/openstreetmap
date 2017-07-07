@@ -98,28 +98,6 @@ module.exports.tests.centroid = function(test, common) {
   });
 };
 
-module.exports.tests.noderefs = function(test, common) {
-  var nodeData = [ 'X', 'Y' ];
-  test('noderefs: valid', function(t) {
-    var stream = constructor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getMeta('nodes'), nodeData, 'noderefs set' );
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write({ id: 1, type: 'X', nodes: nodeData });
-  });
-  test('noderefs: invalid', function(t) {
-    var stream = constructor();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.false( doc.getMeta('nodes'), 'no noderefs' );
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write({ id: 1, type: 'X' });
-  });
-};
-
 module.exports.tests.tags = function(test, common) {
   var tagData = [ 'X', 'Y' ];
   test('noderefs: valid', function(t) {

@@ -24,10 +24,9 @@ streams.import = function(){
   streams.pbfParser()
     .pipe( streams.docConstructor() )
     .pipe( streams.tagMapper() )
-    .pipe( streams.docDenormalizer() )
-    .pipe( streams.addressExtractor() )
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )
+    .pipe( streams.addressExtractor() )
     .pipe( streams.deduper() )
     .pipe( spy.obj(function (doc) {
         logger.info(doc.getGid(), doc.getName('default'), doc.getCentroid());

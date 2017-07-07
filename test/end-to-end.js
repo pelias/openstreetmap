@@ -49,16 +49,15 @@ var results = [];
 streams.pbfParser()
   .pipe( streams.docConstructor() )
   .pipe( streams.tagMapper() )
-  .pipe( streams.docDenormalizer() )
-  .pipe( streams.addressExtractor() )
   .pipe( streams.categoryMapper( streams.config.categoryDefaults ) )
+  .pipe( streams.addressExtractor() )
   .pipe( model.createDocumentMapperStream() )
   .pipe( sink.obj(function (doc) {
     results.push(doc);
   }) )
   .on('error', function error(err) {
     console.error('YIKES! Test failed with the following error: ', err.message);
-    process.exit();
+    process.exit(1);
   })
   .on('finish', function assert(){
 
