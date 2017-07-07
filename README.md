@@ -28,6 +28,14 @@ $ npm install
 ## Download data
 
 The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
+You can use the included download script to obtain the desired `pbf` files as follows. In the configuration file you can
+specify which files are to be downloaded. They will all be downloaded to the `imports.openstreetmap.datapath` directory.
+If no download sources are specified in the configuration, the entire planet file will be downloaded from the
+[OpenStreetMap download site](http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf).
+
+```bash
+$ PELIAS_CONFIG=<path-to-config> npm run download
+```
 
 > __PRO-TIP:__ *Currently, this module only supports the input of a [single pbf file at a time, but we wish to support multiple files](https://github.com/pelias/openstreetmap/issues/55).*
 
@@ -38,18 +46,26 @@ In order to tell the importer the location of your downloads, temp space and env
 See [the config](https://github.com/pelias/config) documentation for details on the structure of this file. Your relevant config info for the openstreetmap module might look something like this:
 
 ```javascript
+{
+  "imports": {
     "openstreetmap": {
+      "download": [{
+        "sourceURL": "https://s3.amazonaws.com/metro-extracts.mapzen.com/portland_oregon.osm.pbf"
+      }],
       "datapath": "/mnt/pelias/openstreetmap",
       "leveldbpath": "/tmp",
       "import": [{
-        "filename": "london_england.osm.pbf"
+        "filename": "portland_oregon.osm.pbf"
       }]
     }
+  }
+}
 ```
 
 ### Environment Settings
 
 - `imports.openstreetmap.datapath` - this is the directory which you downloaded the pbf file to
+- `imports.openstreetmap.download[0].sourceURL` - this is the source URL of the pbf file to be downloaded
 - `imports.openstreetmap.import[0].filename` - this is the name of the pbf file you downloaded
 - `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
 
