@@ -52,7 +52,7 @@ function downloadSource(config, sourceUrl, callback) {
   const targetDir = config.imports.openstreetmap.datapath;
 
   logger.debug(`downloading ${sourceUrl} to ${targetDir}`);
-  child_process.exec(`cd ${targetDir} && { curl -L -X GET --silent --remote-name ${sourceUrl}; cd -; }`, callback);
+  child_process.exec(`cd ${targetDir} && { curl -L -X GET --silent --remote-name ${sourceUrl}; }`, callback);
 }
 
 module.exports = download;
