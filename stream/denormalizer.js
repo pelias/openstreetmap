@@ -10,7 +10,8 @@
 var through = require('through2'),
     isObject = require('is-object'),
     geometryUtil = require('../util/geometryUtil'),
-    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' ),
+    _ = require('lodash');
 
 // convert de-normalized ways to geojson
 function denormalizer(){
@@ -42,7 +43,7 @@ function denormalizer(){
 
         // only compute centroids where they have not already
         // been computed (avoid doing double work)
-        if ( 'number' !== typeof doc.getLat() || 'number' !== typeof doc.getLon() ) {
+        if (_.isEmpty(doc.getCentroid())) {
           var center = geometryUtil.computeCenter(points);
           if (isObject(center)) {
             doc.setCentroid(center);
