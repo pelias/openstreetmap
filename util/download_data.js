@@ -20,13 +20,14 @@ if (require.main === module) {
 function download(callback) {
   let sources;
 
-  if (!_.isEmpty(config.imports.openstreetmap.download)) {
-    sources = _.map(config.imports.openstreetmap.download, (source) => source.sourceURL);
-  }
-  else {
+  // if no download sources are specified, default to the planet file
+  if (_.isEmpty(config.imports.openstreetmap.download)) {
     sources = [
       'http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf'
     ];
+  }
+  else {
+    sources = _.map(config.imports.openstreetmap.download, (source) => source.sourceURL);
   }
 
   logger.info(`Downloading sources: ${sources}`);
