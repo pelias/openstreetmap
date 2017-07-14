@@ -7,6 +7,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "download": "node util/download_data.js",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "npm run pretest && node test/end-to-end.js;",
     "lint": "jshint .",
@@ -40,6 +41,7 @@
   "dependencies": {
     "combined-stream": "^1.0.5",
     "extend": "^3.0.0",
+    "fs-extra": "^3.0.1",
     "geolib": "^2.0.17",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
