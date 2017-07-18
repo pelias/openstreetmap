@@ -41,7 +41,7 @@
   "dependencies": {
     "combined-stream": "^1.0.5",
     "extend": "^3.0.0",
-    "fs-extra": "^3.0.1",
+    "fs-extra": "^4.0.0",
     "geolib": "^2.0.17",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
