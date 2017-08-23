@@ -50,7 +50,7 @@
     "merge": "^1.2.0",
     "pbf2json": "4.4.0",
     "pelias-address-deduplicator": "1.1.0",
-    "pelias-config": "2.11.0",
+    "pelias-config": "2.12.0",
     "pelias-dbclient": "2.2.0",
     "pelias-logger": "0.2.0",
     "pelias-model": "5.0.0",
