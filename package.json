@@ -48,7 +48,7 @@
     "joi": "^10.1.0",
     "lodash": "^4.16.0",
     "merge": "^1.2.0",
-    "pbf2json": "4.4.0",
+    "pbf2json": "git://github.com/pelias/pbf2json.git#replace_parser",
     "pelias-address-deduplicator": "1.1.0",
     "pelias-config": "2.12.0",
     "pelias-dbclient": "2.2.2",
