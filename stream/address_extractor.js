@@ -98,6 +98,15 @@ module.exports = function(){
         if( record !== undefined ){
           // copy meta data (but maintain the id & type assigned above)
           record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+
+          // multilang support for addresses
+          var tags = doc.getMeta('tags');
+          for( var tag in tags ) {
+            var suffix = getStreetSuffix(tag);
+            if (suffix ) {
+              record.setName(suffix, streetno + ' ' + tags[tag] );
+            }
+          }
           this.push( record );
         }
         else {
@@ -141,6 +150,21 @@ function setProperties( record, doc ){
       record.setAddress( prop, doc.getAddress( prop ) );
     } catch ( ex ) {}
   });
+}
+
+
+function getStreetSuffix( tag ){
+  if( tag.length < 6 || tag.substr(0,12) !== 'addr:street:' ){
+    return false;
+  }
+  // normalize suffix
+  var suffix = tag.substr(12).toLowerCase();
+
+  if (languages && languages.indexOf(suffix) === -1) { // not interested in this name version
+    return false;
+  }
+
+  return suffix;
 }
 
 // export for testing
