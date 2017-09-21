@@ -177,7 +177,6 @@ module.exports.tests.karlsruhe_schema = function(test, common) {
     doc.setMeta('tags', { 'addr:housename': 'CCC', 'addr:housenumber': '111' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getAddress('name'), 'CCC', 'correctly mapped');
       t.equal(doc.getAddress('number'), '111', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
