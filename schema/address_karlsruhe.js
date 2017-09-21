@@ -11,7 +11,6 @@
 **/
 
 var KARLSRUHE_SCHEMA = {
-  'addr:housename':     'name',
   'addr:housenumber':   'number',
   'addr:street':        'street',
   'addr:postcode':      'zip'
