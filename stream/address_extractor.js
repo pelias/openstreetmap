@@ -28,6 +28,7 @@ var isObject = require('is-object');
 var extend = require('extend');
 var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 var Document = require('pelias-model').Document;
+var config = require('pelias-config').generate().api;
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
@@ -39,10 +40,29 @@ function hasValidAddress( doc ){
   return true;
 }
 
+var languages;
+if (Array.isArray(config.languages)) {
+  languages = config.languages;
+}
+
+function hasValidName( doc ){
+  if(languages) {
+    for(var lang in languages) {
+      if (doc.getName(languages[lang])) {
+        return true;
+      }
+    }
+  } else {
+    return !!doc.getName('default') ;
+  }
+
+  return false;
+}
+
 module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
-    var isNamedPoi = !!doc.getName('default');
+    var isNamedPoi = hasValidName( doc );
     var isAddress = hasValidAddress( doc );
 
     // create a new record for street addresses
