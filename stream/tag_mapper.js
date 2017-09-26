@@ -18,6 +18,14 @@ var ADDRESS_SCHEMA = merge( true, false,
   require('../schema/address_karlsruhe')
 );
 
+var config = require('pelias-config').generate().api;
+
+var languages;
+if (Array.isArray(config.languages) && config.languages.length>0) {
+  languages = config.languages;
+}
+
+
 module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
@@ -30,6 +38,8 @@ module.exports = function(){
         return next( null, doc );
       }
 
+      var names = {};
+
       // Unfortunately we need to iterate over every tag,
       // so we only do the iteration once to save CPU.
       for( var tag in tags ){
@@ -37,10 +47,11 @@ module.exports = function(){
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
         var suffix = getNameSuffix( tag );
-        if( suffix ){
+        if( suffix && (!languages || languages.indexOf(suffix) !== -1)) {
+          // set only languages we wish to support
           var val1 = trim( tags[tag] );
           if( val1 ){
-            doc.setName( suffix, val1 );
+            names[suffix] = trim( tags[tag] );
           }
         }
 
@@ -48,7 +59,7 @@ module.exports = function(){
         else if( tag in NAME_SCHEMA ){
           var val2 = trim( tags[tag] );
           if( val2 ){
-            doc.setName( NAME_SCHEMA[tag], val2 );
+            names[NAME_SCHEMA[tag]] = val2;
           }
         }
 
@@ -57,6 +68,27 @@ module.exports = function(){
           var val3 = trim( tags[tag] );
           if( val3 ){
             doc.setAddress( ADDRESS_SCHEMA[tag], val3 );
+          }
+        }
+      }
+      // process names
+      var defaultName = names['default'];
+
+      if (!defaultName && languages) { // api likes default name
+        for(var i in languages) {
+          defaultName = names[languages[i]];
+          if (defaultName) { // use first supported name version as default
+            break;
+          }
+        }
+      }
+      if (defaultName) {
+        doc.setName( 'default', defaultName);
+
+        for(var prop in names) {
+          if ( names[prop] !== defaultName) {
+            // don't set duplicates. A missing language defaults to name.default.
+            doc.setName( prop, names[prop] );
           }
         }
       }
