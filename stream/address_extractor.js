@@ -41,7 +41,7 @@ function hasValidAddress( doc ){
 }
 
 var languages;
-if (Array.isArray(config.languages)) {
+if (Array.isArray(config.languages) && config.languages.length>0) {
   languages = config.languages;
 }
 
