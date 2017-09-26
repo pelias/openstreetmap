@@ -18,13 +18,23 @@ var ADDRESS_SCHEMA = merge( true, false,
   require('../schema/address_karlsruhe')
 );
 
-var config = require('pelias-config').generate().api;
+var config = require('pelias-config').generate();
+var api = config.api;
 
 var languages;
-if (Array.isArray(config.languages) && config.languages.length>0) {
-  languages = config.languages;
+if (Array.isArray(api.languages) && api.languages.length>0) {
+  languages = api.languages;
 }
 
+var osm = config.imports ? config.imports.openstreetmap : null;
+var nameValidators = {};
+
+if (osm && osm.nameValidators) {
+  // validators help to drop junk values
+  for (var suffix in osm.nameValidators) {
+    nameValidators[suffix] = new RegExp(osm.nameValidators[suffix]);
+  }
+}
 
 module.exports = function(){
 
@@ -47,20 +57,29 @@ module.exports = function(){
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
         var suffix = getNameSuffix( tag );
+        // set only languages we wish to support
         if( suffix && (!languages || languages.indexOf(suffix) !== -1)) {
-          // set only languages we wish to support
           var val1 = trim( tags[tag] );
-          if( val1 ){
-            names[suffix] = trim( tags[tag] );
+          if( !val1 ) {
+            continue;
           }
+          if (nameValidators[suffix] && !nameValidators[suffix].test(val1)) {
+            continue;
+          }
+          names[suffix] = val1;
         }
 
         // Map name data from our name mapping schema
         else if( tag in NAME_SCHEMA ){
+          var mappedTag = NAME_SCHEMA[tag];
           var val2 = trim( tags[tag] );
-          if( val2 ){
-            names[NAME_SCHEMA[tag]] = val2;
+          if(!val2) {
+            continue;
           }
+          if (nameValidators[mappedTag] && !nameValidators[mappedTag].test(val2)) {
+            continue;
+          }
+          names[mappedTag] = val2;
         }
 
         // Map address data from our address mapping schema

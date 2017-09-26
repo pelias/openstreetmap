@@ -40,12 +40,12 @@ module.exports.tests.passthrough = function(test, common) {
 
 module.exports.tests.localised_names = function(test, common) {
   var doc = new Document('a','b',1);
-  doc.setMeta('tags', { 'name:en': 'test', 'name:es': 'prueba' });
+  doc.setMeta('tags', { 'name': 'test', 'name:fi': 'testi' });
   test('maps - localised names', function(t) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('en'), 'test', 'correctly mapped');
-      t.equal(doc.getName('es'), 'prueba', 'correctly mapped');
+      t.equal(doc.getName('default'), 'test', 'correctly mapped');
+      t.equal(doc.getName('fi'), 'testi', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -70,7 +70,7 @@ module.exports.tests.osm_names = function(test, common) {
     doc.setMeta('tags', { loc_name: 'test1', nat_name: 'test2' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('local'), 'test1', 'correctly mapped');
+      t.equal(doc.getName('default'), 'test1', 'correctly mapped');
       t.equal(doc.getName('national'), 'test2', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
@@ -110,22 +110,6 @@ module.exports.tests.reject_difficult_keys = function(test, common) {
   });
 };
 
-// Accept keys from ./config/localized_keys.js
-module.exports.tests.accept_localized_keys = function(test, common) {
-  var doc = new Document('a','b',1);
-  doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2', 'name:ko': 'test3' });
-  test('maps - localized keys', function(t) {
-    var stream = mapper();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
-      t.equal(doc.getName('pl'), 'test2', 'correctly mapped');
-      t.equal(doc.getName('ko'), 'test3', 'correctly mapped');
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write(doc);
-  });
-};
 
 module.exports.tests.lowercase_keys = function(test, common) {
   var doc = new Document('a','b',1);
@@ -133,7 +117,7 @@ module.exports.tests.lowercase_keys = function(test, common) {
   test('maps - lowercase keys', function(t) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('en'), 'test', 'correctly mapped');
+      t.equal(doc.getName('default'), 'test', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

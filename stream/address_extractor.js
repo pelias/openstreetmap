@@ -127,7 +127,7 @@ module.exports = function(){
       peliasLogger.verbose('[address_extractor] duplicating a venue with address');
     }
     else if ( !isAddress && !isNamedPoi ) {
-      peliasLogger.error('[address_extractor] Invalid doc not pushed downstream: ', JSON.stringify( doc, null, 2 ));
+      peliasLogger.debug('[address_extractor] Invalid doc not pushed downstream: ', JSON.stringify( doc, null, 2 ));
     }
 
     return next();
