@@ -28,6 +28,8 @@ var isObject = require('is-object');
 var extend = require('extend');
 var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 var Document = require('pelias-model').Document;
+var geolib = require( 'geolib' );
+var config = require('pelias-config').generate().api;
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
@@ -39,11 +41,62 @@ function hasValidAddress( doc ){
   return true;
 }
 
+var languages;
+if (Array.isArray(config.languages) && config.languages.length>0) {
+  languages = config.languages;
+}
+
+function hasValidName( doc ){
+  if(languages) {
+    for(var lang in languages) {
+      if (doc.getName(languages[lang])) {
+        return true;
+      }
+    }
+  } else {
+    return !!doc.getName('default') ;
+  }
+
+  return false;
+}
+
+var houseNameValidator = new RegExp('[a-zA-Z]{3,}');
+
+function getHouseName( doc ){
+  if( !isObject( doc ) ){ return null; }
+  if( !isObject( doc.address_parts ) ){ return null; }
+  if( 'string' !== typeof doc.address_parts.name ){ return null; }
+  if( !houseNameValidator.test(doc.address_parts.name) ){ return null; }
+
+  return doc.address_parts.name;
+}
+
+var houses = {};
+
+function dedupeHouse(name, doc) {
+  var centroid = doc.getCentroid();
+  if (!houses[name]) {
+    houses[name] = [centroid];
+  } else {
+    for (var i in houses[name]) {
+      var c2 =  houses[name][i];
+      var p1 = { longitude: centroid.lon, latitude: centroid.lat };
+      var p2 = { longitude: c2.lon, latitude: c2.lat };
+      if(geolib.getDistance(p1, p2) < 1000) { // m
+        return true;
+      }
+    }
+    houses[name].push(centroid);
+  }
+  return false;
+}
+
 module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
-    var isNamedPoi = !!doc.getName('default');
+    var isNamedPoi = hasValidName( doc );
     var isAddress = hasValidAddress( doc );
+    var houseName = getHouseName( doc );
 
     // create a new record for street addresses
     if( isAddress ){
@@ -78,6 +131,15 @@ module.exports = function(){
         if( record !== undefined ){
           // copy meta data (but maintain the id & type assigned above)
           record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+
+          // multilang support for addresses
+          var tags = doc.getMeta('tags');
+          for( var tag in tags ) {
+            var suffix = getStreetSuffix(tag);
+            if (suffix ) {
+              record.setName(suffix, streetno + ' ' + tags[tag] );
+            }
+          }
           this.push( record );
         }
         else {
@@ -86,6 +148,37 @@ module.exports = function(){
 
       }, this);
 
+    }
+
+    // create a new record for buildings. Try to avoid duplicates
+    if( houseName && doc.getName('default') !== houseName && !dedupeHouse(houseName, doc)) {
+      var record2;
+
+      try {
+        var newid = doc.getSourceId()+':B';
+
+        // copy data to new document
+        record2 = new Document( 'openstreetmap', 'venue', newid )
+          .setName( 'default', houseName )
+          .setCentroid( doc.getCentroid() );
+
+        setProperties( record2, doc );
+      }
+
+      catch( e ){
+        peliasLogger.error( 'address_extractor error' );
+        peliasLogger.error( e.stack );
+        peliasLogger.error( JSON.stringify( doc, null, 2 ) );
+      }
+
+      if( record2 !== undefined ){
+        // copy meta data (but maintain the id & type assigned above)
+        record2._meta = extend( true, {}, doc._meta, { id: record2.getId() } );
+        this.push( record2 );
+      }
+      else {
+        peliasLogger.error( '[address_extractor] failed to push housename downstream' );
+      }
     }
 
     // forward doc downstream if it's a POI in its own right
@@ -97,8 +190,8 @@ module.exports = function(){
     if ( isAddress && isNamedPoi ) {
       peliasLogger.verbose('[address_extractor] duplicating a venue with address');
     }
-    else if ( !isAddress && !isNamedPoi ) {
-      peliasLogger.error('[address_extractor] Invalid doc not pushed downstream: ', JSON.stringify( doc, null, 2 ));
+    else if ( !isAddress && !isNamedPoi && !houseName) {
+      peliasLogger.debug('[address_extractor] Invalid doc not pushed downstream: ', JSON.stringify( doc, null, 2 ));
     }
 
     return next();
@@ -121,6 +214,21 @@ function setProperties( record, doc ){
       record.setAddress( prop, doc.getAddress( prop ) );
     } catch ( ex ) {}
   });
+}
+
+
+function getStreetSuffix( tag ){
+  if( tag.length < 6 || tag.substr(0,12) !== 'addr:street:' ){
+    return false;
+  }
+  // normalize suffix
+  var suffix = tag.substr(12).toLowerCase();
+
+  if (languages && languages.indexOf(suffix) === -1) { // not interested in this name version
+    return false;
+  }
+
+  return suffix;
 }
 
 // export for testing

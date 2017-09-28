@@ -48,7 +48,7 @@
     "joi": "^11.0.1",
     "lodash": "^4.16.0",
     "merge": "^1.2.0",
-    "pbf2json": "4.4.0",
+    "pbf2json": "git://github.com/hsldevcom/pbf2json.git",
     "pelias-address-deduplicator": "1.1.0",
     "pelias-config": "2.12.1",
     "pelias-dbclient": "2.2.3",
@@ -80,7 +80,6 @@
   },
   "pre-commit": [
     "lint",
-    "validate",
     "test",
     "check-dependencies"
   ]

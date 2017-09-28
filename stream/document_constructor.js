@@ -41,8 +41,9 @@ module.exports = function(){
       }
 
       // Set noderefs (for ways)
-      if( item.hasOwnProperty('nodes') ){
-        doc.setMeta( 'nodes', item.nodes );
+      if( item.hasOwnProperty('BBoxMin') && item.hasOwnProperty('BBoxMax') ){
+        doc.setMeta( 'BBoxMin', item.BBoxMin );
+        doc.setMeta( 'BBoxMax', item.BBoxMax );
       }
 
       // Store osm tags as a property inside _meta
