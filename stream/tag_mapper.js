@@ -26,15 +26,6 @@ if (Array.isArray(api.languages) && api.languages.length>0) {
   languages = api.languages;
 }
 
-var osm = config.imports ? config.imports.openstreetmap : null;
-var nameValidators = {};
-
-if (osm && osm.nameValidators) {
-  // validators help to drop junk values
-  for (var suffix in osm.nameValidators) {
-    nameValidators[suffix] = new RegExp(osm.nameValidators[suffix]);
-  }
-}
 
 module.exports = function(){
 
@@ -63,9 +54,6 @@ module.exports = function(){
           if( !val1 ) {
             continue;
           }
-          if (nameValidators[suffix] && !nameValidators[suffix].test(val1)) {
-            continue;
-          }
           names[suffix] = val1;
         }
 
@@ -74,9 +62,6 @@ module.exports = function(){
           var mappedTag = NAME_SCHEMA[tag];
           var val2 = trim( tags[tag] );
           if(!val2) {
-            continue;
-          }
-          if (nameValidators[mappedTag] && !nameValidators[mappedTag].test(val2)) {
             continue;
           }
           names[mappedTag] = val2;

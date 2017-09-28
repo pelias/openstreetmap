@@ -21,8 +21,7 @@ var OSM_NAMING_SCHEMA = {
   'old_name':         'old',
   'reg_name':         'regional',
   'short_name':       'short',
-  'sorting_name':     'sorting',
-  'addr:housename':   'building'
+  'sorting_name':     'sorting'
 };
 
 module.exports = OSM_NAMING_SCHEMA;
