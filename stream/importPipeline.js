@@ -1,6 +1,7 @@
 var spy = require('through2-spy');
 var logger = require('pelias-logger').get('openstreetmap-points');
 var categoryDefaults = require('../config/category_map');
+var peliasConfig = require( 'pelias-config' ).generate();
 
 var streams = {};
 
@@ -30,9 +31,10 @@ streams.import = function(){
     .pipe( streams.adminLookup() )
     .pipe( streams.deduper() )
     .pipe( spy.obj(function (doc) {
+      if (peliasConfig.imports.openstreetmap.logDocumentCentroids) {
         logger.verbose(doc.getGid(), doc.getName('default'), doc.getCentroid());
-      })
-    )
+      }
+    }))
     .pipe( streams.dbMapper() )
     .pipe( streams.elasticsearch() );
 };
