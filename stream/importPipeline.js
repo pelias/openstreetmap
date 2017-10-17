@@ -1,4 +1,3 @@
-var spy = require('through2-spy');
 var logger = require('pelias-logger').get('openstreetmap-points');
 var categoryDefaults = require('../config/category_map');
 
@@ -29,10 +28,6 @@ streams.import = function(){
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )
     .pipe( streams.deduper() )
-    .pipe( spy.obj(function (doc) {
-        logger.verbose(doc.getGid(), doc.getName('default'), doc.getCentroid());
-      })
-    )
     .pipe( streams.dbMapper() )
     .pipe( streams.elasticsearch() );
 };
