@@ -61,9 +61,15 @@ module.exports = function(){
             peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetnumbers);
           }
 
+          // If unit is set to an address add it to default name since streetno and street will be the same
+          var unit = '';
+          if(doc.address_parts.hasOwnProperty('unit')) {
+            unit = ' ' + doc.address_parts.unit;
+          }
+          peliasLogger.debug('Address unit ' + unit);
           // copy data to new document
           record = new Document( 'openstreetmap', 'address', newid.join(':') )
-            .setName( 'default', streetno + ' ' + doc.address_parts.street )
+            .setName( 'default',  streetno + unit + ' ' + doc.address_parts.street)
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );
@@ -112,7 +118,7 @@ module.exports = function(){
 };
 
 // properties to map from the osm record to the pelias doc
-var addrProps = [ 'name', 'number', 'street', 'zip' ];
+var addrProps = [ 'name', 'unit', 'number', 'street', 'zip' ];
 
 // call document setters and ignore non-fatal errors
 function setProperties( record, doc ){

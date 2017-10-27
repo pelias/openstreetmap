@@ -146,10 +146,11 @@ module.exports.tests.lowercase_keys = function(test, common) {
 module.exports.tests.osm_schema = function(test, common) {
   test('maps - osm schema', function(t) {
     var doc = new Document('a','b',1);
-    doc.setMeta('tags', { postal_code: 'AAA' });
+    doc.setMeta('tags', { postal_code: 'AAA', 'addr:unit': 'BBB' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getAddress('zip'), 'AAA', 'correctly mapped');
+      t.equal(doc.getAddress('unit'), 'BBB', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

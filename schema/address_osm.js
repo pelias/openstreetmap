@@ -11,7 +11,8 @@
 **/
 
 var OSM_SCHEMA = {
-  'postal_code': 'zip'
+  'postal_code': 'zip',
+  'addr:unit': 'unit'
 };
 
 module.exports = OSM_SCHEMA;
