@@ -66,7 +66,7 @@ module.exports = function(){
           if(doc.address_parts.hasOwnProperty('unit')) {
             unit = ' ' + doc.address_parts.unit;
           }
-          peliasLogger.debug('Address unit ' + unit);
+
           // copy data to new document
           record = new Document( 'openstreetmap', 'address', newid.join(':') )
             .setName( 'default',  streetno + unit + ' ' + doc.address_parts.street)
