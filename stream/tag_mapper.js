@@ -5,7 +5,7 @@
 **/
 
 var through = require('through2'),
-    trimmer = require('trimmer'),
+    _ = require('lodash'),
     merge = require('merge'),
     peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
 
@@ -80,7 +80,7 @@ module.exports = function(){
 
 // Clean string of leading/trailing junk chars
 function trim( str ){
-  return trimmer( str, '#$%^*<>-=_{};:",./?\t\n\' ' );
+  return _.trim( str, '#$%^*<>-=_{};:",./?\t\n\' ' );
 }
 
 // extract name suffix, eg for 'name:EN' return 'en'
