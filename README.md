@@ -69,7 +69,7 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 - `imports.openstreetmap.import[0].filename` - this is the name of the pbf file you downloaded
 - `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
 
-> __PRO-TIP:__ If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
+> __PRO-TIP:__ Path pointing towards SSD instead of HDD provide significant performance benefits
 
 
 ### Administrative Hierarchy Lookup
