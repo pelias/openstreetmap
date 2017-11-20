@@ -69,7 +69,7 @@ module.exports = function(){
 
           // copy data to new document
           record = new Document( 'openstreetmap', 'address', newid.join(':') )
-            .setName( 'default',  streetno + unit + ' ' + doc.address_parts.street)
+            .setName( 'default',  streetno + ' ' + doc.address_parts.street + unit)
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );
