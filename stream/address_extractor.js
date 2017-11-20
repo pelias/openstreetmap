@@ -62,14 +62,15 @@ module.exports = function(){
           }
 
           // If unit is set to an address add it to default name since streetno and street will be the same
-          var unit = '';
-          if(doc.address_parts.hasOwnProperty('unit')) {
-            unit = ' ' + doc.address_parts.unit;
+          var name = [ streetno, doc.address_parts.street ];
+          if( doc.address_parts.hasOwnProperty('unit') ) {
+            name.push(doc.address_parts.unit);
           }
+          name = name.join(' ');
 
           // copy data to new document
           record = new Document( 'openstreetmap', 'address', newid.join(':') )
-            .setName( 'default',  streetno + ' ' + doc.address_parts.street + unit)
+            .setName( 'default', name )
             .setCentroid( doc.getCentroid() );
 
           setProperties( record, doc );
