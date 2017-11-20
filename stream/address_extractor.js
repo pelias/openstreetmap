@@ -64,7 +64,7 @@ module.exports = function(){
           // If unit is set to an address add it to default name since streetno and street will be the same
           var name = [ streetno, doc.address_parts.street ];
           if( doc.address_parts.hasOwnProperty('unit') ) {
-            name.push(doc.address_parts.unit);
+            name.push( doc.address_parts.unit );
           }
           name = name.join(' ');
 
