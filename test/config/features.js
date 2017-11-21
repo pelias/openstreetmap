@@ -31,7 +31,8 @@ module.exports.tests.whitelist = function(test, common) {
     t.false( features.indexOf('office+name') <0 );
     t.false( features.indexOf('public_transport+name') <0 );
     t.false( features.indexOf('cuisine+name') <0 );
-    t.false( features.indexOf('railway+name') <0 );
+    t.false( features.indexOf('railway~tram_stop+name') <0 );
+    t.false( features.indexOf('railway~station+name') <0 );
     t.false( features.indexOf('sport+name') <0 );
     t.false( features.indexOf('natural+name') <0 );
     t.false( features.indexOf('tourism+name') <0 );
