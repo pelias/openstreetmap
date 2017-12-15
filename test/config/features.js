@@ -27,38 +27,6 @@ module.exports.tests.blacklist = function(test, common) {
 module.exports.tests.whitelist = function(test, common) {
   test('whitelist', function(t) {
     t.false( features.indexOf('addr:housenumber+addr:street') <0 );
-    t.false( features.indexOf('amenity+name') <0 );
-    t.false( features.indexOf('building+name') <0 );
-    t.false( features.indexOf('shop+name') <0 );
-    t.false( features.indexOf('office+name') <0 );
-    t.false( features.indexOf('public_transport+name') <0 );
-    t.false( features.indexOf('cuisine+name') <0 );
-    t.false( features.indexOf('railway~tram_stop+name') <0 );
-    t.false( features.indexOf('railway~station+name') <0 );
-    t.false( features.indexOf('railway~halt+name') <0 );
-    t.false( features.indexOf('railway~subway_entrance+name') <0 );
-    t.false( features.indexOf('railway~train_station_entrance+name') <0 );
-    t.false( features.indexOf('sport+name') <0 );
-    t.false( features.indexOf('natural+name') <0 );
-    t.false( features.indexOf('tourism+name') <0 );
-    t.false( features.indexOf('leisure+name') <0 );
-    t.false( features.indexOf('historic+name') <0 );
-    t.false( features.indexOf('man_made+name') <0 );
-    t.false( features.indexOf('landuse+name') <0 );
-    t.false( features.indexOf('waterway+name') <0 );
-    t.false( features.indexOf('aerialway+name') <0 );
-    t.false( features.indexOf('craft+name') <0 );
-    t.false( features.indexOf('military+name') <0 );
-    t.false( features.indexOf('aeroway~terminal+name') <0 );
-    t.false( features.indexOf('aeroway~aerodrome+name') <0 );
-    t.false( features.indexOf('aeroway~helipad+name') <0 );
-    t.false( features.indexOf('aeroway~airstrip+name') <0 );
-    t.false( features.indexOf('aeroway~heliport+name') <0 );
-    t.false( features.indexOf('aeroway~areodrome+name') <0 );
-    t.false( features.indexOf('aeroway~spaceport+name') <0 );
-    t.false( features.indexOf('aeroway~landing_strip+name') <0 );
-    t.false( features.indexOf('aeroway~airfield+name') <0 );
-    t.false( features.indexOf('aeroway~airport+name') <0 );
     t.end();
   });
 };
