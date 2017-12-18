@@ -64,10 +64,9 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 
 The importer has the possibility to download or not the OSM venues.
 This ability is managed by the parameter "importVenues" as described below:
-@see https://github.com/QwantResearch/openstreetmap/pull/1
 
 | key | required | default | description |
-| `imports.openstreetmap.importVenues` | no | false | set to `true` to include venues in the data download and import process |
+| `imports.openstreetmap.importVenues` | no | true | set to `true` to include venues in the data download and import process |
 
 ### Environment Settings
 

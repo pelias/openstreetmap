@@ -10,8 +10,7 @@ var fakeGeneratedConfig = {
       datapath: 'defaultDataPath',
       leveldbpath: 'defaultLevelDBPath',
       'import': [{
-          filename: 'defaultFileName',
-          importVenues: false
+          filename: 'defaultFileName'
       }]
     }
   }
@@ -72,26 +71,12 @@ module.exports.tests.validate = function(test, common) {
     var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
     fakeGeneratedConfig.imports.openstreetmap.datapath = '';
     fakeGeneratedConfig.imports.openstreetmap.import[0].filename = 'dev/null';
-    fakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;
     fakeGeneratedConfig.imports.openstreetmap.leveldbpath = 'path/doesnt/exist';
     var conf = pbf.config();
     t.throws(function(){
       var stream = pbf.parser(conf);
       stream.kill();
     }, 'failed to stat leveldb path: path/doesnt/exist', 'should fail on invalid leveldb path');
-    t.end();
-  });
-  test('validate: importVenues', function(t) {
-    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
-    fakeGeneratedConfig.imports.openstreetmap.datapath = '';
-    fakeGeneratedConfig.imports.openstreetmap.import[0].filename = 'dev/null';
-    fakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;
-    fakeGeneratedConfig.imports.openstreetmap.leveldbpath = 'path/doesnt/exist';
-    var conf = pbf.config();
-    t.throws(function(){
-      var stream = pbf.parser(conf);
-      stream.kill();
-    }, 'failed to stat pbf file: defaultDataPath/the/file/does/not/exist.pbf', 'should fail on missing file');
     t.end();
   });
 };
@@ -101,7 +86,6 @@ module.exports.tests.parser = function(test, common) {
   test('parser: create parser', function(t) {
     var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
     fakeGeneratedConfig.imports.openstreetmap.import[0].filename =  path.resolve(__dirname + '/../vancouver_canada.osm.pbf');
-    fakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;
     fakeGeneratedConfig.imports.openstreetmap.leveldbpath = '/tmp';
     var stream = pbf.parser();
     t.equal(typeof stream, 'object', 'valid stream');

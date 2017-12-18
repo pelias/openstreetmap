@@ -8,7 +8,6 @@ var fs = require('fs'),
     pbf2json = require('pbf2json'),
     settings = require('pelias-config').generate(),
     features = require('../config/features'),
-    features_venues = require('../config/features_venues'),
     path = require('path');
 
 // Create a new pbf parser stream
@@ -45,13 +44,10 @@ function config(opts){
 
   // Use default parser tags
   if(!opts.tags){
+    opts.tags = features.tags;
     // check if we import venues
-    // @see https://github.com/QwantResearch/openstreetmap/pull/1/files
-    if (!opt.venues) {
-      opts.tags = features;
-    }
-    else {
-      opts.tags = features_venues;
+    if (opt.venues) {
+      opts.tags = features.tags.concat(features.tags_venues);
     }
   }
   return opts;

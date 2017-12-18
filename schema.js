@@ -6,7 +6,7 @@ const Joi = require('joi');
 // datapath: string (required)
 // leveldbpath: string (required)
 // import: array of objects containing filename (optional)
-// importVenues: boolean (optional)  @see https://github.com/QwantResearch/openstreetmap/pull/1
+// importVenues: boolean (optional)  
 // download: array of objects containing sourceURL (optional)
 // deduplicate: boolean (optional)
 module.exports = Joi.object().keys({
@@ -16,7 +16,7 @@ module.exports = Joi.object().keys({
       leveldbpath: Joi.string(),
       import: Joi.array().items(Joi.object().keys({
         filename: Joi.string(),
-        importVenues: Joi.boolean().default(false).truthy('yes').falsy('no').insensitive(true)
+        importVenues: Joi.boolean().default(true).truthy('yes').falsy('no').insensitive(true)
       }).requiredKeys('filename').unknown(true)),
       download: Joi.array().items(Joi.object().keys({
         sourceURL: Joi.string()
