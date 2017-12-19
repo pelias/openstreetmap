@@ -95,15 +95,16 @@ module.exports.tests.parser = function(test, common) {
   });
 };
 
-// Desable venues import
+// Disable venues import
 module.exports.tests.parser = function(test, common) {
-  test('Desable venues import', function(t) {
+  test('Disable venues import', function(t) {
     var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
+    fakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;    
     var conf = pbf.config();
     var expected = {
       importVenues: false
     };
-    t.equal(conf.importVenues, expected.importVenues, 'desable importVenues');
+    t.equal(conf.importVenues, expected.importVenues, 'disable importVenues');
     t.end();
   });
 };
