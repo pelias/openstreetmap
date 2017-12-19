@@ -10,7 +10,7 @@ var tags = [
 ];
 
 // tags corresponding to venues
-var tags_venues = [
+var venue_tags = [
   'amenity+name',
   'building+name',
   'shop+name',
@@ -45,4 +45,4 @@ var tags_venues = [
   'aeroway~airport+name'
 ];
 
-module.exports = { tags,tags_venues}
+module.exports = {tags,venue_tags}

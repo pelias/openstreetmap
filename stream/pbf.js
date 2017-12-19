@@ -43,11 +43,15 @@ function config(opts){
   }
 
   // Use default parser tags
-  if(!opts.tags){
-    opts.tags = features.tags;
+  if(!opts.tags){    
     // check if we import venues
-    if (opt.venues) {
-      opts.tags = features.tags.concat(features.tags_venues);
+    if (opts.importVenues) {
+      opts.importVenues = true;
+      opts.tags = features.tags.concat(features.venue_tags);      
+    }
+    else{      
+      opts.importVenues = false;
+      opts.tags = features.tags;
     }
   }
   return opts;

@@ -10,7 +10,8 @@ var fakeGeneratedConfig = {
       datapath: 'defaultDataPath',
       leveldbpath: 'defaultLevelDBPath',
       'import': [{
-          filename: 'defaultFileName'
+          filename: 'defaultFileName',
+          importVenues: false
       }]
     }
   }
@@ -45,12 +46,10 @@ module.exports.tests.config = function(test, common) {
     var defaults = pbf.config();
     var expected = {
       file: 'defaultDataPath/defaultFileName',
-      leveldb: 'defaultLevelDBPath',
-      importVenues: false
+      leveldb: 'defaultLevelDBPath'
     };
     t.equal(defaults.file, expected.file, 'load from settings');
     t.equal(defaults.leveldb, expected.leveldb, 'load from settings');
-    t.equal(defaults.importVenues, expected.importVenues, 'load from settings');
     t.end();
   });
 };
@@ -92,6 +91,19 @@ module.exports.tests.parser = function(test, common) {
     t.equal(typeof stream._read, 'function', 'valid readable');
     t.equal(typeof stream._write, 'function', 'valid writeable');
     stream.kill();
+    t.end();
+  });
+};
+
+// Desable venues import
+module.exports.tests.parser = function(test, common) {
+  test('Desable venues import', function(t) {
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
+    var conf = pbf.config();
+    var expected = {
+      importVenues: false
+    };
+    t.equal(conf.importVenues, expected.importVenues, 'desable importVenues');
     t.end();
   });
 };
