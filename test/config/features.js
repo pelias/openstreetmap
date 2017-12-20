@@ -24,6 +24,7 @@ module.exports.tests.blacklist = function(test, common) {
 };
 
 // ensure some tags are included
+// we exclude by default tags corresponding to venues
 module.exports.tests.whitelist = function(test, common) {
   test('whitelist default tags', function(t) {
     t.false( features.tags.indexOf('addr:housenumber+addr:street') <0 );

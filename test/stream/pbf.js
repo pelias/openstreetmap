@@ -10,8 +10,7 @@ var fakeGeneratedConfig = {
       datapath: 'defaultDataPath',
       leveldbpath: 'defaultLevelDBPath',
       'import': [{
-          filename: 'defaultFileName',
-          importVenues: false
+          filename: 'defaultFileName'
       }]
     }
   }
@@ -98,8 +97,14 @@ module.exports.tests.parser = function(test, common) {
 // Disable venues import
 module.exports.tests.parser = function(test, common) {
   test('Disable venues import', function(t) {
-    var pbf = proxyquire('../../stream/pbf', {'pelias-config': fakeConfig});
-    fakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;    
+    var localFakeGeneratedConfig = JSON.parse(JSON.stringify(fakeGeneratedConfig));  // "JSON.parse" to get a deep copy
+    var localFakeConfig = {
+      generate: function fakeGenerate() {
+        return localFakeGeneratedConfig;
+      }
+    };
+    var pbf = proxyquire('../../stream/pbf', {'pelias-config': localFakeConfig});
+    localFakeGeneratedConfig.imports.openstreetmap.import[0].importVenues = false;    
     var conf = pbf.config();
     var expected = {
       importVenues: false
