@@ -28,6 +28,7 @@ module.exports.tests.blacklist = function(test, common) {
 module.exports.tests.whitelist = function(test, common) {
   test('whitelist default tags', function(t) {
     t.false( features.tags.indexOf('addr:housenumber+addr:street') <0 );
+    t.true( features.venue_tags.indexOf('amenity+name') <0 );
     t.end();
   });
 };
