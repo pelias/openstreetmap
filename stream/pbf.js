@@ -45,15 +45,18 @@ function config(opts){
   // Use default parser tags
   if(!opts.tags){    
     // check if we import venues
-    if (!opts.importVenues) {
+    if(opts.importVenues === true){
+      opts.tags = features.tags.concat(features.venue_tags);                 
+    }
+    else {
       opts.importVenues = settings.imports.openstreetmap.import[0].importVenues
       if(opts.importVenues === true){
         opts.tags = features.tags.concat(features.venue_tags);                 
-      }
+      } 
       else {
-        opts.tags = features.tags;        
-      }           
-    }
+        opts.tags = features.tags; 
+      }             
+    }           
   }
   return opts;
 }
