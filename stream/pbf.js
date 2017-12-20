@@ -6,7 +6,7 @@
 
 var fs = require('fs'),
     pbf2json = require('pbf2json'),
-    settings = require('pelias-config').generate(),
+    settings = require('pelias-config').generate(require('../schema')),
     features = require('../config/features'),
     path = require('path');
 
@@ -46,12 +46,12 @@ function config(opts){
   if(!opts.tags){    
     // check if we import venues    
     opts.importVenues = settings.imports.openstreetmap.import[0].importVenues
-    if(opts.importVenues === true){
+    if(opts.importVenues){
       opts.tags = features.tags.concat(features.venue_tags);                 
     } 
     else {
       opts.tags = features.tags; 
-    }          
+    }            
   }
   return opts;
 }
