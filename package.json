@@ -66,7 +66,7 @@
     "naivedb": "^1.0.7",
     "pelias-mock-logger": "^1.0.1",
     "precommit-hook": "^3.0.0",
-    "proxyquire": "^1.7.10",
+    "proxyquire": "^2.0.0",
     "semantic-release": "^15.4.1",
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
