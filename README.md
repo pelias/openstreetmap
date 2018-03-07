@@ -27,11 +27,11 @@ $ npm install
 
 ## Download data
 
-The importer will accept any valid `pbf` extract you have, this can be a full planet file (25GB+) from http://planet.openstreetmap.org/ or a smaller extract from https://mapzen.com/metro-extracts/ or http://download.geofabrik.de/
+The importer will accept any valid `pbf` extract you have, such as a full planet file (39GB+) from [planet.openstreetmap.org](https://planet.openstreetmap.org) or [download.geofabrik.de](https://download.geofabrik.de)
 You can use the included download script to obtain the desired `pbf` files as follows. In the configuration file you can
 specify which files are to be downloaded. They will all be downloaded to the `imports.openstreetmap.datapath` directory.
-If no download sources are specified in the configuration, the entire planet file will be downloaded from the
-[OpenStreetMap download site](http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf).
+
+If no download sources are specified in the configuration, the entire planet file will be downloaded. Keep in mind this file is quite large.
 
 ```bash
 $ PELIAS_CONFIG=<path-to-config> npm run download
