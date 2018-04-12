@@ -37,8 +37,6 @@ If no download sources are specified in the configuration, the entire planet fil
 $ PELIAS_CONFIG=<path-to-config> npm run download
 ```
 
-> __PRO-TIP:__ *Currently, this module only supports the input of a [single pbf file at a time, but we wish to support multiple files](https://github.com/pelias/openstreetmap/issues/55).*
-
 ## Configuration
 
 In order to tell the importer the location of your downloads, temp space and environmental settings you will first need to create a `~/pelias.json` file.
