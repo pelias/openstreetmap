@@ -67,6 +67,7 @@ module.exports = function(){
           var iata = trim( tags.iata );
           if( iata ){
             doc.setNameAlias( 'default', iata );
+            doc.setNameAlias( 'default', `${iata} Airport` );
           }
         }
       }
