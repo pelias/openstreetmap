@@ -1,6 +1,11 @@
 {
   "name": "pelias-openstreetmap",
   "version": "0.0.0-semantic-release",
+  "engines": {
+    "node": ">=6.11.4",
+    "npm": ">=1.4.3",
+    "elasticsearch": ">=1.3.4"
+  },
   "author": "mapzen",
   "description": "Pelias openstreetmap utilities",
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
@@ -32,11 +37,6 @@
   ],
   "bugs": {
     "url": "https://github.com/mapzen/pelias-openstreetmap/issues"
-  },
-  "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=1.4.3",
-    "elasticsearch": ">=1.3.4"
   },
   "dependencies": {
     "async": "^2.0.0",
