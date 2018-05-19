@@ -19,11 +19,10 @@
     "pretest": "test/pretest.sh",
     "start": "node --max_old_space_size=4096 index.js",
     "test": "NODE_ENV=test npm run units",
-    "travis": "npm run check-dependencies && node ./test/travis-config.js && npm test && npm run end-to-end",
+    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
     "validate": "npm ls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "check-dependencies": "node_modules/.bin/npm-check --production"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -66,7 +65,6 @@
     "istanbul": "^0.4.3",
     "jshint": "^2.8.0",
     "naivedb": "^1.0.7",
-    "npm-check": "git://github.com/orangejulius/npm-check.git#disable-update-check",
     "pelias-mock-logger": "^1.0.1",
     "precommit-hook": "^3.0.0",
     "proxyquire": "^1.7.10",
@@ -79,7 +77,6 @@
   "pre-commit": [
     "lint",
     "validate",
-    "test",
-    "check-dependencies"
+    "test"
   ]
 }
