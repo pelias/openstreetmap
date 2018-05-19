@@ -1,6 +1,6 @@
 {
   "name": "pelias-openstreetmap",
-  "version": "0.0.0-semantic-release",
+  "version": "0.0.0-development",
   "engines": {
     "node": ">=6.11.4",
     "npm": ">=1.4.3",
@@ -19,11 +19,9 @@
     "pretest": "test/pretest.sh",
     "start": "node --max_old_space_size=4096 index.js",
     "test": "NODE_ENV=test npm run units",
-    "travis": "npm run check-dependencies && node ./test/travis-config.js && npm test && npm run end-to-end",
+    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
-    "validate": "npm ls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "check-dependencies": "node_modules/.bin/npm-check --production"
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
@@ -66,11 +64,10 @@
     "istanbul": "^0.4.3",
     "jshint": "^2.8.0",
     "naivedb": "^1.0.7",
-    "npm-check": "git://github.com/orangejulius/npm-check.git#disable-update-check",
     "pelias-mock-logger": "^1.0.1",
     "precommit-hook": "^3.0.0",
     "proxyquire": "^1.7.10",
-    "semantic-release": "^8.0.1",
+    "semantic-release": "^15.4.1",
     "taginfo": "^1.0.1",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.0",
@@ -79,7 +76,10 @@
   "pre-commit": [
     "lint",
     "validate",
-    "test",
-    "check-dependencies"
-  ]
+    "test"
+  ],
+  "release": {
+    "branch": "production",
+    "success": []
+  }
 }

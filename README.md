@@ -13,7 +13,7 @@
 
 ## Prerequisites
 
-* NodeJS `4.0.0` or newer (the latest in the Node 4 series is currently recommended)
+* NodeJS `6.0.0` or newer (the latest in the Node 8 series is currently recommended)
 * Elasticsearch 2.3+ (support for version 1.x has been deprecated).
 
 ## Clone and Install dependencies
@@ -135,7 +135,7 @@ $ npm run coverage
 
 ### Continuous Integration
 
-Travis tests every change against Node.js version `4` and `6`.
+Travis tests every change against all supported Node.js versions.
 
 ![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
 
