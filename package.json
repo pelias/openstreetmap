@@ -21,8 +21,7 @@
     "test": "NODE_ENV=test npm run units",
     "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
-    "validate": "npm ls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
