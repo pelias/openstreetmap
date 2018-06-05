@@ -69,7 +69,7 @@
     "proxyquire": "^2.0.0",
     "semantic-release": "^15.4.1",
     "taginfo": "^1.0.1",
-    "tap-spec": "^4.0.2",
+    "tap-spec": "^5.0.0",
     "tape": "^4.0.0",
     "tmp": "0.0.33"
   },
