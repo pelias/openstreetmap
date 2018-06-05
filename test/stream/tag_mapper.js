@@ -141,6 +141,22 @@ module.exports.tests.lowercase_keys = function(test, common) {
   });
 };
 
+module.exports.tests.airport_codes = function(test, common) {
+  var doc = new Document('a','b',1);
+  doc.setMeta('tags', { 'name': 'test', 'aerodrome': '', 'iata': 'FOO' });
+  test('alias - airport codes', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'test', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), ['FOO', 'FOO Airport'], 'correctly mapped');
+      t.deepEqual(doc.getPopularity(), 10000);
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ======================== addresses =========================
 
 module.exports.tests.osm_schema = function(test, common) {

@@ -1,6 +1,11 @@
 {
   "name": "pelias-openstreetmap",
-  "version": "0.0.0-semantic-release",
+  "version": "0.0.0-development",
+  "engines": {
+    "node": ">=6.11.4",
+    "npm": ">=1.4.3",
+    "elasticsearch": ">=1.3.4"
+  },
   "author": "mapzen",
   "description": "Pelias openstreetmap utilities",
   "homepage": "https://github.com/mapzen/pelias-openstreetmap",
@@ -14,11 +19,9 @@
     "pretest": "test/pretest.sh",
     "start": "node --max_old_space_size=4096 index.js",
     "test": "NODE_ENV=test npm run units",
-    "travis": "npm run check-dependencies && node ./test/travis-config.js && npm test && npm run end-to-end",
+    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "node test/run.js | tap-spec",
-    "validate": "npm ls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "check-dependencies": "node_modules/.bin/npm-check --production"
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
@@ -33,53 +36,50 @@
   "bugs": {
     "url": "https://github.com/mapzen/pelias-openstreetmap/issues"
   },
-  "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=1.4.3",
-    "elasticsearch": ">=1.3.4"
-  },
   "dependencies": {
     "async": "^2.0.0",
     "combined-stream": "^1.0.5",
     "extend": "^3.0.0",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^6.0.0",
     "geolib": "^2.0.17",
     "is-object": "^1.0.1",
     "iso-639-3": "^1.0.0",
-    "joi": "^12.0.0",
+    "joi": "^13.1.2",
     "lodash": "^4.17.4",
     "merge": "^1.2.0",
-    "pbf2json": "4.4.0",
+    "pbf2json": "4.5.0",
     "pelias-address-deduplicator": "1.1.0",
-    "pelias-config": "2.14.0",
-    "pelias-dbclient": "2.4.0",
-    "pelias-logger": "0.3.1",
-    "pelias-model": "5.3.2",
-    "pelias-wof-admin-lookup": "4.5.4",
+    "pelias-config": "3.0.2",
+    "pelias-dbclient": "2.5.6",
+    "pelias-logger": "0.4.2",
+    "pelias-model": "5.5.2",
+    "pelias-wof-admin-lookup": "4.6.5",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0"
   },
   "devDependencies": {
     "colors": "^1.1.2",
-    "deep-diff": "^0.3.2",
+    "deep-diff": "^1.0.0",
     "event-stream": "^3.3.2",
     "istanbul": "^0.4.3",
     "jshint": "^2.8.0",
     "naivedb": "^1.0.7",
-    "npm-check": "git://github.com/orangejulius/npm-check.git#disable-update-check",
     "pelias-mock-logger": "^1.0.1",
     "precommit-hook": "^3.0.0",
-    "proxyquire": "^1.7.10",
-    "semantic-release": "^8.0.1",
+    "proxyquire": "^2.0.0",
+    "semantic-release": "^15.4.1",
     "taginfo": "^1.0.1",
-    "tap-spec": "^4.0.2",
+    "tap-spec": "^5.0.0",
     "tape": "^4.0.0",
     "tmp": "0.0.33"
   },
   "pre-commit": [
     "lint",
     "validate",
-    "test",
-    "check-dependencies"
-  ]
+    "test"
+  ],
+  "release": {
+    "branch": "production",
+    "success": []
+  }
 }

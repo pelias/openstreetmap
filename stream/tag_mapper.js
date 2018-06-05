@@ -60,6 +60,18 @@ module.exports = function(){
           }
         }
       }
+
+      // Import airport codes as aliases
+      if( tags.hasOwnProperty('aerodrome') || tags.hasOwnProperty('aeroway') ){
+        if( tags.hasOwnProperty('iata') ){
+          var iata = trim( tags.iata );
+          if( iata ){
+            doc.setNameAlias( 'default', iata );
+            doc.setNameAlias( 'default', `${iata} Airport` );
+            doc.setPopularity(10000);
+          }
+        }
+      }
     }
 
     catch( e ){
