@@ -67,11 +67,40 @@ module.exports.tests.osm_names = function(test, common) {
   });
   test('maps - name schema', function(t) {
     var doc = new Document('a','b',1);
-    doc.setMeta('tags', { loc_name: 'test1', nat_name: 'test2' });
+    doc.setMeta('tags', { int_name: 'test1', nat_name: 'test2' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('local'), 'test1', 'correctly mapped');
+      t.equal(doc.getName('international'), 'test1', 'correctly mapped');
       t.equal(doc.getName('national'), 'test2', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+  test('maps - name aliases', function(t) {
+    var doc = new Document('a','b',1);
+    doc.setMeta('tags', {
+      loc_name: 'loc_name',
+      nat_name: 'nat_name',
+      int_name: 'int_name',
+      name: 'name',
+      alt_name: 'alt_name',
+      official_name: 'official_name',
+      old_name: 'old_name',
+      reg_name: 'reg_name',
+      short_name: 'short_name',
+      sorting_name: 'sorting_name'
+    });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'name', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), ['loc_name','alt_name','short_name'], 'correctly mapped');
+      t.equal(doc.getName('national'), 'nat_name', 'correctly mapped');
+      t.equal(doc.getName('international'), 'int_name', 'correctly mapped');
+      t.equal(doc.getName('official'), 'official_name', 'correctly mapped');
+      t.equal(doc.getName('old'), 'old_name', 'correctly mapped');
+      t.equal(doc.getName('regional'), 'reg_name', 'correctly mapped');
+      t.equal(doc.getName('sorting'), 'sorting_name', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

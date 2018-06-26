@@ -17,6 +17,6 @@
   "undef": true,
   "unused": false,
   "maxparams": 4,
-  "maxdepth": 4,
+  "maxdepth": 5,
   "maxlen": 140
 }
