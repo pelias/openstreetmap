@@ -5,14 +5,11 @@
 
 # Pelias OpenStreetMap importer
 
-[![NPM](https://nodei.co/npm/pelias-openstreetmap.png?downloads=true&stars=true)](https://nodei.co/npm/pelias-openstreetmap)
-
-[![Gitter Chat](https://badges.gitter.im/pelias/pelias.svg)](https://gitter.im/pelias/pelias?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 ## Overview
 
-| ![osm](http://wiki.openstreetmap.org/w/images/archive/c/c8/20110430164439%21Public-images-osm_logo.png) | The openstreetmap importer provides a way of parsing, mapping and augmenting OSM data in to elasticsearch.         |
-| ------------- |:-------------|
+The OpenStreetMap importer handles importing data from [OpenStreetMap](https://www.openstreetmap.org/) into Elasticsearch for use by Pelias.
+
+It includes logic for filtering to select only data relevant for geocoding, transforming it to match the Pelias data model, and augmenting the data as required.
 
 ## Prerequisites
 
@@ -21,7 +18,7 @@
 
 ## Clone and Install dependencies
 
-Since this module is just one part of our geocoder, we'd recommend starting with our [Vagrant image](https://github.com/pelias/vagrant) for quick setup, or our [full installation docs](https://github.com/pelias/pelias-doc/blob/master/installing.md) to use this module.
+> For instructions on setting up Plias as a whole, see our [getting started guide](https://github.com/pelias/documentation/blob/master/getting_started_install.md). Further instructions here pertain to the OSM importer only
 
 ```bash
 $ git clone https://github.com/pelias/openstreetmap.git && cd openstreetmap;
@@ -51,7 +48,7 @@ See [the config](https://github.com/pelias/config) documentation for details on 
   "imports": {
     "openstreetmap": {
       "download": [{
-        "sourceURL": "https://s3.amazonaws.com/metro-extracts.mapzen.com/portland_oregon.osm.pbf"
+        "sourceURL": "https://s3.amazonaws.com/metro-extracts.nextzen.org/portland_oregon.osm.pbf"
       }],
       "datapath": "/mnt/pelias/openstreetmap",
       "leveldbpath": "/tmp",
@@ -77,7 +74,7 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 
 OSM records often do not contain information about which city, state (or
 other region like province), or country that they belong to. Pelias has the
-ability to compute these values from [Who's on First](http://whosonfirst.mapzen.com/) data.
+ability to compute these values from [Who's on First](http://www.whosonfirst.org/) data.
 For more info on how admin lookup works, see the documentation for
 [pelias/wof-admin-lookup](https://github.com/pelias/wof-admin-lookup). By default,
 adminLookup is enabled.  To disable, set `imports.adminLookup.enabled` to `false` in Pelias config.
@@ -98,7 +95,7 @@ Ingestion time varies from machine-to-machine but as a general guide it takes ab
 
 These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
 
-If you are looking to run a planet-wide cluster like the one we provide at https://search.mapzen.com/ please get in contact for more information from our ops team.
+If you are looking to run a planet-wide cluster like the one we provide for [geocode.earth](https://geocode.earth) please see our documentation on [full planet builds](https://github.com/pelias/documentation/blob/master/full_planet_considerations.md#importer-machine).
 
 ## Issues
 
