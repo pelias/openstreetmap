@@ -7,7 +7,9 @@
 
 ## Overview
 
-The openstreetmap importer provides a way of parsing, mapping and augmenting OSM data in to elasticsearch.
+The OpenStreetMap importer handles importing data from [OpenStreetMap](https://www.openstreetmap.org/) into Elasticsearch for use by Pelias.
+
+It includes logic for filtering to select only data relevant for geocoding, transforming it to match the Pelias data model, and augmenting the data as required.
 
 ## Prerequisites
 
