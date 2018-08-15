@@ -18,7 +18,7 @@ It includes logic for filtering to select only data relevant for geocoding, tran
 
 ## Clone and Install dependencies
 
-> For instructions on setting up Plias as a whole, see our [getting started guide](https://github.com/pelias/documentation/blob/master/getting_started_install.md). Further instructions here pertain to the OSM importer only
+> For instructions on setting up Pelias as a whole, see our [getting started guide](https://github.com/pelias/documentation/blob/master/getting_started_install.md). Further instructions here pertain to the OSM importer only
 
 ```bash
 $ git clone https://github.com/pelias/openstreetmap.git && cd openstreetmap;
