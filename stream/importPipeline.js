@@ -1,4 +1,3 @@
-var logger = require('pelias-logger').get('openstreetmap-points');
 var categoryDefaults = require('../config/category_map');
 
 var streams = {};
