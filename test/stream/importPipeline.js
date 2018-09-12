@@ -15,7 +15,6 @@ module.exports.tests.interface = function(test, common) {
     'tagMapper',
     'adminLookup',
     'addressExtractor',
-    'deduper',
     'categoryMapper',
     'dbMapper',
     'elasticsearch',

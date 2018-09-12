@@ -47,7 +47,6 @@
     "lodash": "^4.17.4",
     "merge": "^1.2.0",
     "pbf2json": "^4.5.0",
-    "pelias-address-deduplicator": "^1.1.0",
     "pelias-blacklist-stream": "^1.0.0",
     "pelias-config": "^3.3.0",
     "pelias-dbclient": "^2.5.6",
