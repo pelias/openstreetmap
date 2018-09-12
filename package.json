@@ -12,7 +12,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "download": "node util/download_data.js",
+    "download": "./bin/download",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "export NODE_ENV=test && npm run pretest && node test/end-to-end.js;",
     "lint": "jshint .",
