@@ -18,9 +18,9 @@
     "lint": "jshint .",
     "pretest": "test/pretest.sh",
     "start": "node --max_old_space_size=4096 index.js",
-    "test": "NODE_ENV=test npm run units",
+    "test": "npm run units",
     "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
-    "units": "node test/run.js | tap-spec",
+    "units": "./bin/test",
     "validate": "npm ls"
   },
   "repository": {
