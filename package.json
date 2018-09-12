@@ -17,7 +17,7 @@
     "end-to-end": "export NODE_ENV=test && npm run pretest && node test/end-to-end.js;",
     "lint": "jshint .",
     "pretest": "test/pretest.sh",
-    "start": "node --max_old_space_size=4096 index.js",
+    "start": "./bin/start",
     "test": "npm run units",
     "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
     "units": "./bin/test",

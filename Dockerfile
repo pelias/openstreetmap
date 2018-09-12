@@ -21,3 +21,5 @@ RUN npm test
 
 # run as the pelias user
 USER pelias
+
+CMD [ "./bin/start" ]
