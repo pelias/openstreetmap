@@ -16,10 +16,10 @@ RUN npm install
 # add local code
 ADD . ${WORKDIR}
 
+# run as the pelias user, starting with tests
+USER pelias
+
 # run tests
 RUN npm test
-
-# run as the pelias user
-USER pelias
 
 CMD [ "./bin/start" ]
