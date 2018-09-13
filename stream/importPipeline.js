@@ -13,7 +13,6 @@ streams.docDenormalizer = require('./denormalizer');
 streams.tagMapper = require('./tag_mapper');
 streams.adminLookup = require('pelias-wof-admin-lookup').create;
 streams.addressExtractor = require('./address_extractor');
-streams.deduper = require('./deduper');
 streams.categoryMapper = require('./category_mapper');
 streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
@@ -28,7 +27,6 @@ streams.import = function(){
     .pipe( streams.blacklistStream() )
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )
-    .pipe( streams.deduper() )
     .pipe( streams.dbMapper() )
     .pipe( streams.elasticsearch() );
 };
