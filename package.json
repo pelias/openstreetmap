@@ -14,9 +14,8 @@
   "scripts": {
     "download": "./bin/download",
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
-    "end-to-end": "export NODE_ENV=test && npm run pretest && node test/end-to-end.js;",
+    "end-to-end": "export NODE_ENV=test && node test/end-to-end.js;",
     "lint": "jshint .",
-    "pretest": "test/pretest.sh",
     "start": "./bin/start",
     "test": "npm run units",
     "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
