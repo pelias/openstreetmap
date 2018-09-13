@@ -21,5 +21,3 @@ USER pelias
 
 # run tests
 RUN npm test
-
-CMD [ "./bin/start" ]
