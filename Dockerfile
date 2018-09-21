@@ -16,8 +16,8 @@ RUN npm install
 # add local code
 ADD . ${WORKDIR}
 
-# run as the pelias user, starting with tests
-USER pelias
+# run tests, clean up LevelDB lockfile
+RUN npm test && rm -rf /tmp/*
 
-# run tests
-RUN npm test
+# run as the pelias user
+USER pelias
