@@ -48,7 +48,13 @@ module.exports = function(){
         else if( tag in NAME_SCHEMA ){
           var val2 = trim( tags[tag] );
           if( val2 ){
-            doc.setName( NAME_SCHEMA[tag], val2 );
+            if( tag === NAME_SCHEMA._primary ){
+              doc.setName( NAME_SCHEMA[tag], val2 );
+            } else if ( 'default' === NAME_SCHEMA[tag] ) {
+              doc.setNameAlias( NAME_SCHEMA[tag], val2 );
+            } else {
+              doc.setName( NAME_SCHEMA[tag], val2 );
+            }
           }
         }
 

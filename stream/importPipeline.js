@@ -1,4 +1,3 @@
-var logger = require('pelias-logger').get('openstreetmap-points');
 var categoryDefaults = require('../config/category_map');
 
 var streams = {};
@@ -9,11 +8,11 @@ streams.config = {
 
 streams.pbfParser = require('./multiple_pbfs').create;
 streams.docConstructor = require('./document_constructor');
+streams.blacklistStream = require('pelias-blacklist-stream');
 streams.docDenormalizer = require('./denormalizer');
 streams.tagMapper = require('./tag_mapper');
 streams.adminLookup = require('pelias-wof-admin-lookup').create;
 streams.addressExtractor = require('./address_extractor');
-streams.deduper = require('./deduper');
 streams.categoryMapper = require('./category_mapper');
 streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
@@ -25,9 +24,9 @@ streams.import = function(){
     .pipe( streams.tagMapper() )
     .pipe( streams.docDenormalizer() )
     .pipe( streams.addressExtractor() )
+    .pipe( streams.blacklistStream() )
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )
-    .pipe( streams.deduper() )
     .pipe( streams.dbMapper() )
     .pipe( streams.elasticsearch() );
 };

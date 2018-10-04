@@ -5,7 +5,7 @@ const async = require('async');
 const child_process = require('child_process');
 const fs = require('fs-extra');
 const config = require( 'pelias-config' ).generate(require('../schema'));
-const logger = require('pelias-logger').get('download');
+const logger = require('pelias-logger').get('openstreetmap-download');
 
 if (require.main === module) {
   download((err) => {
