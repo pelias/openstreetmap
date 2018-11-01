@@ -9,7 +9,6 @@ streams.config = {
 streams.pbfParser = require('./multiple_pbfs').create;
 streams.docConstructor = require('./document_constructor');
 streams.blacklistStream = require('pelias-blacklist-stream');
-streams.docDenormalizer = require('./denormalizer');
 streams.tagMapper = require('./tag_mapper');
 streams.adminLookup = require('pelias-wof-admin-lookup').create;
 streams.addressExtractor = require('./address_extractor');
@@ -22,7 +21,6 @@ streams.import = function(){
   streams.pbfParser()
     .pipe( streams.docConstructor() )
     .pipe( streams.tagMapper() )
-    .pipe( streams.docDenormalizer() )
     .pipe( streams.addressExtractor() )
     .pipe( streams.blacklistStream() )
     .pipe( streams.categoryMapper( categoryDefaults ) )

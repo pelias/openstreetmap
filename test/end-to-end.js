@@ -49,7 +49,6 @@ var results = [];
 streams.pbfParser()
   .pipe( streams.docConstructor() )
   .pipe( streams.tagMapper() )
-  .pipe( streams.docDenormalizer() )
   .pipe( streams.addressExtractor() )
   .pipe( streams.categoryMapper( streams.config.categoryDefaults ) )
   .pipe( model.createDocumentMapperStream() )
