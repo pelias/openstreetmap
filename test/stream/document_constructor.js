@@ -98,31 +98,54 @@ module.exports.tests.centroid = function(test, common) {
   });
 };
 
-module.exports.tests.noderefs = function(test, common) {
-  var nodeData = [ 'X', 'Y' ];
-  test('noderefs: valid', function(t) {
+module.exports.tests.bounds = function(test, common) {
+  test('bounds: no bbox provided', function(t) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal( doc.getMeta('nodes'), nodeData, 'noderefs set' );
-      t.end(); // test will fail if not called (or called twice).
+      t.deepEqual( doc.getBoundingBox(), undefined, 'undefined bounds' );
+      t.end();
       next();
     }));
-    stream.write({ id: 1, type: 'X', nodes: nodeData });
+    stream.write({ id: 1, type: 'X', lat: 1, lon: 1 });
   });
-  test('noderefs: invalid', function(t) {
+  test('bounds: bbox not object', function(t) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.false( doc.getMeta('nodes'), 'no noderefs' );
-      t.end(); // test will fail if not called (or called twice).
+      t.deepEqual( doc.getBoundingBox(), undefined, 'undefined bounds' );
+      t.end();
       next();
     }));
-    stream.write({ id: 1, type: 'X' });
+    stream.write({ id: 1, type: 'X', lat: 1, lon: 1, bounds: [] });
+  });
+  test('bounds: valid bbox provided', function(t) {
+    var stream = constructor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual( doc.getBoundingBox(), '{"min_lat":-1.1,"max_lat":1.1,"min_lon":-2.2,"max_lon":2.2}', 'valid bounds' );
+      t.end();
+      next();
+    }));
+    stream.write({ id: 1, type: 'X', lat: 1, lon: 1, bounds: {
+      n: +1.1, s: -1.1, w: -2.2, e: +2.2
+    }});
+  });
+  test('bounds: partial bbox provided - skip record', function(t) {
+    var stream = constructor();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.end(); // test will fail if document is piped downstream
+      next();
+    }));
+    t.doesNotThrow( function emptyDocument(){
+      stream.write({ id: 1, type: 'X', lat: 1, lon: 1, bounds: {
+        n: +1.1, s: -1.1
+      }});
+    });
+    t.end();
   });
 };
 
 module.exports.tests.tags = function(test, common) {
   var tagData = [ 'X', 'Y' ];
-  test('noderefs: valid', function(t) {
+  test('tags: valid', function(t) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( doc.getMeta('tags'), tagData, 'tags set' );
@@ -131,7 +154,7 @@ module.exports.tests.tags = function(test, common) {
     }));
     stream.write({ id: 1, type: 'X', tags: tagData });
   });
-  test('noderefs: invalid', function(t) {
+  test('tags: invalid', function(t) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.deepEqual( doc.getMeta('tags'), {}, 'no tags' );
