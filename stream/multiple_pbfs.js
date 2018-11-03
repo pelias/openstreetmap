@@ -8,7 +8,11 @@ function createCombinedStream(){
   var defaultPath= require('pelias-config').generate().imports.openstreetmap;
 
   defaultPath.import.forEach(function( importObject){
-    var conf = {file: path.join(defaultPath.datapath, importObject.filename), leveldb: defaultPath.leveldbpath};
+    var conf = {
+      file: path.join(defaultPath.datapath, importObject.filename),
+      leveldb: defaultPath.leveldbpath,
+      importVenues: importObject.importVenues
+    };
     fullStream.append(function(next){
       logger.info('Creating read stream for: ' + conf.file);
       next(pbf.parser(conf));
