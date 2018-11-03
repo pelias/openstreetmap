@@ -51,7 +51,7 @@
     "pelias-dbclient": "^2.5.6",
     "pelias-logger": "^1.2.1",
     "pelias-model": "^5.7.1",
-    "pelias-wof-admin-lookup": "^4.6.5",
+    "pelias-wof-admin-lookup": "^5.0.0",
     "through2": "^2.0.0",
     "through2-sink": "^1.0.0"
   },
