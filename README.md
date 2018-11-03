@@ -13,8 +13,7 @@ It includes logic for filtering to select only data relevant for geocoding, tran
 
 ## Prerequisites
 
-* NodeJS `6.0.0` or newer (the latest in the Node 8 series is currently recommended)
-* Elasticsearch 2.3+ (support for version 1.x has been deprecated).
+See [Pelias software requirements](https://github.com/pelias/documentation/blob/master/requirements.md)
 
 ## Clone and Install dependencies
 
