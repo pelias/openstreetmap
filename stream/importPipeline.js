@@ -26,7 +26,7 @@ streams.import = function(){
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )
     .pipe( streams.dbMapper() )
-    .pipe( streams.elasticsearch() );
+    .pipe( streams.elasticsearch({name: 'openstreetmap'}) );
 };
 
 module.exports = streams;

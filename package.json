@@ -48,7 +48,7 @@
     "pbf2json": "^5.0.0",
     "pelias-blacklist-stream": "^1.0.0",
     "pelias-config": "^3.3.0",
-    "pelias-dbclient": "^2.5.6",
+    "pelias-dbclient": "^2.8.0",
     "pelias-logger": "^1.2.1",
     "pelias-model": "^5.7.1",
     "pelias-wof-admin-lookup": "^5.0.0",
