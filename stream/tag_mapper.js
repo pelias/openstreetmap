@@ -81,7 +81,6 @@ module.exports = function(){
 
       // Add alias for 'Railway Station' as this is often not part of the name
       if( tags.hasOwnProperty('railway') ){
-      {
         if( tags.railway == 'station' ){
           doc.setNameAlias( 'default', doc.getName() + " Railway Station" );
           doc.setPopularity(1000);
