@@ -9,6 +9,12 @@ var mapping = {
       'alt_suffixes': ['station'],
       'suffix': 'Railway Station',
     }
+  },
+  'station': {
+    'light_rail': {
+      'alt_suffixes': ['station', 'light rail'],
+      'suffix': 'light rail station',
+    }
   }
 };
 
