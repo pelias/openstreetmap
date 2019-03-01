@@ -15,6 +15,7 @@ module.exports.tests.interface = function(test, common) {
     'adminLookup',
     'addressExtractor',
     'categoryMapper',
+    'venueNormalization',
     'dbMapper',
     'elasticsearch',
     'import'

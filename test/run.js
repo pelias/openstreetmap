@@ -10,6 +10,7 @@ var tests = [
   require('./config/localized_name_keys'),
   require('./stream/address_extractor'),
   require('./stream/category_mapper'),
+    require('./stream/venue_normalization'),
   require('./stream/document_constructor'),
   require('./stream/importPipeline'),
   require('./stream/pbf'),
