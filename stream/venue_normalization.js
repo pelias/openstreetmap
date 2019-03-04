@@ -1,4 +1,3 @@
-
 /**
   The venue normalization is similar to the category mapper
   It's designed to add standardized aliases for different venue types to allow easier searching'
@@ -26,7 +25,7 @@ module.exports = function( mapping ){
       
       var name = doc.getName( 'default' );
       if ( !name ) {
-	name = doc.getNameAliases( 'default' );
+	      name = doc.getNameAliases( 'default' );
       }
       if ( !name || name.legnth === 0 ){
         return next( null, doc );
@@ -41,10 +40,10 @@ module.exports = function( mapping ){
         // handle regular features
         for( var feature in mapping[key] ){
           if( tags[key] === feature ){
-	    var rule = mapping[key][feature];
-	    addAliases( name, rule, doc );
+            var rule = mapping[key][feature];
+            addAliases( name, rule, doc );
           }
-	}
+	      }
       }
     }
 
@@ -65,7 +64,7 @@ function addAliases( name, rule, doc ) {
     for( var suffix in rule.alt_suffixes ){
       var suffix_name = rule.alt_suffixes[suffix];
       if( name.toLowerCase().endsWith( ' ' + suffix_name ) ){
-	name = name.slice( 0, -suffix_name.length - 1 );
+	      name = name.slice( 0, -suffix_name.length - 1 );
       }
     }
   }
