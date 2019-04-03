@@ -1,3 +1,4 @@
+
 /**
   The venue normalization is similar to the category mapper
   It's designed to add standardized aliases for different venue types to allow easier searching'
@@ -25,25 +26,51 @@ module.exports = function( mapping ){
       
       var name = doc.getName( 'default' );
       if ( !name ) {
-	      name = doc.getNameAliases( 'default' );
+        name = doc.getNameAliases( 'default' );
       }
       if ( !name || name.legnth === 0 ){
         return next( null, doc );
       }
       
       // iterate over mapping
-      for( var key in mapping ){
-
-        // check each mapping key against document tags
-        if( !tags.hasOwnProperty( key ) ){ continue; }
-
-        // handle regular features
-        for( var feature in mapping[key] ){
-          if( tags[key] === feature ){
-            var rule = mapping[key][feature];
-            addAliases( name, rule, doc );
+      for( var idx in mapping ){
+        var process = true;
+        var rule = mapping[idx];
+        
+        loop_conditions:
+        for( var condition in rule.conditions ) {
+          var cond = rule.conditions[condition];
+            
+          if( !tags.hasOwnProperty( cond[0] ) ) {
+            process = false;
+            break loop_conditions;
           }
-	      }
+            
+          if ( cond.length === 2 && cond[1] !== tags[ cond[0] ] )
+          {
+            process = false;
+            break loop_conditions;
+          }
+        }
+        
+        if (!process) {
+          continue;
+        }
+        
+        var current_name = name;
+        
+        if( rule.hasOwnProperty( 'synonyms' ) ) {
+          for( var synonym_idx in rule.synonyms ) {
+            var synonym = rule.synonyms[synonym_idx];
+            if( current_name.toLowerCase().endsWith( ' ' + synonym ) ) {
+              current_name = current_name.slice( 0, -synonym.length - 1 );
+            }
+          }
+        }
+        
+        if( rule.hasOwnProperty( 'suffix' ) && current_name.length > 0 ){
+          doc.setNameAlias( 'default', current_name + ' ' + rule.suffix );
+        }
       }
     }
 
@@ -58,18 +85,3 @@ module.exports = function( mapping ){
   });
 
 };
-
-function addAliases( name, rule, doc ) {
-  if( rule.hasOwnProperty( 'alt_suffixes' ) ){
-    for( var suffix in rule.alt_suffixes ){
-      var suffix_name = rule.alt_suffixes[suffix];
-      if( name.toLowerCase().endsWith( ' ' + suffix_name ) ){
-	      name = name.slice( 0, -suffix_name.length - 1 );
-      }
-    }
-  }
-  
-  if( rule.hasOwnProperty( 'suffix' ) && name.length > 0 ){
-    doc.setNameAlias( 'default', name + ' ' + rule.suffix );
-  }
-}

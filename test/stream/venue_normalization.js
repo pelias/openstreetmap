@@ -41,7 +41,7 @@ module.exports.tests.no_name = function(test, common) {
   var doc = new Document('osm','a',1);
   doc.setMeta( 'tags', { 'railway': 'station' } );
   test('maps - no name', function(t) {
-    var stream = mapper( { 'railway': { 'station': { 'suffix': 'railway station' } } } );
+    var stream = mapper( [{'conditions': [['railway', 'station']], 'synonyms': ['station'],'suffix': 'railway station'}] );
     stream.pipe( through.obj( function( doc, enc, next ){
       t.deepEqual(doc.name, {}, 'no name passed through');
       t.end(); // test will fail if not called (or called twice).
@@ -58,7 +58,7 @@ module.exports.tests.no_suffix = function(test, common) {
   doc.setName( 'default', 'test' );
   doc.setMeta( 'tags', { 'railway': 'station' } );
   test('maps - no suffix', function(t) {
-    var stream = mapper( { 'railway': { 'station': { 'suffix': 'railway station' } } } );
+    var stream = mapper( [{'conditions': [['railway', 'station']], 'synonyms': ['station'],'suffix': 'railway station'}] );
     stream.pipe( through.obj( function( doc, enc, next ){
       t.deepEqual(doc.name, { 'default': [ 'test', 'test railway station' ] }, 'correctly aliased');
       t.end(); // test will fail if not called (or called twice).
@@ -73,7 +73,7 @@ module.exports.tests.with_suffix = function(test, common) {
   doc.setName( 'default', 'test station' );
   doc.setMeta( 'tags', { 'railway': 'station' } );
   test('maps - with suffix', function(t) {
-    var stream = mapper( { 'railway': { 'station': { 'alt_suffixes': [ 'station' ], 'suffix': 'railway station' } } } );
+    var stream = mapper( [{'conditions': [['railway', 'station']], 'synonyms': ['station'],'suffix': 'railway station'}] );
     stream.pipe( through.obj( function( doc, enc, next ){
       t.deepEqual(doc.name, { 'default': [ 'test station', 'test railway station' ] }, 'correctly aliased');
       t.end(); // test will fail if not called (or called twice).
