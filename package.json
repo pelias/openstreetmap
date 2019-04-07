@@ -45,13 +45,13 @@
     "joi": "^14.0.0",
     "lodash": "^4.17.4",
     "merge": "^1.2.0",
-    "pbf2json": "^5.0.0",
+    "pbf2json": "^6.0.0",
     "pelias-blacklist-stream": "^1.0.0",
     "pelias-config": "^3.3.0",
     "pelias-dbclient": "^2.8.0",
     "pelias-logger": "^1.2.1",
     "pelias-model": "^5.7.1",
-    "pelias-wof-admin-lookup": "^5.0.0",
+    "pelias-wof-admin-lookup": "^5.3.0",
     "through2": "^3.0.0",
     "through2-sink": "^1.0.0"
   },
@@ -68,7 +68,7 @@
     "taginfo": "^1.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.0.0",
-    "tmp": "0.0.33"
+    "tmp": "0.1.0"
   },
   "pre-commit": [
     "lint",

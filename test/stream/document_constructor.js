@@ -25,7 +25,7 @@ module.exports.tests.instantiate = function(test, common) {
     var stream = constructor();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal( Object.getPrototypeOf(doc), Document.prototype, 'correct proto' );
-      t.equal( doc.getId(), 'X:1', 'correct id' );
+      t.equal( doc.getId(), 'X/1', 'correct id' );
       t.equal( doc.getType(), 'venue', 'defaults to venue' );
       t.end(); // test will fail if not called (or called twice).
       next();

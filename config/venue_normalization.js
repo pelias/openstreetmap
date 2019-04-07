@@ -9,6 +9,7 @@ var mapping = [
             ['railway', 'station']
         ],
         'synonyms': [
+            'train station',
             'station'
         ],
         'suffix': 'railway station'
