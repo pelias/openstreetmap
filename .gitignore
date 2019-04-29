@@ -4,3 +4,6 @@ esclient.log
 nohup.out
 test/*.pbf
 coverage
+
+actual_output.json
+expected_output.json
