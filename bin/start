@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec node --max_old_space_size=4096 index.js
+exec node --max_old_space_size=6000 index.js
