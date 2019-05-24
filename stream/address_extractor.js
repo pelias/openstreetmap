@@ -18,7 +18,7 @@
   duplicating the data across to the new doc instance while adjusting it's id and type.
 
   In a rare case it is possible that the record contains neither a valid name nor a valid
-  address. If this case in encountered then the parser should be modified so these records
+  address. If this case is encountered then the parser should be modified so these records
   are no longer passed down the pipeline; as they will simply be discarded because they are
   not searchable.
 **/

@@ -11,7 +11,7 @@ streams.docConstructor = require('./document_constructor');
 streams.blacklistStream = require('pelias-blacklist-stream');
 streams.tagMapper = require('./tag_mapper');
 streams.adminLookup = require('pelias-wof-admin-lookup').create;
-streams.addressExtractor = require('./address_extractor');
+// streams.addressExtractor = require('./address_extractor');
 streams.categoryMapper = require('./category_mapper');
 streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
@@ -21,7 +21,7 @@ streams.import = function(){
   streams.pbfParser()
     .pipe( streams.docConstructor() )
     .pipe( streams.tagMapper() )
-    .pipe( streams.addressExtractor() )
+    // .pipe( streams.addressExtractor() )
     .pipe( streams.blacklistStream() )
     .pipe( streams.categoryMapper( categoryDefaults ) )
     .pipe( streams.adminLookup() )

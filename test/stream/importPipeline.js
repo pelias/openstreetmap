@@ -13,7 +13,7 @@ module.exports.tests.interface = function(test, common) {
     'blacklistStream',
     'tagMapper',
     'adminLookup',
-    'addressExtractor',
+    // 'addressExtractor',
     'categoryMapper',
     'dbMapper',
     'elasticsearch',
