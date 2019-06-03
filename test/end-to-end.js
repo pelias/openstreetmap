@@ -51,6 +51,7 @@ streams.pbfParser()
   .pipe( streams.tagMapper() )
   .pipe( streams.addressExtractor() )
   .pipe( streams.categoryMapper( streams.config.categoryDefaults ) )
+  .pipe( streams.addendumMapper() )
   .pipe( model.createDocumentMapperStream() )
   .pipe( sink.obj(function (doc) {
     results.push(doc);
