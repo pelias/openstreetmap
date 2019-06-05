@@ -22,6 +22,8 @@ var venue_tags = [
   'railway~halt+name',
   'railway~subway_entrance+name',
   'railway~train_station_entrance+name',
+  'highway~pedestrian+area~yes+name',
+  'place~square+name',
   'sport+name',
   'natural+name',
   'tourism+name',
