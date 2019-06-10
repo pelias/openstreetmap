@@ -100,10 +100,10 @@ adminLookup is enabled.  To disable, set `imports.adminLookup.enabled` to `false
 
 ## Running an import
 
-This will start the import process, it will take around 30 seconds to prime it's in-memory data and then you should see regular debugging output in the terminal.
+This will start the import process. It may take a few minutes to load administrative data and begin processing the OSM PBF file, then you should see regular progress updates in the terminal.
 
 ```bash
-$ PELIAS_CONFIG=<path_to_config_json> npm start
+$ npm start
 ```
 
 ## How long does it take?
