@@ -59,21 +59,33 @@ See [the config](https://github.com/pelias/config) documentation for details on 
 }
 ```
 
-The importer has the possibility to download or not the OSM venues.
-This ability is managed by the parameter "importVenues" as described below:
+### Configuration Settings
 
-| key | required | default | description |
-| `imports.openstreetmap.importVenues` | no | true | set to `true` to include venues in the data download and import process |
+#### `imports.openstreetmap.datapath`
 
-### Environment Settings
+This is the directory where the OSM importer will look for files to import. If configured it will also download files to this location.
 
-- `imports.openstreetmap.datapath` - this is the directory which you downloaded the pbf file to
-- `imports.openstreetmap.download[0].sourceURL` - this is the source URL of the pbf file to be downloaded
-- `imports.openstreetmap.import[0].filename` - this is the name of the pbf file you downloaded
-- `imports.openstreetmap.leveldbpath` - this is the directory where temporary files will be stored in order to denormalize osm ways, in the case of a planet import it is best to have 100GB free so you don't run out of disk.
+#### `imports.openstreetmap.download[0].sourceURL`
 
-> __PRO-TIP:__ If your paths point to an SSD rather than a HDD then you will get a significant speed boost, although this is not required.
+A URL to download when the download script (in `./bin/download`) is run. Will be downloaded to the `datapath` dirctory.
 
+#### `imports.openstreetmap.import[0].filename`
+
+The OSM importer will look for a file with a name matching this value in the configured `datapath` directory when importing data.
+
+If downloading from a remote URL, the filename must match the value in `sourceURL`.
+
+#### `imports.openstreetmap.leveldbpath`
+
+This is the directory where temporary files will be stored in order to
+denormalize OSM ways and relations. In the case of a planet import it is best
+to have at least 100GB free.
+
+Defaults to `tmp`.
+
+#### `imports.openstreetmap.importVenues`
+
+By default, the OSM importer imports both venue records and addresses. If set to false, only address records will be imported.
 
 ### Administrative Hierarchy Lookup
 
