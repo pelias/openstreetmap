@@ -11,6 +11,7 @@ var tests = [
   require('./stream/address_extractor'),
   require('./stream/category_mapper'),
   require('./stream/addendum_mapper'),
+  require('./stream/popularity_mapper'),
   require('./stream/document_constructor'),
   require('./stream/importPipeline'),
   require('./stream/pbf'),
