@@ -197,32 +197,42 @@ module.exports.tests.nonvenue = function (test, common) {
 // ===================== discard disused places ======================
 
 module.exports.tests.disused = function (test, common) {
-  var doc = new Document('osm', 'address', 1);
+  var doc = new Document('osm', 'venue', 1);
   doc.setMeta('tags', { 'disused:amenity': 'yes' });
   test('does not map - disused', t => {
     var stream = mapper();
+    var counter = 0;
     stream.pipe(through.obj((doc, enc, next) => {
-      t.false(doc.getPopularity(), 'no mapping performed');
-      t.end(); // test will fail if not called (or called twice).
+      counter++;
       next();
+    }, (done) => {
+      t.equal(counter, 0, 'document discarded');
+      t.end(); // test will fail if not called (or called twice).
+      done();
     }));
     stream.write(doc);
+    stream.end();
   });
 };
 
 // ===================== discard abandoned places ======================
 
 module.exports.tests.abandoned = function (test, common) {
-  var doc = new Document('osm', 'address', 1);
+  var doc = new Document('osm', 'venue', 1);
   doc.setMeta('tags', { 'abandoned:amenity': 'yes' });
   test('does not map - abandoned', t => {
     var stream = mapper();
+    var counter = 0;
     stream.pipe(through.obj((doc, enc, next) => {
-      t.false(doc.getPopularity(), 'no mapping performed');
-      t.end(); // test will fail if not called (or called twice).
+      counter++;
       next();
+    }, (done) => {
+      t.equal(counter, 0, 'document discarded');
+      t.end(); // test will fail if not called (or called twice).
+      done();
     }));
     stream.write(doc);
+    stream.end();
   });
 };
 

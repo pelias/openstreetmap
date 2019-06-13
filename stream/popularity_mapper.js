@@ -190,10 +190,11 @@ module.exports = function(){
         }
       }
 
-      // set document popularity when it is a non-zero value
-      if( !!popularity ){
-        doc.setPopularity( popularity );
-      }
+      // set document popularity if it is greater than zero
+      if( popularity > 0 ){ doc.setPopularity( popularity ); }
+
+      // discard places with a negative popularity
+      else if( popularity < 0 ){ return next(); }
     }
 
     catch( e ){
@@ -202,13 +203,7 @@ module.exports = function(){
       peliasLogger.error( JSON.stringify( doc, null, 2 ) );
     }
 
-    // discard disused and abandoned places with a negative popularity
-    if(( doc.getPopularity() || 0 ) < 0 ){
-      return next();
-    }
-
     return next( null, doc );
-
   });
 
 };
