@@ -247,7 +247,6 @@ module.exports.tests.airport_codes = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getName('default'), 'test', 'correctly mapped');
       t.deepEqual(doc.getNameAliases('default'), ['FOO', 'FOO Airport'], 'correctly mapped');
-      t.deepEqual(doc.getPopularity(), 10000);
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

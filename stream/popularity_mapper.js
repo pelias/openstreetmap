@@ -109,6 +109,7 @@ const config = {
     coworking_space: { _score: 1000 },
     dojo: { _score: 1000 },
     embassy: { _score: 1000 },
+    ferry_terminal: { _score: 2000 },
     fire_station: { _score: 1000 },
     marketplace: { _score: 1000 },
     place_of_worship: { _score: 1000 },
@@ -117,6 +118,20 @@ const config = {
     prison: { _score: 1000 },
     public_bath: { _score: 1000 },
     townhall: { _score: 1000 }
+  },
+
+  // transportation
+  aerodrome: {
+    international: { _score: 10000 },
+    regional: { _score: 5000 }
+  },
+  iata: {
+    _score: 5000,
+    none: { _score: -5000 }
+  },
+  railway: {
+    station: { _score: 2000 },
+    subway_entrance: { _score: 2000 },
   },
 
   // contact information
@@ -168,7 +183,7 @@ module.exports = function(){
           for( let value in config[tag] ){
             if( value === '_score' ){ continue; }
             if( !config[tag][value]._score ){ continue; }
-            if( tags[tag] === value.trim() ){
+            if (tags[tag].trim().toLowerCase() === value ){
               popularity += config[tag][value]._score;
             }
           }

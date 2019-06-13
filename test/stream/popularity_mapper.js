@@ -134,6 +134,50 @@ module.exports.tests.contact_phone = function (test, common) {
   });
 };
 
+// ===================== transportation ======================
+
+module.exports.tests.international_airport = function(test, common) {
+  var doc = new Document('a','venue',1);
+  doc.setMeta('tags', { 'aerodrome': 'international', 'iata': 'JFK' });
+  test('alias - international airport', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.getPopularity(), 15000);
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.regional_airport = function (test, common) {
+  var doc = new Document('a', 'venue', 1);
+  doc.setMeta('tags', { 'aerodrome': 'regional', 'iata': 'None' });
+  test('alias - regional airport (invalid IATA code)', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.deepEqual(doc.getPopularity(), 5000);
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.railway_station = function (test, common) {
+  var doc = new Document('a', 'venue', 1);
+  doc.setMeta('tags', { 'railway': 'station' });
+  test('alias - railway station', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.deepEqual(doc.getPopularity(), 2000);
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ===================== do not map non-venue docs ======================
 
 module.exports.tests.nonvenue = function (test, common) {
