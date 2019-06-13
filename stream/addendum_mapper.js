@@ -13,9 +13,9 @@ const whitelist = [
   'icao', // ICAO airport codes
   'wikidata', // Wikidata concordance
   'wikipedia', // Wikipedia concordance
-  // 'website', // Website URL
-  // 'phone', // Telephone number
-  // 'opening_hours', // Opening hours
+  'website', // Website URL
+  'phone', // Telephone number
+  'opening_hours', // Opening hours
 ];
 
 module.exports = function(){
