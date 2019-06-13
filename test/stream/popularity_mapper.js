@@ -126,7 +126,7 @@ module.exports.tests.contact_phone = function (test, common) {
   test('maps - contact:phone', t => {
     var stream = mapper();
     stream.pipe(through.obj((doc, enc, next) => {
-      t.deepEqual(doc.getPopularity(), 1000, 'correctly mapped');
+      t.deepEqual(doc.getPopularity(), 200, 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

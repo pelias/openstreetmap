@@ -135,21 +135,21 @@ const config = {
   },
 
   // contact information
-  website: { _score: 2000 },
-  phone: { _score: 1000 },
-  'contact:website': { _score: 2000 },
-  'contact:email': { _score: 1000 },
-  'contact:phone': { _score: 1000 },
-  'contact:fax': { _score: 1000 },
+  website: { _score: 200 },
+  phone: { _score: 200 },
+  'contact:website': { _score: 200 },
+  'contact:email': { _score: 200 },
+  'contact:phone': { _score: 200 },
+  'contact:fax': { _score: 200 },
 
   // social media
-  'contact:foursquare': { _score: 2000 },
-  'contact:facebook': { _score: 2000 },
-  'contact:linkedin': { _score: 2000 },
-  'contact:instagram': { _score: 2000 },
-  'contact:skype': { _score: 2000 },
-  'contact:flickr': { _score: 2000 },
-  'contact:youtube': { _score: 2000 },
+  'contact:foursquare': { _score: 200 },
+  'contact:facebook': { _score: 200 },
+  'contact:linkedin': { _score: 200 },
+  'contact:instagram': { _score: 200 },
+  'contact:skype': { _score: 200 },
+  'contact:flickr': { _score: 200 },
+  'contact:youtube': { _score: 200 },
 };
 
 module.exports = function(){
