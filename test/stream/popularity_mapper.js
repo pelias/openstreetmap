@@ -196,7 +196,7 @@ module.exports.tests.nonvenue = function (test, common) {
 
 // ===================== discard disused places ======================
 
-module.exports.tests.nonvenue = function (test, common) {
+module.exports.tests.disused = function (test, common) {
   var doc = new Document('osm', 'address', 1);
   doc.setMeta('tags', { 'disused:amenity': 'yes' });
   test('does not map - disused', t => {
@@ -212,7 +212,7 @@ module.exports.tests.nonvenue = function (test, common) {
 
 // ===================== discard abandoned places ======================
 
-module.exports.tests.nonvenue = function (test, common) {
+module.exports.tests.abandoned = function (test, common) {
   var doc = new Document('osm', 'address', 1);
   doc.setMeta('tags', { 'abandoned:amenity': 'yes' });
   test('does not map - abandoned', t => {
