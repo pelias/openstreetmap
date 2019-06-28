@@ -3,13 +3,14 @@ var extractor = require('../../stream/address_extractor');
 var fixtures = require('../fixtures/docs');
 var Document = require('pelias-model').Document;
 var through = require('through2');
-var event_stream = require( 'event-stream' );
+const stream_mock = require('stream-mock');
 
 function test_stream(input, testedStream, callback) {
-  var input_stream = event_stream.readArray(input);
-  var destination_stream = event_stream.writeArray(callback);
-
-  input_stream.pipe(testedStream).pipe(destination_stream);
+  const reader = new stream_mock.ObjectReadableMock(input);
+  const writer = new stream_mock.ObjectWritableMock();
+  writer.on('error', (e) => callback(e));
+  writer.on('finish', () => callback(null, writer.data));
+  reader.pipe(testedStream).pipe(writer);
 }
 
 module.exports.tests = {};
