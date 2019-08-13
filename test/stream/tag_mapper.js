@@ -156,6 +156,25 @@ module.exports.tests.accept_localized_keys = function(test, common) {
   });
 };
 
+// Use 'name:official' in situations where no other default name was available
+// https://github.com/pelias/openstreetmap/issues/497
+module.exports.tests.use_official_as_fallback_default = function (test, common) {
+  var doc = new Document('a', 'b', 1);
+  doc.setMeta('tags', { 'name:ru': 'test1', 'name:en': 'test2', 'official_name': 'test3' });
+  test('maps - use name:official as fallback default', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.equal(doc.getName('default'), 'test3', 'name:en used as fallback');
+      t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
+      t.equal(doc.getName('en'), 'test2', 'correctly mapped');
+      t.equal(doc.getName('official'), 'test3', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // Use 'name:en' in situations where no other default name was available
 // https://github.com/pelias/openstreetmap/issues/497
 module.exports.tests.use_en_as_fallback_default = function (test, common) {
@@ -168,6 +187,37 @@ module.exports.tests.use_en_as_fallback_default = function (test, common) {
       t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
       t.equal(doc.getName('pl'), 'test2', 'correctly mapped');
       t.equal(doc.getName('en'), 'test3', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// Use the *only* available name:** tag as fallback
+module.exports.tests.unambiguous_default_name_fallback = function (test, common) {
+  var doc = new Document('a', 'b', 1);
+  doc.setMeta('tags', { 'name:ru': 'test1' });
+  test('maps - unambiguous name:** used as default name fallback', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.equal(doc.getName('default'), 'test1', 'only name:** tag used as fallback');
+      t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// In cases where there are multiple name:** tags, do not try to guess
+module.exports.tests.ambiguous_default_name_fallback = function (test, common) {
+  var doc = new Document('a', 'b', 1);
+  doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2' });
+  test('maps - ambiguous name:** not used as default name fallback', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.false(doc.getName('default'), 'do not try to guess');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
