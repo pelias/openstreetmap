@@ -67,6 +67,15 @@ module.exports = function(){
         }
       }
 
+      // Handle the case where no default name was set but there was
+      // an english name which we could use as the default.
+      if( !doc.getName('default') ){
+        var en = doc.getName('en');
+        if( 'string' === typeof en ){
+          doc.setName('default', en);
+        }
+      }
+
       // Import airport codes as aliases
       if( tags.hasOwnProperty('aerodrome') || tags.hasOwnProperty('aeroway') ){
         if( tags.hasOwnProperty('iata') ){

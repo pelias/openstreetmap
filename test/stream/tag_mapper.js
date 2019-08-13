@@ -156,6 +156,25 @@ module.exports.tests.accept_localized_keys = function(test, common) {
   });
 };
 
+// Use 'name:en' in situations where no other default name was available
+// https://github.com/pelias/openstreetmap/issues/497
+module.exports.tests.use_en_as_fallback_default = function (test, common) {
+  var doc = new Document('a', 'b', 1);
+  doc.setMeta('tags', { 'name:ru': 'test1', 'name:pl': 'test2', 'name:en': 'test3' });
+  test('maps - use name:en as fallback default', function (t) {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.equal(doc.getName('default'), 'test3', 'name:en used as fallback');
+      t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
+      t.equal(doc.getName('pl'), 'test2', 'correctly mapped');
+      t.equal(doc.getName('en'), 'test3', 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.tests.lowercase_keys = function(test, common) {
   var doc = new Document('a','b',1);
   doc.setMeta('tags', { 'name:EN': 'test' });
