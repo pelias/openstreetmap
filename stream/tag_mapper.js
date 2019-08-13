@@ -67,12 +67,34 @@ module.exports = function(){
         }
       }
 
-      // Handle the case where no default name was set but there was
-      // an english name which we could use as the default.
+      // Handle the case where no default name was set but there were
+      // other names which we could use as the default.
       if( !doc.getName('default') ){
-        var en = doc.getName('en');
-        if( 'string' === typeof en ){
-          doc.setName('default', en);
+
+        var defaultName =
+          doc.getName('official') ||
+          doc.getName('international') ||
+          doc.getName('national') ||
+          doc.getName('regional') ||
+          doc.getName('en');
+
+        // use one of the preferred name tags listed above
+        if ( defaultName ){
+          doc.setName('default', defaultName);
+        }
+
+        // else try to use an available two-letter language name tag
+        else {
+          var keys = Object.keys(doc.name).filter(n => n.length === 2);
+
+          // unambiguous (there is only a single two-letter name tag)
+          if ( keys.length === 1 ){
+            doc.setName('default', doc.getName(keys[0]));
+          }
+
+          // note we do not handle ambiguous cases where the record contains >1
+          // two-letter name tags.
+          // see: https://github.com/pelias/openstreetmap/pull/498
         }
       }
 
