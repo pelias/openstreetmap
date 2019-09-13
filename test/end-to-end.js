@@ -65,8 +65,8 @@ streams.pbfParser()
     var actual = results;
     var expected = JSON.parse( fs.readFileSync( expectedPath, { encoding: 'utf8' } ) );
 
-    actual = _.sortBy(actual, ['_id', '_type']);
-    expected = _.sortBy(expected, ['_id', '_type']);
+    actual = _.sortBy(actual, ['_id']);
+    expected = _.sortBy(expected, ['_id']);
 
     fs.writeFileSync('actual_output.json', JSON.stringify(actual, null, 2));
     fs.writeFileSync('expected_output.json', JSON.stringify(expected, null, 2));

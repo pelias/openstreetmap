@@ -15,7 +15,7 @@
 
   In the case where the document contains BOTH a valid house number & street name we
   consider this record to be an address in it's own right and we clone that record,
-  duplicating the data across to the new doc instance while adjusting it's id and type.
+  duplicating the data across to the new doc instance while adjusting it's id and layer.
 
   In a rare case it is possible that the record contains neither a valid name nor a valid
   address. If this case in encountered then the parser should be modified so these records
@@ -76,8 +76,8 @@ module.exports = function(){
         }
 
         if( record !== undefined ){
-          // copy meta data (but maintain the id & type assigned above)
-          record._meta = extend( true, {}, doc._meta, { id: record.getId(), type: record.getType() } );
+          // copy meta data (but maintain the id assigned above)
+          record._meta = extend( true, {}, doc._meta, { id: record.getId() } );
           this.push( record );
         }
         else {

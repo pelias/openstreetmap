@@ -23,7 +23,7 @@ module.exports = function( mapping ){
     try {
 
       // do not categorize addresses
-      if( doc.getType().match('address') ){
+      if( doc.getLayer().match('address') ){
         return next( null, doc );
       }
 

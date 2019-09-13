@@ -104,7 +104,7 @@ module.exports.tests.catch_thrown_errors = function (test, common) {
 
     var stream = mapper();
     stream.pipe(through.obj((doc, enc, next) => {
-      t.deepEqual(doc.getType(), 'a', 'doc passthrough');
+      t.deepEqual(doc.getLayer(), 'a', 'doc passthrough');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

@@ -74,7 +74,7 @@ module.exports.tests.passthrough = function(test, common) {
     var stream = extractor();
 
     test_stream([fixtures.named], stream, function (err, actual) {
-      t.equal(actual[0].getType(), 'venue', 'type not changed');
+      t.equal(actual[0].getLayer(), 'venue', 'layer not changed');
       t.end();
     });
   });
@@ -101,7 +101,7 @@ module.exports.tests.createFromNameless = function(test, common) {
       t.equal(actual[0].getId(), 'item:3', 'address only id schema');
       t.deepEqual(Object.keys(actual[0].name), ['default'], 'only default name set');
       t.equal(actual[0].getName('default'), '10 Mapzen pl', 'correct name');
-      t.equal(actual[0].getType(), 'address', 'type changed');
+      t.equal(actual[0].getLayer(), 'address', 'layer changed');
       t.end();
     });
   });
@@ -119,11 +119,11 @@ module.exports.tests.duplicateFromPOIAddress = function(test, common) {
 
       t.equal(actual[0].getId(), 'item:4', 'poi address id schema');
       t.equal(actual[0].getName('default'), '11 Sesame st', 'correct name');
-      t.equal(actual[0].getType(), 'address', 'type changed');
+      t.equal(actual[0].getLayer(), 'address', 'layer changed');
 
       t.equal(actual[1].getId(), 'item:4', 'id unchanged');
       t.equal(actual[1].getName('default'), 'poi4', 'correct name');
-      t.equal(actual[1].getType(), 'address', 'type unchanged');
+      t.equal(actual[1].getLayer(), 'address', 'layer unchanged');
 
       t.end(); // test should fail if not called, or called more than once.
     });
@@ -139,7 +139,7 @@ module.exports.tests.duplicateAllFields = function(test, common) {
       // the first item pushed downstream should be the extracted address
       var docAddress = actual[0];
       t.equal(docAddress.getId(), 'item:6', 'changed');
-      t.equal(docAddress.getType(), 'address', 'changed');
+      t.equal(docAddress.getLayer(), 'address', 'changed');
       t.deepEqual(Object.keys(docAddress.name).length, 1, 'changed');
       t.equal(docAddress.getName('default'), '13 Goldsmiths row', 'changed');
       t.false(docAddress.getName('alt'), 'unset');
@@ -150,7 +150,7 @@ module.exports.tests.duplicateAllFields = function(test, common) {
       // second doc
       var docVenue = actual[1];
       t.equal(docVenue.getId(), 'item:6', 'not changed');
-      t.equal(docVenue.getType(), 'venue', 'not changed');
+      t.equal(docVenue.getLayer(), 'venue', 'not changed');
       t.deepEqual(Object.keys(docVenue.name).length, 2, 'not changed');
       t.equal(docVenue.getName('default'), 'item6', 'not changed');
       t.equal(docVenue.getName('alt'), 'item six', 'not changed');
@@ -171,20 +171,20 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
       t.equal(actual.length, 4, 'correct number of results');
 
       t.equal(actual[0].getId(), 'item:10', 'changed');
-      t.equal(actual[0].getType(), 'address', 'changed');
+      t.equal(actual[0].getLayer(), 'address', 'changed');
       t.equal(actual[0].getName('default'), '1 Pennine Road', 'changed');
 
 
       t.equal(actual[1].getId(), 'item:10:2', 'changed');
-      t.equal(actual[1].getType(), 'address', 'changed');
+      t.equal(actual[1].getLayer(), 'address', 'changed');
       t.equal(actual[1].getName('default'), '2 Pennine Road', 'changed');
 
       t.equal(actual[2].getId(), 'item:10:3', 'changed');
-      t.equal(actual[2].getType(), 'address', 'changed');
+      t.equal(actual[2].getLayer(), 'address', 'changed');
       t.equal(actual[2].getName('default'), '3 Pennine Road', 'changed');
 
       t.equal(actual[3].getId(), 'item:10', 'not changed');
-      t.equal(actual[3].getType(), 'venue', 'not changed');
+      t.equal(actual[3].getLayer(), 'venue', 'not changed');
       t.equal(actual[3].getName('default'), 'poi10', 'not changed');
 
       t.end(); // test should fail if not called, or called more than twice.
@@ -201,7 +201,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     var doc = new Document('a','b', 1);
 
     // this method will throw a generic Error for testing
-    doc.getType = function(){ throw new Error('test'); };
+    doc.getLayer = function(){ throw new Error('test'); };
 
     test_stream([doc], extractor(), function( err, actual ) {
       t.equal(actual.length, 0, 'no results');
@@ -214,7 +214,7 @@ module.exports.tests.catch_thrown_errors = function(test, common) {
     doc.setName('default','test');
 
     // this method will throw a generic Error for testing
-    doc.getType = function(){ throw new Error('test'); };
+    doc.getLayer = function(){ throw new Error('test'); };
 
     test_stream([doc], extractor(), function( err, actual ) {
       t.equal(actual[0].getName('default'), 'test', 'changed');
