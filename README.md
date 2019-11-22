@@ -108,9 +108,9 @@ $ npm start
 
 ## How long does it take?
 
-Ingestion time varies from machine-to-machine but as a general guide it takes about 7 minutes to import 125,000 points-of-interest & 140,000 street addresses covering the city of London on a quad-core 2.x GHZ machine with an SSD.
+If all goes well, you should see between 6000-7000 records imported per second on a modern machine. A full planet install will import about 80 million records, whereas most city extracts will import at most a few thousand.
 
-These counts are of records containing valid location names to search on, data which is not directly searchable by the end user is not imported.
+These counts are of records containing valid location names to search on, data which is not directly searchable by the end user, such as fire hydrants, lamp posts, etc is not imported.
 
 If you are looking to run a planet-wide cluster like the one we provide for [geocode.earth](https://geocode.earth) please see our documentation on [full planet builds](https://github.com/pelias/documentation/blob/master/full_planet_considerations.md#importer-machine).
 
