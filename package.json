@@ -45,7 +45,7 @@
     "merge": "^1.2.0",
     "pbf2json": "^6.1.0",
     "pelias-blacklist-stream": "^1.0.0",
-    "pelias-config": "^4.5.0",
+    "pelias-config": "^4.8.0",
     "pelias-dbclient": "^2.13.0",
     "pelias-logger": "^1.2.1",
     "pelias-model": "^7.1.0",
