@@ -67,7 +67,7 @@ This is the directory where the OSM importer will look for files to import. If c
 
 #### `imports.openstreetmap.download[0].sourceURL`
 
-A URL to download when the download script (in `./bin/download`) is run. Will be downloaded to the `datapath` dirctory.
+A URL to download when the download script (in `./bin/download`) is run. Will be downloaded to the `datapath` directory.
 
 #### `imports.openstreetmap.import[0].filename`
 
