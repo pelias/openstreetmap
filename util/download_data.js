@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const async = require('async');
 const child_process = require('child_process');
-const fs = require('fs-extra');
+const fs = require('fs');
 const config = require( 'pelias-config' ).generate(require('../schema'));
 const logger = require('pelias-logger').get('openstreetmap-download');
 
@@ -32,7 +32,7 @@ function download(callback) {
 
   logger.info(`Downloading sources: ${sources}`);
 
-  fs.ensureDir(config.imports.openstreetmap.datapath, (err) => {
+  fs.mkdir(config.imports.openstreetmap.datapath, { recursive: true }, (err) => {
     if (err) {
       logger.error(`error making directory ${config.imports.openstreetmap.datapath}`, err);
       return callback(err);
