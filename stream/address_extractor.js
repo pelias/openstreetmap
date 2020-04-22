@@ -94,10 +94,6 @@ module.exports = function(){
       this.push( doc );
     }
 
-    if ( isAddress && isNamedPoi ) {
-      peliasLogger.verbose('[address_extractor] duplicating a venue with address');
-    }
-
     return next();
 
   });
