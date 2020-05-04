@@ -68,6 +68,8 @@ module.exports.tests.whitelist = function(test, common) {
     t.false( features.venue_tags.indexOf('aeroway~landing_strip+name') <0 );
     t.false( features.venue_tags.indexOf('aeroway~airfield+name') <0 );
     t.false( features.venue_tags.indexOf('aeroway~airport+name') <0 );
+    t.false( features.venue_tags.indexOf('brand+name') <0 );
+    t.false( features.venue_tags.indexOf('healthcare+name') <0 );
     t.end();
   });
 };
