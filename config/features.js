@@ -44,7 +44,9 @@ var venue_tags = [
   'aeroway~spaceport+name',
   'aeroway~landing_strip+name',
   'aeroway~airfield+name',
-  'aeroway~airport+name'
+  'aeroway~airport+name',
+  'brand+name',
+  'healthcare+name'
 ];
 
 module.exports = {tags,venue_tags};
