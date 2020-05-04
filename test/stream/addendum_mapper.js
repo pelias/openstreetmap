@@ -92,6 +92,34 @@ module.exports.tests.wikipedia = function (test, common) {
   });
 };
 
+module.exports.tests.brand = function (test, common) {
+  var doc = new Document('osm', 'a', 1);
+  doc.setMeta('tags', { 'brand': '99 Ranch Market' });
+  test('maps - brand', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.addendum.osm, { brand: '99 Ranch Market' }, 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.operator = function (test, common) {
+  var doc = new Document('osm', 'a', 1);
+  doc.setMeta('tags', { 'operator': 'YMCA' });
+  test('maps - operator', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.addendum.osm, { operator: 'YMCA' }, 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ======================= errors ========================
 
 // catch general errors in the stream, emit logs and passthrough the doc

@@ -13,6 +13,8 @@ const whitelist = [
   'icao', // ICAO airport codes
   'wikidata', // Wikidata concordance
   'wikipedia', // Wikipedia concordance
+  'operator', // Operator name
+  'brand', // Brand name
   // 'website', // Website URL
   // 'phone', // Telephone number
   // 'opening_hours', // Opening hours
