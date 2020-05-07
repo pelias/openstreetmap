@@ -5,12 +5,12 @@
 **/
 
 // default tags imported
-var tags = [
+const tags = [
   'addr:housenumber+addr:street'
 ];
 
 // tags corresponding to venues
-var venue_tags = [
+const venue_tags = [
   'amenity+name',
   'building+name',
   'shop+name',
