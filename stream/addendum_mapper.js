@@ -15,9 +15,9 @@ const whitelist = [
   'wikipedia', // Wikipedia concordance
   'operator', // Operator name
   'brand', // Brand name
-  // 'website', // Website URL
-  // 'phone', // Telephone number
-  // 'opening_hours', // Opening hours
+  'website', // Website URL
+  'phone', // Telephone number
+  'opening_hours', // Opening hours
 ];
 
 module.exports = function(){

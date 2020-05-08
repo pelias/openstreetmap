@@ -92,6 +92,7 @@ module.exports.tests.wikipedia = function (test, common) {
   });
 };
 
+
 module.exports.tests.brand = function (test, common) {
   var doc = new Document('osm', 'a', 1);
   doc.setMeta('tags', { 'brand': '99 Ranch Market' });
@@ -113,6 +114,50 @@ module.exports.tests.operator = function (test, common) {
     var stream = mapper();
     stream.pipe(through.obj((doc, enc, next) => {
       t.deepEqual(doc.addendum.osm, { operator: 'YMCA' }, 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// ===================== contact details ======================
+
+module.exports.tests.website = function (test, common) {
+  var doc = new Document('osm', 'a', 1);
+  doc.setMeta('tags', { 'website': 'https://example.com' });
+  test('maps - website', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.addendum.osm, { website: 'https://example.com' }, 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.phone = function (test, common) {
+  var doc = new Document('osm', 'a', 1);
+  doc.setMeta('tags', { 'phone': '555-5555' });
+  test('maps - phone', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.addendum.osm, { phone: '555-5555' }, 'correctly mapped');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+module.exports.tests.opening_hours = function (test, common) {
+  var doc = new Document('osm', 'a', 1);
+  doc.setMeta('tags', { 'opening_hours': '24/7' });
+  test('maps - opening_hours', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.addendum.osm, { opening_hours: '24/7' }, 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
