@@ -18,6 +18,11 @@ const whitelist = [
   'website', // Website URL
   'phone', // Telephone number
   'opening_hours', // Opening hours
+
+  // COVID-19
+  'opening_hours:covid19',
+  'delivery:covid19',
+  'safety:mask:covid19'
 ];
 
 module.exports = function(){
