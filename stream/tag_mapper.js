@@ -105,7 +105,6 @@ module.exports = function(){
           if( iata ){
             doc.setNameAlias( 'default', iata );
             doc.setNameAlias( 'default', `${iata} Airport` );
-            doc.setPopularity(10000);
           }
         }
       }

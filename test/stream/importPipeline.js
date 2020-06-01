@@ -16,6 +16,7 @@ module.exports.tests.interface = function(test, common) {
     'addressExtractor',
     'categoryMapper',
     'addendumMapper',
+    'popularityMapper',
     'dbMapper',
     'elasticsearch',
     'import'
