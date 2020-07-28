@@ -10,6 +10,7 @@
 
 const through = require('through2');
 const peliasLogger = require('pelias-logger').get('openstreetmap');
+const peliasConfig = require('pelias-config').generate();
 
 const config = {
   // https://taginfo.openstreetmap.org/keys/importance
@@ -200,7 +201,10 @@ module.exports = function(){
       if( popularity > 0 ){ doc.setPopularity( popularity ); }
 
       // discard places with a negative popularity
-      else if( popularity < 0 ){ return next(); }
+      else if( popularity < 0 && peliasConfig.get('imports.openstreetmap.removeDisusedVenues') === true ){
+        peliasLogger.warn(`removing record ${doc.getGid()} (${doc.getName('default')}) with popularity ${popularity}`);
+        return next();
+      }
     }
 
     catch( e ){

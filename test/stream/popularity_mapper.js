@@ -2,6 +2,27 @@ const through = require('through2');
 const mapper = require('../../stream/popularity_mapper');
 const ixtures = require('../fixtures/docs');
 const Document = require('pelias-model').Document;
+const proxyquire = require('proxyquire');
+const peliasConfig = require('pelias-config');
+
+function mapper_with_removal_enabled() {
+  const customConfig = {
+    imports: {
+      openstreetmap: {
+        removeDisusedVenues: true
+      }
+    }
+  };
+
+  const configWithCustomSettings = {
+    generate: function() {
+      return peliasConfig.generateCustom(customConfig);
+    }
+  };
+  return proxyquire('../../stream/popularity_mapper', {
+    'pelias-config': configWithCustomSettings
+  });
+}
 
 module.exports.tests = {};
 
@@ -200,7 +221,7 @@ module.exports.tests.disused = function (test, common) {
   var doc = new Document('osm', 'venue', 1);
   doc.setMeta('tags', { 'disused:amenity': 'yes' });
   test('does not map - disused', t => {
-    var stream = mapper();
+    var stream = mapper_with_removal_enabled()();
     var counter = 0;
     stream.pipe(through.obj((doc, enc, next) => {
       counter++;
@@ -220,8 +241,23 @@ module.exports.tests.disused = function (test, common) {
 module.exports.tests.abandoned = function (test, common) {
   var doc = new Document('osm', 'venue', 1);
   doc.setMeta('tags', { 'abandoned:amenity': 'yes' });
-  test('does not map - abandoned', t => {
+  test('does not map - abandoned, removal disabled', t => {
     var stream = mapper();
+    var counter = 0;
+    stream.pipe(through.obj((doc, enc, next) => {
+      counter++;
+      next();
+    }, (done) => {
+      t.equal(counter, 1, 'document NOT discarded');
+      t.end(); // test will fail if not called (or called twice).
+      done();
+    }));
+    stream.write(doc);
+    stream.end();
+  });
+
+  test('does not map - abandoned, removal enabled', t => {
+    var stream = mapper_with_removal_enabled()();
     var counter = 0;
     stream.pipe(through.obj((doc, enc, next) => {
       counter++;
