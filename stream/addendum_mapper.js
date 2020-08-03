@@ -18,6 +18,7 @@ const whitelist = [
   'website', // Website URL
   'phone', // Telephone number
   'opening_hours', // Opening hours
+  'amenity',
 
   // COVID-19
   'opening_hours:covid19',
