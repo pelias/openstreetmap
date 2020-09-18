@@ -9,7 +9,6 @@
 var fs = require('fs'),
     path = require('path'),
     colors = require('colors'),
-    tmp = require('tmp'),
     deep = require('deep-diff'),
     streams = require('../stream/importPipeline'),
     model = require('pelias-model'),
