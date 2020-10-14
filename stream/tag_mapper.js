@@ -4,10 +4,10 @@
   document model, using a variety of different schemas found in /schema/*.
 **/
 
-var through = require('through2'),
-    _ = require('lodash'),
-    merge = require('merge'),
-    peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+const _ = require('lodash');
+const through = require('through2');
+const merge = require('merge');
+const peliasLogger = require('pelias-logger').get('openstreetmap');
 
 var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
@@ -72,10 +72,10 @@ module.exports = function(){
       if( !doc.getName('default') ){
 
         var defaultName =
-          doc.getName('official') ||
-          doc.getName('international') ||
-          doc.getName('national') ||
-          doc.getName('regional') ||
+          _.get(tags, 'official_name') ||
+          _.get(tags, 'int_name') ||
+          _.get(tags, 'nat_name') ||
+          _.get(tags, 'reg_name') ||
           doc.getName('en');
 
         // use one of the preferred name tags listed above

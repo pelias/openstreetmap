@@ -1,8 +1,8 @@
 
-var through = require('through2'),
-    mapper = require('../../stream/tag_mapper'),
-    fixtures = require('../fixtures/docs'),
-    Document = require('pelias-model').Document;
+const through = require('through2');
+const mapper = require('../../stream/tag_mapper');
+const fixtures = require('../fixtures/docs');
+const Document = require('pelias-model').Document;
 
 module.exports.tests = {};
 
@@ -65,18 +65,19 @@ module.exports.tests.osm_names = function(test, common) {
     }));
     stream.write(doc);
   });
-  test('maps - name schema', function(t) {
-    var doc = new Document('a','b',1);
-    doc.setMeta('tags', { int_name: 'test1', nat_name: 'test2' });
-    var stream = mapper();
-    stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('international'), 'test1', 'correctly mapped');
-      t.equal(doc.getName('national'), 'test2', 'correctly mapped');
-      t.end(); // test will fail if not called (or called twice).
-      next();
-    }));
-    stream.write(doc);
-  });
+  // note: these aliases are currently disabled because they are not being used when querying
+  // test('maps - name schema', function(t) {
+  //   var doc = new Document('a','b',1);
+  //   doc.setMeta('tags', { int_name: 'test1', nat_name: 'test2' });
+  //   var stream = mapper();
+  //   stream.pipe( through.obj( function( doc, enc, next ){
+  //     t.equal(doc.getName('international'), 'test1', 'correctly mapped');
+  //     t.equal(doc.getName('national'), 'test2', 'correctly mapped');
+  //     t.end(); // test will fail if not called (or called twice).
+  //     next();
+  //   }));
+  //   stream.write(doc);
+  // });
   test('maps - name aliases', function(t) {
     var doc = new Document('a','b',1);
     doc.setMeta('tags', {
@@ -95,12 +96,15 @@ module.exports.tests.osm_names = function(test, common) {
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getName('default'), 'name', 'correctly mapped');
       t.deepEqual(doc.getNameAliases('default'), ['loc_name','alt_name','short_name'], 'correctly mapped');
-      t.equal(doc.getName('national'), 'nat_name', 'correctly mapped');
-      t.equal(doc.getName('international'), 'int_name', 'correctly mapped');
-      t.equal(doc.getName('official'), 'official_name', 'correctly mapped');
-      t.equal(doc.getName('old'), 'old_name', 'correctly mapped');
-      t.equal(doc.getName('regional'), 'reg_name', 'correctly mapped');
-      t.equal(doc.getName('sorting'), 'sorting_name', 'correctly mapped');
+
+      // note: these aliases are currently disabled because they are not being used when querying
+      // t.equal(doc.getName('national'), 'nat_name', 'correctly mapped');
+      // t.equal(doc.getName('international'), 'int_name', 'correctly mapped');
+      // t.equal(doc.getName('official'), 'official_name', 'correctly mapped');
+      // t.equal(doc.getName('old'), 'old_name', 'correctly mapped');
+      // t.equal(doc.getName('regional'), 'reg_name', 'correctly mapped');
+      // t.equal(doc.getName('sorting'), 'sorting_name', 'correctly mapped');
+
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
@@ -164,10 +168,9 @@ module.exports.tests.use_official_as_fallback_default = function (test, common) 
   test('maps - use name:official as fallback default', function (t) {
     var stream = mapper();
     stream.pipe(through.obj(function (doc, enc, next) {
-      t.equal(doc.getName('default'), 'test3', 'name:en used as fallback');
+      t.equal(doc.getName('default'), 'test3', 'official_name used as fallback');
       t.equal(doc.getName('ru'), 'test1', 'correctly mapped');
       t.equal(doc.getName('en'), 'test2', 'correctly mapped');
-      t.equal(doc.getName('official'), 'test3', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

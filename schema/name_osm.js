@@ -27,13 +27,15 @@ var OSM_NAMING_SCHEMA = {
   'name':             'default',
   'loc_name':         'default',
   'alt_name':         'default',
-  'int_name':         'international',
-  'nat_name':         'national',
-  'official_name':    'official',
-  'old_name':         'old',
-  'reg_name':         'regional',
   'short_name':       'default',
-  'sorting_name':     'sorting'
+
+  // note: these aliases are currently disabled because they are not being used when querying
+  // 'int_name':         'international',
+  // 'nat_name':         'national',
+  // 'official_name':    'official',
+  // 'old_name':         'old',
+  // 'reg_name':         'regional',
+  // 'sorting_name':     'sorting'
 };
 
 // this property is considered the 'primary name'
