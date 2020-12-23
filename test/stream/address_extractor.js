@@ -173,19 +173,22 @@ module.exports.tests.semi_colon_street_numbers = function(test, common) {
       t.equal(actual[0].getId(), 'item:10', 'changed');
       t.equal(actual[0].getLayer(), 'address', 'changed');
       t.equal(actual[0].getName('default'), '1 Pennine Road', 'changed');
-
+      t.equal(actual[0].getAddress('number'), '1', 'single number');
 
       t.equal(actual[1].getId(), 'item:10:2', 'changed');
       t.equal(actual[1].getLayer(), 'address', 'changed');
       t.equal(actual[1].getName('default'), '2 Pennine Road', 'changed');
+      t.equal(actual[1].getAddress('number'), '2', 'single number');
 
       t.equal(actual[2].getId(), 'item:10:3', 'changed');
       t.equal(actual[2].getLayer(), 'address', 'changed');
       t.equal(actual[2].getName('default'), '3 Pennine Road', 'changed');
+      t.equal(actual[2].getAddress('number'), '3', 'single number');
 
       t.equal(actual[3].getId(), 'item:10', 'not changed');
       t.equal(actual[3].getLayer(), 'venue', 'not changed');
       t.equal(actual[3].getName('default'), 'poi10', 'not changed');
+      t.equal(actual[3].getAddress('number'), '1', 'first number');
 
       t.end(); // test should fail if not called, or called more than twice.
     });
