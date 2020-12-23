@@ -58,7 +58,7 @@ module.exports = function(){
         try {
           var newid = [ doc.getSourceId() ];
           if( i > 0 ){
-            newid.push( streetno );
+            newid.push( i );
             peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetNumbers);
           }
 
