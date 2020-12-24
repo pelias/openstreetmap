@@ -45,20 +45,21 @@ module.exports = function(){
     var isNamedPoi = !!doc.getName('default');
     var isAddress = hasValidAddress( doc );
 
+    // accept semi-colon delimited house numbers
+    // ref: https://github.com/pelias/openstreetmap/issues/21
+    var streetNumbers = (doc.getAddress('number') || '').split(';').map(Function.prototype.call, String.prototype.trim);
+
     // create a new record for street addresses
     if( isAddress ){
       var record;
 
-      // accept semi-colon delimited house numbers
-      // ref: https://github.com/pelias/openstreetmap/issues/21
-      var streetnumbers = doc.address_parts.number.split(';').map(Function.prototype.call, String.prototype.trim);
-      streetnumbers.forEach( function( streetno, i ){
+      streetNumbers.forEach( function( streetno, i ){
 
         try {
           var newid = [ doc.getSourceId() ];
           if( i > 0 ){
             newid.push( streetno );
-            peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetnumbers);
+            peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetNumbers);
           }
 
           // copy data to new document
@@ -66,7 +67,11 @@ module.exports = function(){
             .setName( 'default', streetno + ' ' + doc.address_parts.street )
             .setCentroid( doc.getCentroid() );
 
+          // copy all address properties
           setProperties( record, doc );
+
+          // ensure that only a single address number is used
+          record.setAddress('number', streetno);
         }
 
         catch( e ){
@@ -91,6 +96,12 @@ module.exports = function(){
     // forward doc downstream if it's a POI in its own right
     // note: this MUST be below the address push()
     if( isNamedPoi ){
+
+      // in the case of multiple house numbers, only use the first one for the venue
+      if (streetNumbers.length > 1) {
+        doc.setAddress('number', streetNumbers[0]);
+      }
+
       this.push( doc );
     }
 
