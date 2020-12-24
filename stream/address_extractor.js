@@ -58,12 +58,12 @@ module.exports = function(){
         try {
           var newid = [ doc.getSourceId() ];
           if( i > 0 ){
-            newid.push( streetno );
+            newid.push( i );
             peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetNumbers);
           }
 
           // copy data to new document
-          record = new Document( 'openstreetmap', 'address', newid.join(':') )
+          record = new Document( 'openstreetmap', 'address', newid.join('/') )
             .setName( 'default', streetno + ' ' + doc.address_parts.street )
             .setCentroid( doc.getCentroid() );
 
