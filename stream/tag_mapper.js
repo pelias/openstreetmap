@@ -43,7 +43,7 @@ module.exports = function(){
           if (trimmed_value)  {
             if (!trimmed_name ) {
               doc.setName('default', trim( tags[key]));
-            } else {
+            } else if(!trimmed_name.includes(trimmed_value)) {
               doc.setNameAlias('default', trim( tags[key]));
             }
           }
