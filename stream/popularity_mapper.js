@@ -166,7 +166,7 @@ module.exports = function(){
     try {
 
       // only map venues
-      if( doc.getLayer() !== 'venue' ){
+      if( !['venue', 'address'].includes(doc.getLayer()) ){
         return next(null, doc);
       }
 
@@ -195,6 +195,12 @@ module.exports = function(){
             }
           }
         }
+      }
+
+      // addresses with a popularity score GTE 10000 receieve
+      // a popularity of 1000, all others get a popularity of 0.
+      if ( doc.getLayer() === 'address' ){
+        popularity = (popularity >= 10000) ? 1000 : 0;
       }
 
       // set document popularity if it is greater than zero
