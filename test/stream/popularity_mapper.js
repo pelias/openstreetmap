@@ -202,12 +202,30 @@ module.exports.tests.railway_station = function (test, common) {
 // ===================== do not map non-venue docs ======================
 
 module.exports.tests.nonvenue = function (test, common) {
-  var doc = new Document('osm', 'address', 1);
+  var doc = new Document('osm', 'street', 1);
   doc.setMeta('tags', { 'importance': 'international' });
   test('does not map - non-venue', t => {
     var stream = mapper();
     stream.pipe(through.obj((doc, enc, next) => {
       t.false(doc.getPopularity(), 'no mapping performed');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// ===================== maps address docs ======================
+// note: currently 1000 is the hard maximum popularity for addresses
+// this restriction may be lifted in the future.
+
+module.exports.tests.address = function (test, common) {
+  var doc = new Document('osm', 'address', 1);
+  doc.setMeta('tags', { 'importance': 'international' });
+  test('does not map - non-venue', t => {
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.deepEqual(doc.getPopularity(), 1000);
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
