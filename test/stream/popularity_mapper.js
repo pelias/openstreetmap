@@ -290,6 +290,20 @@ module.exports.tests.abandoned = function (test, common) {
   });
 };
 
+module.exports.tests.abandoned_amenity_place_of_worship = function (test, common) {
+  var doc = new Document('osm', 'venue', 1);
+  doc.setMeta('tags', { 'abandoned:amenity': 'place_of_worship', 'tourism': 'attraction' });
+  test('does not map negative value for - abandoned:amenity=place_of_worship', t => {
+    var stream = mapper();
+    stream.pipe(through.obj(function (doc, enc, next) {
+      t.deepEqual(doc.getPopularity(), 2000);
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ======================= errors ========================
 
 // catch general errors in the stream, emit logs and passthrough the doc
