@@ -82,7 +82,12 @@ const config = {
   // https://wiki.openstreetmap.org/wiki/Key:abandoned:
   abandoned: { _score: -100000 },
   'abandoned:shop': { _score: -100000 },
-  'abandoned:amenity': { _score: -100000 },
+  'abandoned:amenity': {
+    // note: some places such as 'Angkor Wat' are tagged 'abandoned:amenity=place_of_worship'.
+    // we use a positive integer to negate the effects of the base _score below (zeroing it out).
+    place_of_worship: { _score: +100000 },
+    _score: -100000
+  },
   'abandoned:railway': { _score: -100000 },
   'abandoned:leisure': { _score: -100000 },
 
