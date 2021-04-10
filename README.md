@@ -184,10 +184,3 @@ $ npm run coverage
 Travis tests every change against all supported Node.js versions.
 
 ![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
-
-
-### Versioning
-
-We rely on semantic-release and Greenkeeper to maintain our module and dependency versions.
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/pelias/openstreetmap.svg)](https://greenkeeper.io/)
