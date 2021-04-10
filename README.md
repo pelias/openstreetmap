@@ -181,6 +181,4 @@ $ npm run coverage
 
 ### Continuous Integration
 
-Travis tests every change against all supported Node.js versions.
-
-![Travis CI Status](https://travis-ci.org/pelias/openstreetmap.svg)
+CI tests every change against all supported Node.js versions.
