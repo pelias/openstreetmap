@@ -110,9 +110,9 @@ By default, the OSM importer imports both venue records and addresses. If set to
 
 If set to boolean `true`, `venue`s with popularity below `0` (as determined by OSM tags) will be
 discarded. In practice, this affects records with tags such as
-`[disused](https://wiki.openstreetmap.org/wiki/Key:disused#disused:_namespace)`,
-`[amenity:disused](https://wiki.openstreetmap.org/wiki/Tag:amenity%3Ddisused)` and
-`[abandoned](https://wiki.openstreetmap.org/wiki/Key:abandoned:)`
+[`disused`](https://wiki.openstreetmap.org/wiki/Key:disused#disused:_namespace),
+[`amenity:disused`](https://wiki.openstreetmap.org/wiki/Tag:amenity%3Ddisused) and
+[`abandoned`](https://wiki.openstreetmap.org/wiki/Key:abandoned:)
 
 By default, or if set to any other value besides `true`, these records will be imported.
 
