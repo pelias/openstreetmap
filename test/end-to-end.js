@@ -10,6 +10,7 @@ var fs = require('fs'),
     path = require('path'),
     colors = require('colors'),
     deep = require('deep-diff'),
+    jdiff = require('json-diff'),
     streams = require('../stream/importPipeline'),
     model = require('pelias-model'),
     sink = require('through2-sink'),
@@ -79,25 +80,20 @@ streams.pbfParser()
       var d = deep.diff(actual[i], expected[i]);
       if (d) {
         countDiff++;
+        console.log(jdiff.diffString(actual[i], expected[i]));
       }
       else {
         countSame++;
       }
       i++;
     }
-    var diff = deep.diff( actual, expected );
 
-    if (!diff) {
+    if (countDiff === 0) {
       fs.unlinkSync('actual_output.json');
       fs.unlinkSync('expected_output.json');
     }
 
-    if( diff ){
-      //added for clarification because understanding the deep diff output is hard
-      console.log('actual:', JSON.stringify(actual[0], null, 2));
-      console.log('expected:', JSON.stringify(expected[0], null, 2));
-
-      console.log( JSON.stringify(diff, null, 2) );
+    if (countDiff > 0){
       console.log('actual count:', actual.length);
       console.log('expected count:', expected.length);
       console.log('matching count:', colors.green(countSame));
