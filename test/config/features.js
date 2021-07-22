@@ -39,9 +39,7 @@ module.exports.tests.whitelist_venue_tags = function(test, common) {
     t.true( features.venue_tags.includes('building+name') );
     t.true( features.venue_tags.includes('shop+name') );
     t.true( features.venue_tags.includes('office+name') );
-    t.true( features.venue_tags.includes('highway:bus_stop+name') );
     t.true( features.venue_tags.includes('cuisine+name') );
-    t.true( features.venue_tags.includes('railway~tram_stop+name') );
     t.true( features.venue_tags.includes('railway~station+name') );
     t.true( features.venue_tags.includes('railway~halt+name') );
     t.true( features.venue_tags.includes('railway~subway_entrance+name') );
