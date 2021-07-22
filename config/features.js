@@ -20,7 +20,6 @@ const venue_tags = [
   'railway~station+name',
   'railway~tram_stop+name',
   'railway~halt+name',
-  'railway~platform+name',
   'railway~subway_entrance+name',
   'railway~train_station_entrance+name',
   'highway~pedestrian+area~yes+name',

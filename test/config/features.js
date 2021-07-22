@@ -44,7 +44,6 @@ module.exports.tests.whitelist_venue_tags = function(test, common) {
     t.true( features.venue_tags.includes('railway~tram_stop+name') );
     t.true( features.venue_tags.includes('railway~station+name') );
     t.true( features.venue_tags.includes('railway~halt+name') );
-    t.true( features.venue_tags.includes('railway~platform+name') );
     t.true( features.venue_tags.includes('railway~subway_entrance+name') );
     t.true( features.venue_tags.includes('railway~train_station_entrance+name') );
     t.true( features.venue_tags.includes('sport+name') );
