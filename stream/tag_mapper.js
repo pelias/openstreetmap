@@ -45,7 +45,7 @@ module.exports = function(){
         }
 
         // Map name data from our name mapping schema
-        else if( tag in NAME_SCHEMA ){
+        else if( _.has(NAME_SCHEMA, tag) ){
           var val2 = trim( tags[tag] );
           if( val2 ){
             if( tag === NAME_SCHEMA._primary ){
@@ -59,7 +59,7 @@ module.exports = function(){
         }
 
         // Map address data from our address mapping schema
-        else if( tag in ADDRESS_SCHEMA ){
+        else if( _.has(ADDRESS_SCHEMA, tag) ){
           var val3 = trim( tags[tag] );
           if( val3 ){
             doc.setAddress( ADDRESS_SCHEMA[tag], val3 );
