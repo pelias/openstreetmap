@@ -81,7 +81,7 @@ module.exports = function(){
 
         // use one of the preferred name tags listed above
         if ( defaultName ){
-          doc.setName('default', defaultName);
+          doc.setName('default', trim( defaultName ) );
         }
 
         // else try to use an available two-letter language name tag
@@ -128,7 +128,9 @@ module.exports = function(){
 };
 
 // Clean string of leading/trailing junk chars
+// note: parenthesed text is removed
 function trim( str ){
+  str = str.replace(/\([^)]*\) */g, ''); // remove parenthesed portions of text
   return _.trim( str, '#$%^*<>-=_{};:",./?\t\n\' ' );
 }
 
