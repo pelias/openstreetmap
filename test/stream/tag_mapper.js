@@ -420,6 +420,25 @@ module.exports.tests.newline_in_value = function(test, common) {
   });
 };
 
+// ======================= misc ========================
+
+// Tags with a key which matches a JS reserved word should not cause errors
+// https://github.com/pelias/openstreetmap/issues/557
+module.exports.tests.skip_inherited_enumerable_properties = function(test, common) {
+  var doc = new Document('a','b',1);
+  doc.setMeta('tags', { 'constructor': 'example' });
+  test('skip_inherited_enumerable_properties', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.false(doc.name.hasOwnProperty('function Object() { [native code] }'));
+      t.false(Object.keys(doc.name).length, 'empty');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 module.exports.all = function (tape, common) {
 
   function test(name, testFunction) {

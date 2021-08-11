@@ -13,8 +13,9 @@
   @see: ./config/category_map.js
 **/
 
-var through = require('through2');
-var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+const _ = require('lodash');
+const through = require('through2');
+const peliasLogger = require('pelias-logger').get('openstreetmap');
 
 module.exports = function( mapping ){
 
@@ -34,24 +35,24 @@ module.exports = function( mapping ){
       }
 
       // iterate over mapping
-      for( var key in mapping ){
+      _.each(mapping, (osmTagValues, osmTagKey) => {
 
         // check each mapping key against document tags
-        if( !tags.hasOwnProperty( key ) ){ continue; }
+        if( !tags.hasOwnProperty( osmTagKey ) ){ return; }
 
         // handle mapping wildcards
-        if( mapping[key].hasOwnProperty('*') ){
-          addCategories( doc, mapping[key]['*'] );
+        if( osmTagValues.hasOwnProperty('*') ){
+          addCategories( doc, osmTagValues['*'] );
         }
 
         // handle regular features
-        for( var feature in mapping[key] ){
-          if( '*' === feature ){ continue; }
-          if( tags[key] === feature ){
-            addCategories( doc, mapping[key][feature] );
+        _.each(osmTagValues, (categories, osmTagValue) => {
+          if( '*' === osmTagValue ){ return; }
+          if( tags[osmTagKey] === osmTagValue ){
+            addCategories( doc, categories );
           }
-        }
-      }
+        });
+      });
     }
 
     catch( e ){

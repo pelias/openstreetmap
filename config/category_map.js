@@ -17,7 +17,7 @@
  @see: https://github.com/pelias/pelias/wiki/Taxonomy-v1
 **/
 
-var mapping = {
+const mapping = {
 
   'aerialway': {
     '*':                        ['transport'],

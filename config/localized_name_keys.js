@@ -30,14 +30,15 @@
   @see: http://wiki.openstreetmap.org/wiki/Talk:Names
 **/
 
-var iso6393 = require('iso-639-3');
-var keys = [];
+const _ = require('lodash');
+const iso6393 = require('iso-639-3');
+const keys = [];
 
-for( var i in iso6393 ){
-  var code = iso6393[i].iso6391;
+_.each(iso6393, (lang) => {
+  let code = _.get(lang, 'iso6391');
   if( code ){
     keys.push( code );
   }
-}
+});
 
 module.exports = keys;
