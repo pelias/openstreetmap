@@ -32,40 +32,40 @@ module.exports = function(){
 
       // Unfortunately we need to iterate over every tag,
       // so we only do the iteration once to save CPU.
-      for( var tag in tags ){
+      _.each(tags, (value, key) => {
 
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
-        var suffix = getNameSuffix( tag );
+        var suffix = getNameSuffix( key );
         if( suffix ){
-          var val1 = trim( tags[tag] );
+          var val1 = trim( value );
           if( val1 ){
             doc.setName( suffix, val1 );
           }
         }
 
         // Map name data from our name mapping schema
-        else if( _.has(NAME_SCHEMA, tag) ){
-          var val2 = trim( tags[tag] );
+        else if( _.has(NAME_SCHEMA, key) ){
+          var val2 = trim( value );
           if( val2 ){
-            if( tag === NAME_SCHEMA._primary ){
-              doc.setName( NAME_SCHEMA[tag], val2 );
-            } else if ( 'default' === NAME_SCHEMA[tag] ) {
-              doc.setNameAlias( NAME_SCHEMA[tag], val2 );
+            if( key === NAME_SCHEMA._primary ){
+              doc.setName( NAME_SCHEMA[key], val2 );
+            } else if ( 'default' === NAME_SCHEMA[key] ) {
+              doc.setNameAlias( NAME_SCHEMA[key], val2 );
             } else {
-              doc.setName( NAME_SCHEMA[tag], val2 );
+              doc.setName( NAME_SCHEMA[key], val2 );
             }
           }
         }
 
         // Map address data from our address mapping schema
-        else if( _.has(ADDRESS_SCHEMA, tag) ){
-          var val3 = trim( tags[tag] );
+        else if( _.has(ADDRESS_SCHEMA, key) ){
+          var val3 = trim( value );
           if( val3 ){
-            doc.setAddress( ADDRESS_SCHEMA[tag], val3 );
+            doc.setAddress( ADDRESS_SCHEMA[key], val3 );
           }
         }
-      }
+      });
 
       // Handle the case where no default name was set but there were
       // other names which we could use as the default.
