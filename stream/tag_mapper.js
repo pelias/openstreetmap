@@ -62,7 +62,8 @@ module.exports = function(){
         else if( _.has(ADDRESS_SCHEMA, key) ){
           var val3 = trim( value );
           if( val3 ){
-            doc.setAddress( ADDRESS_SCHEMA[key], val3 );
+            let label = ADDRESS_SCHEMA[key];
+            doc.setAddress(label, normalizeAddressField(label, val3));
           }
         }
       });
@@ -148,4 +149,21 @@ function getNameSuffix( tag ){
   }
 
   return suffix;
+}
+
+// apply some very basic normalization
+// note: in the future we should consider doing something more advanced like:
+// https://github.com/pelias/openaddresses/pull/477
+function normalizeAddressField(key, value) {
+  if (key === 'street') {
+
+    // contract English diagonals
+    value = value
+      .replace(/\b(northwest)\b/i, 'NW')
+      .replace(/\b(northeast)\b/i, 'NE')
+      .replace(/\b(southwest)\b/i, 'SW')
+      .replace(/\b(southeast)\b/i, 'SE');
+  }
+
+  return value;
 }

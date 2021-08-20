@@ -302,6 +302,55 @@ module.exports.tests.karlsruhe_schema = function(test, common) {
   });
 };
 
+// ======================== address normalization =========================
+
+module.exports.tests.contract_directionals = (test, common) => {
+  test('norm - contract directionals at end', (t) => {
+    var doc = new Document('a', 'b', 1);
+    doc.setMeta('tags', { 'addr:street': 'Foo Street Southwest' });
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.equal(doc.getAddress('street'), 'Foo Street SW', 'contracted');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+  test('norm - contract directionals at start', (t) => {
+    var doc = new Document('a', 'b', 1);
+    doc.setMeta('tags', { 'addr:street': 'Southwest Foo Street' });
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.equal(doc.getAddress('street'), 'SW Foo Street', 'contracted');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+  test('norm - requires trailing word break', (t) => {
+    var doc = new Document('a', 'b', 1);
+    doc.setMeta('tags', { 'addr:street': 'Foo Street Southwestern' });
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.equal(doc.getAddress('street'), 'Foo Street Southwestern', 'no-op');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+  test('norm - requires leading word break', (t) => {
+    var doc = new Document('a', 'b', 1);
+    doc.setMeta('tags', { 'addr:street': 'OurSouthwest Foo Street' });
+    var stream = mapper();
+    stream.pipe(through.obj((doc, enc, next) => {
+      t.equal(doc.getAddress('street'), 'OurSouthwest Foo Street', 'no-op');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // ======================== data cleansing =========================
 
 module.exports.tests.trim_junk = function(test, common) {
