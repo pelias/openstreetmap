@@ -16,7 +16,7 @@
     "lint": "jshint .",
     "start": "./bin/start",
     "test": "npm run units",
-    "travis": "node ./test/travis-config.js && npm test && npm run end-to-end",
+    "ci": "node ./test/ci-config.js && npm test && npm run end-to-end",
     "units": "./bin/test",
     "validate": "npm ls"
   },
