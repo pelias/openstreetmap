@@ -6,12 +6,11 @@
 
 const _ = require('lodash');
 const through = require('through2');
-const merge = require('merge');
 const peliasLogger = require('pelias-logger').get('openstreetmap');
 
 var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
 var NAME_SCHEMA = require('../schema/name_osm');
-var ADDRESS_SCHEMA = merge( true, false,
+var ADDRESS_SCHEMA = _.merge( {},
   require('../schema/address_tiger'),
   require('../schema/address_osm'),
   require('../schema/address_naptan'),
