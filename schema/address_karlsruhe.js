@@ -14,6 +14,7 @@ var KARLSRUHE_SCHEMA = {
   'addr:housename':     'name',
   'addr:housenumber':   'number',
   'addr:street':        'street',
+  'addr:place':         'street',
   'addr:postcode':      'zip'
 
   // @ref: https://github.com/pelias/model/pull/13
