@@ -25,13 +25,13 @@ module.exports = function(){
       }
 
       // fill addr:street with addr:place if missing
-      var street = tags['addr:street'] || ''
+      var street = tags['addr:street'] || '';
       if (
-        street == '' &&  // override also if street tag is empty
+        street === '' &&  // override also if street tag is empty
         tags.hasOwnProperty('addr:place') &&
         tags.hasOwnProperty('addr:housenumber')
       ) {
-        tags['addr:street'] = tags['addr:place']
+        tags['addr:street'] = tags['addr:place'];
       }
     }
 
