@@ -1,8 +1,8 @@
 
 /**
-  This stream is responsible for filling 'addr:street' in case if
-  is empty or missing, with 'addr:place' value. Note that both 'addr:place'
-  and 'addr:housenumber' must be present inside tags!
+  This stream is responsible for filling 'addr:street' if is empty or missing,
+  with 'addr:place' value. Note that both 'addr:place' and 'addr:housenumber'
+  must be present inside tags!
 
   @ref https://github.com/pelias/openstreetmap/pull/565
 **/

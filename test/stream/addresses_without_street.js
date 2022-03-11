@@ -20,7 +20,7 @@ module.exports.tests.interface = function(test, common) {
   });
 };
 
-// a tags with missing of required extra tag (addr:housenumber)
+// a tags with missing required extra tag (addr:housenumber)
 // should pass through the stream without being modified.
 // @ref https://github.com/pelias/openstreetmap/pull/565#issuecomment-1062874227
 module.exports.tests.passthrough = function(test, common) {
