@@ -11,6 +11,7 @@ module.exports.tests.interface = function(test, common) {
     'pbfParser',
     'docConstructor',
     'blacklistStream',
+    'addressesWithoutStreet',
     'tagMapper',
     'adminLookup',
     'addressExtractor',

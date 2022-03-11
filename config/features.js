@@ -6,7 +6,8 @@
 
 // default tags imported
 const tags = [
-  'addr:housenumber+addr:street'
+  'addr:housenumber+addr:street',
+  'addr:housenumber+addr:place'  // @ref https://github.com/pelias/pelias/issues/787#issuecomment-477137803
 ];
 
 // tags corresponding to venues
