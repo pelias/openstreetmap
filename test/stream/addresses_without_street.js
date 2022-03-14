@@ -29,7 +29,7 @@ module.exports.tests.passthrough = function(test, common) {
     original.setMeta('tags', { 'addr:place': 'L14' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.deepEqual(doc.getMeta('tags'), original.getMeta('tags'), 'tags modified' );
+      t.deepEqual(doc.getMeta('tags'), original.getMeta('tags'), 'tags not modified' );
       t.end(); // test will fail if not called (or called twice).
       next();
     }));

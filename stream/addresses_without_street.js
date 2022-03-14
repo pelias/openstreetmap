@@ -24,14 +24,17 @@ module.exports = function(){
         return next( null, doc );
       }
 
-      // fill addr:street with addr:place if missing
-      var street = tags['addr:street'] || '';
-      if (
-        street === '' &&  // override also if street tag is empty
-        tags.hasOwnProperty('addr:place') &&
-        tags.hasOwnProperty('addr:housenumber')
-      ) {
-        tags['addr:street'] = tags['addr:place'];
+      // housenumber is required
+      if (!_.has(tags, 'addr:housenumber')){
+        return next( null, doc );
+      }
+
+      const street = _.get(tags, 'addr:street', '').trim();
+      const place = _.get(tags, 'addr:place', '').trim();
+
+      // when street is unset but place is set, use place for the street name
+      if (_.isEmpty(street) && !_.isEmpty(place)) {
+        _.set(tags, 'addr:street', place);
       }
     }
 
