@@ -16,7 +16,8 @@ var tests = [
   require('./stream/importPipeline'),
   require('./stream/pbf'),
   require('./stream/stats'),
-  require('./stream/tag_mapper')
+  require('./stream/tag_mapper'),
+  require('./stream/addresses_without_street')
 ];
 
 tests.map(function(t) {
