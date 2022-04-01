@@ -1,4 +1,4 @@
-
+const _ = require('lodash');
 const through = require('through2');
 const mapper = require('../../stream/tag_mapper');
 const fixtures = require('../fixtures/docs');
@@ -94,8 +94,9 @@ module.exports.tests.osm_names = function(test, common) {
     });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('default'), 'name', 'correctly mapped');
-      t.deepEqual(doc.getNameAliases('default'), ['loc_name','alt_name','short_name'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.default), ['name'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.alt), ['loc_name','alt_name'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.abbr), ['short_name'], 'correctly mapped');
 
       // note: these aliases are currently disabled because they are not being used when querying
       // t.equal(doc.getName('national'), 'nat_name', 'correctly mapped');
@@ -248,8 +249,9 @@ module.exports.tests.airport_codes = function(test, common) {
   test('alias - airport codes', function(t) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('default'), 'test', 'correctly mapped');
-      t.deepEqual(doc.getNameAliases('default'), ['FOO', 'FOO Airport'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.default), ['test'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.code), ['FOO'], 'correctly mapped');
+      t.deepEqual(_.castArray(doc.name.org), ['FOO Airport'], 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
