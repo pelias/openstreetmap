@@ -43,10 +43,10 @@
     "lodash": "^4.17.4",
     "pbf2json": "^6.9.0",
     "pelias-blacklist-stream": "^1.0.0",
-    "pelias-config": "^4.12.0",
-    "pelias-dbclient": "^2.13.0",
+    "pelias-config": "^6.0.0",
+    "pelias-dbclient": "^3.0.0",
     "pelias-logger": "^1.2.1",
-    "pelias-model": "^9.2.0",
+    "pelias-model": "^10.0.0",
     "pelias-wof-admin-lookup": "^7.8.0",
     "through2": "^3.0.0",
     "through2-sink": "^1.0.0"
