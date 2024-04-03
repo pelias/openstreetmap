@@ -18,6 +18,7 @@ module.exports = Joi.object().keys({
         filename: Joi.string(),
         importVenues: Joi.boolean().default(true).truthy('yes').falsy('no').insensitive(true)
       }).requiredKeys('filename').unknown(true)),
+      tags: Joi.array().items(Joi.string()),
       download: Joi.array().items(Joi.object().keys({
         sourceURL: Joi.string()
       }).requiredKeys('sourceURL').unknown(true)),
