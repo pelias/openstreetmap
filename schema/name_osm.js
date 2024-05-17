@@ -25,9 +25,9 @@
 
 var OSM_NAMING_SCHEMA = {
   'name':             'default',
-  'loc_name':         'default',
-  'alt_name':         'default',
-  'short_name':       'default',
+  'loc_name':         'alt',
+  'alt_name':         'alt',
+  'short_name':       'abbr',
 
   // note: these aliases are currently disabled because they are not being used when querying
   // 'int_name':         'international',
@@ -37,15 +37,5 @@ var OSM_NAMING_SCHEMA = {
   // 'reg_name':         'regional',
   // 'sorting_name':     'sorting'
 };
-
-// this property is considered the 'primary name'
-// for label generation, the others are considered
-// secondary or 'aliases'.
-Object.defineProperty(OSM_NAMING_SCHEMA, '_primary', {
-  value: 'name',
-  enumerable: false,
-  configurable: false,
-  writable: false
-});
 
 module.exports = OSM_NAMING_SCHEMA;
