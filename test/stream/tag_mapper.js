@@ -119,7 +119,7 @@ module.exports.tests.osm_names = function(test, common) {
       nat_name: 'nat_name',
       int_name: 'int_name',
       name: 'name',
-      alt_name: 'alt_name;alt_name2',
+      alt_name: 'alt_name;alt_name2;alt_name3',
       official_name: 'official_name',
       old_name: 'old_name',
       reg_name: 'reg_name',
@@ -129,7 +129,7 @@ module.exports.tests.osm_names = function(test, common) {
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
       t.equal(doc.getName('default'), 'name', 'correctly mapped');
-      t.deepEqual(doc.getNameAliases('default'), ['loc_name','alt_name','alt_name2','short_name'], 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), ['loc_name','alt_name','alt_name2','alt_name3','short_name'], 'correctly mapped');
 
       t.end(); // test will fail if not called (or called twice).
       next();
