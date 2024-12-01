@@ -35,14 +35,19 @@ module.exports = function(){
 
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
-        var suffix = getNameSuffix( key );
+        let suffix = getNameSuffix( key, 'name:');
+        let altSuffix = getNameSuffix( key, 'alt_name:');
         if( suffix ){
           var val1 = trim( value );
           if( val1 ){
             doc.setName( suffix, val1 );
           }
+        } else if ( altSuffix ) {
+          let val1 = trim(value);
+          if (val1){
+            doc.setNameAlias( altSuffix, val1 );
+          }
         }
-
         // Map name data from our name mapping schema
         else if( _.has(NAME_SCHEMA, key) ){
           var val2 = trim( value );
@@ -133,14 +138,13 @@ function trim( str ){
 
 // extract name suffix, eg for 'name:EN' return 'en'
 // if not valid, return false.
-function getNameSuffix( tag ){
-
-  if( tag.length < 6 || tag.substr(0,5) !== 'name:' ){
+function getNameSuffix( tag, prefix ){
+  if( tag.length < 6 || tag.substr(0, prefix.length) !== prefix ){
     return false;
   }
 
   // normalize suffix
-  var suffix = tag.substr(5).toLowerCase();
+  var suffix = tag.substr(prefix.length).toLowerCase();
 
   // check the suffix is in the localized key list
   if( LOCALIZED_NAME_KEYS.indexOf(suffix) === -1 ){
