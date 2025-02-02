@@ -112,6 +112,38 @@ module.exports.tests.osm_names = function(test, common) {
   });
 };
 
+// Reject alt names that are a substring of the main name
+module.exports.tests.substring_alt_name = function(test, common) {
+  var doc = new Document('a','b',1);
+  doc.setMeta('tags', { 'name': 'test place', 'alt_name': 'test pl' });
+
+  test('rejects - substring alt name', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.name, { default: 'test place' }, 'substring name removed');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
+// Reject alt names that are a substring of the main name, even if they appear before the name in list of tags
+module.exports.tests.substring_alt_name2 = function(test, common) {
+  var doc = new Document('a','b',1);
+  doc.setMeta('tags', { 'alt_name': 'test pl', name: 'test place'});
+
+  test('rejects - substring alt name', function(t) {
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.deepEqual(doc.name, { default: 'test place' }, 'substring name removed');
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+    stream.write(doc);
+  });
+};
+
 // Cover the case of a tag key being 'name:' eg. { 'name:': 'foo' }
 // Not to be confused with { 'name': 'foo' } (note the extraneous colon)
 module.exports.tests.extraneous_colon = function(test, common) {
