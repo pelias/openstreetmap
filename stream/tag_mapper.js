@@ -29,41 +29,32 @@ module.exports = function(){
         return next( null, doc );
       }
 
+      // primary name tag: 'name'
+      if (_.has(tags, 'name')) {
+        appendName(doc, 'default', _.get(tags, 'name'));
+      }
+
       // Unfortunately we need to iterate over every tag,
       // so we only do the iteration once to save CPU.
       _.each(tags, (value, key) => {
+        // primary field was mapped above
+        if (key === 'name') { return; }
 
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
-        var suffix = getNameSuffix( key );
-        if( suffix ){
-          var val1 = trim( value );
-          if( val1 ){
-            doc.setName( suffix, val1 );
-          }
+        var suffix = getNameSuffix(key);
+        if (suffix) {
+          appendName(doc, suffix, value);
         }
 
         // Map name data from our name mapping schema
-        else if( _.has(NAME_SCHEMA, key) ){
-          var val2 = trim( value );
-          if( val2 ){
-            if( key === NAME_SCHEMA._primary ){
-              doc.setName( NAME_SCHEMA[key], val2 );
-            } else if ( 'default' === NAME_SCHEMA[key] ) {
-              doc.setNameAlias( NAME_SCHEMA[key], val2 );
-            } else {
-              doc.setName( NAME_SCHEMA[key], val2 );
-            }
-          }
+        else if (_.has(NAME_SCHEMA, key)) {
+          appendName(doc, _.get(NAME_SCHEMA, key), value);
         }
 
         // Map address data from our address mapping schema
-        else if( _.has(ADDRESS_SCHEMA, key) ){
-          var val3 = trim( value );
-          if( val3 ){
-            let label = ADDRESS_SCHEMA[key];
-            doc.setAddress(label, normalizeAddressField(label, val3));
-          }
+        else if (_.has(ADDRESS_SCHEMA, key)) {
+          appendAddress(doc, ADDRESS_SCHEMA[key], value);
         }
       });
 
@@ -103,8 +94,8 @@ module.exports = function(){
         if( tags.hasOwnProperty('iata') ){
           var iata = trim( tags.iata );
           if( iata ){
-            doc.setNameAlias( 'default', iata );
-            doc.setNameAlias( 'default', `${iata} Airport` );
+            appendName(doc, 'code', iata);
+            appendName(doc, 'org', `${iata} Airport`);
           }
         }
       }
@@ -166,3 +157,46 @@ function normalizeAddressField(key, value) {
 
   return value;
 }
+
+/**
+ * convenience function for appending names:
+ *
+ * - selects 'setName' or 'setNameAlias' appropriately.
+ * - splits on ';', a common OSM convention for multi values.
+ * - applies token normalization via trim().
+ */
+const appendName = (doc, label, value) => {
+  if (!_.isString(value) || !value.length) { return; }
+
+  value.split(';').forEach(name => {
+    let initial = !doc.getName(label);
+    let trimmed = trim(name);
+    if (trimmed.length < 1) { return; }
+
+    if (initial) {
+      doc.setName(label, trimmed);
+    } else {
+      doc.setNameAlias(label, trimmed);
+    }
+  });
+};
+
+/**
+ * convenience function for appending address components:
+ *
+ * - selects 'setAddress' or 'setAddressAlias' appropriately.
+ * - applies token normalization via trim() & normalizeAddressField()
+ */
+const appendAddress = (doc, label, value) => {
+  if (!_.isString(value) || !value.length) { return; }
+
+  let initial = !doc.getAddress(label);
+  let trimmed = normalizeAddressField(label, trim(value));
+  if (trimmed.length < 1) { return; }
+
+  if (initial) {
+    doc.setAddress(label, trimmed);
+  } else {
+    doc.setAddressAlias(label, trimmed);
+  }
+};
