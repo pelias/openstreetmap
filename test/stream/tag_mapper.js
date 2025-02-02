@@ -366,12 +366,12 @@ module.exports.tests.trim_junk = function(test, common) {
     stream.write(doc);
   });
   // ref: https://github.com/pelias/openstreetmap/issues/47
-  test('clean - preserve brackets', function(t) {
+  test('clean - remove text in parenthesis', function(t) {
     var doc = new Document('a','b',1);
-    doc.setMeta('tags', { name: 'Transportation Center Bus Stop (Coach USA)' });
+    doc.setMeta('tags', { name: 'Transportation Center (Coach USA) Bus Stop' });
     var stream = mapper();
     stream.pipe( through.obj( function( doc, enc, next ){
-      t.equal(doc.getName('default'), 'Transportation Center Bus Stop (Coach USA)', 'correctly mapped');
+      t.equal(doc.getName('default'), 'Transportation Center Bus Stop', 'correctly mapped');
       t.end(); // test will fail if not called (or called twice).
       next();
     }));
