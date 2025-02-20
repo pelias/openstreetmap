@@ -50,7 +50,16 @@ module.exports = function(){
             if( key === NAME_SCHEMA._primary ){
               doc.setName( NAME_SCHEMA[key], val2 );
             } else if ( 'default' === NAME_SCHEMA[key] ) {
-              doc.setNameAlias( NAME_SCHEMA[key], val2 );
+              // `alt_name` may contain multiple names separated by semicolons 
+              // (see https://wiki.openstreetmap.org/wiki/Key:alt_name#Examples)
+              if (key === 'alt_name') {
+                const altNames = val2.split(';');
+                altNames.forEach((altName) => {
+                  doc.setNameAlias( NAME_SCHEMA[key], altName );
+                });
+              } else {
+                doc.setNameAlias( NAME_SCHEMA[key], val2 );
+              }
             } else {
               doc.setName( NAME_SCHEMA[key], val2 );
             }
