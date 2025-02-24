@@ -8,9 +8,9 @@ const _ = require('lodash');
 const through = require('through2');
 const peliasLogger = require('pelias-logger').get('openstreetmap');
 
-var LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
-var NAME_SCHEMA = require('../schema/name_osm');
-var ADDRESS_SCHEMA = _.merge( {},
+const LOCALIZED_NAME_KEYS = require('../config/localized_name_keys');
+const NAME_SCHEMA = require('../schema/name_osm');
+const ADDRESS_SCHEMA = _.merge( {},
   require('../schema/address_tiger'),
   require('../schema/address_osm'),
   require('../schema/address_naptan'),
@@ -19,7 +19,7 @@ var ADDRESS_SCHEMA = _.merge( {},
 
 module.exports = function(){
 
-  var stream = through.obj( function( doc, enc, next ) {
+  const stream = through.obj( function( doc, enc, next ) {
 
     try {
 
@@ -35,34 +35,34 @@ module.exports = function(){
 
         // Map localized names which begin with 'name:'
         // @ref: http://wiki.openstreetmap.org/wiki/Namespace#Language_code_suffix
-        var suffix = getNameSuffix( key );
-        if( suffix ){
-          var val1 = trim( value );
-          if( val1 ){
-            doc.setName( suffix, val1 );
+        const langCode = getNameSuffix( key );
+        if( langCode ){
+          const langValue = trim( value );
+          if( langValue ){
+            doc.setName( langCode, langValue );
           }
         }
 
         // Map name data from our name mapping schema
         else if( _.has(NAME_SCHEMA, key) ){
-          var val2 = trim( value );
-          if( val2 ){
+          const nameValue = trim( value );
+          if( nameValue ){
             if( key === NAME_SCHEMA._primary ){
-              doc.setName( NAME_SCHEMA[key], val2 );
+              doc.setName( NAME_SCHEMA[key], nameValue );
             } else if ( 'default' === NAME_SCHEMA[key] ) {
-              doc.setNameAlias( NAME_SCHEMA[key], val2 );
+              doc.setNameAlias( NAME_SCHEMA[key], nameValue );
             } else {
-              doc.setName( NAME_SCHEMA[key], val2 );
+              doc.setName( NAME_SCHEMA[key], nameValue );
             }
           }
         }
 
         // Map address data from our address mapping schema
         else if( _.has(ADDRESS_SCHEMA, key) ){
-          var val3 = trim( value );
-          if( val3 ){
-            let label = ADDRESS_SCHEMA[key];
-            doc.setAddress(label, normalizeAddressField(label, val3));
+          const addrValue = trim( value );
+          if( addrValue ){
+            const label = ADDRESS_SCHEMA[key];
+            doc.setAddress(label, normalizeAddressField(label, addrValue));
           }
         }
       });
@@ -71,7 +71,7 @@ module.exports = function(){
       // other names which we could use as the default.
       if( !doc.getName('default') ){
 
-        var defaultName =
+        const defaultName =
           _.get(tags, 'official_name') ||
           _.get(tags, 'int_name') ||
           _.get(tags, 'nat_name') ||
@@ -85,7 +85,7 @@ module.exports = function(){
 
         // else try to use an available two-letter language name tag
         else {
-          var keys = Object.keys(doc.name).filter(n => n.length === 2);
+          const keys = Object.keys(doc.name).filter(n => n.length === 2);
 
           // unambiguous (there is only a single two-letter name tag)
           if ( keys.length === 1 ){
@@ -101,7 +101,7 @@ module.exports = function(){
       // Import airport codes as aliases
       if( tags.hasOwnProperty('aerodrome') || tags.hasOwnProperty('aeroway') ){
         if( tags.hasOwnProperty('iata') ){
-          var iata = trim( tags.iata );
+          const iata = trim( tags.iata );
           if( iata ){
             doc.setNameAlias( 'default', iata );
             doc.setNameAlias( 'default', `${iata} Airport` );
