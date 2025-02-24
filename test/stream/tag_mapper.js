@@ -110,6 +110,84 @@ module.exports.tests.osm_names = function(test, common) {
     }));
     stream.write(doc);
   });
+
+  test('maps - name aliases - multiple alt_names', function(t) {
+    var doc = new Document('a','b',1);
+    doc.setMeta('tags', {
+      loc_name: 'loc_name',
+      nat_name: 'nat_name',
+      int_name: 'int_name',
+      name: 'name ;name2; name3',
+      alt_name: 'alt_name;alt_name2;alt_name3',
+      official_name: 'official_name',
+      old_name: 'old_name',
+      reg_name: 'reg_name',
+      short_name: 'short_name',
+      sorting_name: 'sorting_name'
+    });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'name', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), [
+        'loc_name',
+        'name2','name3',
+        'alt_name','alt_name2','alt_name3',
+        'short_name'
+      ], 'correctly mapped');
+
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+
+    stream.write(doc);
+  });
+
+  test('maps - semi-colon delimited names', function(t) {
+    var doc = new Document('a','b',1);
+    doc.setMeta('tags', {
+      name: 'name ;name2; name3',
+      'name:de': 'ding ;ding2; ding3',
+    });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'name', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), [
+        'name2','name3',
+      ], 'correctly mapped');
+      
+      t.equal(doc.getName('de'), 'ding', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('de'), [
+        'ding2','ding3',
+      ], 'correctly mapped');
+
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+
+    stream.write(doc);
+  });
+
+  test('maps - semi-colon delimited names - no "name" tag', function(t) {
+    var doc = new Document('a','b',1);
+    doc.setMeta('tags', {
+      'name:de': 'ding ;ding2; ding3',
+    });
+    var stream = mapper();
+    stream.pipe( through.obj( function( doc, enc, next ){
+      t.equal(doc.getName('default'), 'ding', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('default'), [], 'correctly mapped');
+
+      t.equal(doc.getName('de'), 'ding', 'correctly mapped');
+      t.deepEqual(doc.getNameAliases('de'), [
+        'ding2','ding3',
+      ], 'correctly mapped');
+
+      t.end(); // test will fail if not called (or called twice).
+      next();
+    }));
+
+    stream.write(doc);
+  });
 };
 
 // Cover the case of a tag key being 'name:' eg. { 'name:': 'foo' }
