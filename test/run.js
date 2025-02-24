@@ -17,7 +17,8 @@ var tests = [
   require('./stream/pbf'),
   require('./stream/stats'),
   require('./stream/tag_mapper'),
-  require('./stream/addresses_without_street')
+  require('./stream/addresses_without_street'),
+  require('./util/parseSemicolonDelimitedValues')
 ];
 
 tests.map(function(t) {

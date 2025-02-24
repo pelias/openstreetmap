@@ -10,7 +10,7 @@
   @ref: http://wiki.openstreetmap.org/wiki/Karlsruhe_Schema
 **/
 
-var KARLSRUHE_SCHEMA = {
+const KARLSRUHE_SCHEMA = {
   'addr:housename':     'name',
   'addr:housenumber':   'number',
   'addr:street':        'street',

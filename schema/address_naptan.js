@@ -10,7 +10,7 @@
   @ref: http://wiki.openstreetmap.org/wiki/NaPTAN
 **/
 
-var NAPTAN_SCHEMA = {
+const NAPTAN_SCHEMA = {
   'naptan:Street': 'street'
 };
 

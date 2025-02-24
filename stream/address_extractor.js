@@ -23,11 +23,12 @@
   not searchable.
 **/
 
-var through = require('through2');
-var isObject = require('is-object');
-var extend = require('extend');
-var peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
-var Document = require('pelias-model').Document;
+const through = require('through2');
+const isObject = require('is-object');
+const extend = require('extend');
+const peliasLogger = require( 'pelias-logger' ).get( 'openstreetmap' );
+const Document = require('pelias-model').Document;
+const parseSemicolonDelimitedValues = require('../util/parseSemicolonDelimitedValues');
 
 function hasValidAddress( doc ){
   if( !isObject( doc ) ){ return false; }
@@ -42,21 +43,20 @@ function hasValidAddress( doc ){
 module.exports = function(){
 
   var stream = through.obj( function( doc, enc, next ) {
-    var isNamedPoi = !!doc.getName('default');
-    var isAddress = hasValidAddress( doc );
+    const isNamedPoi = !!doc.getName('default');
+    const isAddress = hasValidAddress( doc );
 
     // accept semi-colon delimited house numbers
     // ref: https://github.com/pelias/openstreetmap/issues/21
-    var streetNumbers = (doc.getAddress('number') || '').split(';').map(Function.prototype.call, String.prototype.trim);
+    const streetNumbers = parseSemicolonDelimitedValues(doc.getAddress('number'));
 
     // create a new record for street addresses
     if( isAddress ){
-      var record;
-
       streetNumbers.forEach( function( streetno, i ){
+        let record;
 
         try {
-          var newid = [ doc.getSourceId() ];
+          const newid = [ doc.getSourceId() ];
           if( i > 0 ){
             newid.push( i );
             peliasLogger.debug('[address_extractor] found multiple house numbers: ', streetNumbers);
@@ -116,7 +116,7 @@ module.exports = function(){
 };
 
 // properties to map from the osm record to the pelias doc
-var addrProps = [ 'name', 'number', 'street', 'zip' ];
+const addrProps = [ 'name', 'number', 'street', 'zip' ];
 
 // call document setters and ignore non-fatal errors
 function setProperties( record, doc ){
