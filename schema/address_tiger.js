@@ -10,7 +10,7 @@
   @ref: http://wiki.openstreetmap.org/wiki/TIGER_to_OSM_Attribute_Map
 **/
 
-var TIGER_SCHEMA = {
+const TIGER_SCHEMA = {
   'tiger:zip_left': 'zip',
   'tiger:zip_right': 'zip'
 };

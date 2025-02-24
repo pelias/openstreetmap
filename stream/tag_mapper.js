@@ -47,7 +47,7 @@ module.exports = function(){
         else if( _.has(NAME_SCHEMA, key) ){
           const nameValue = trim( value );
           if( nameValue ){
-            if( key === NAME_SCHEMA._primary ){
+            if( 'name' === key ){
               doc.setName( NAME_SCHEMA[key], nameValue );
             } else if ( 'default' === NAME_SCHEMA[key] ) {
               doc.setNameAlias( NAME_SCHEMA[key], nameValue );

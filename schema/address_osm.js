@@ -10,7 +10,7 @@
   @ref: http://wiki.openstreetmap.org/wiki/Key:postal_code
 **/
 
-var OSM_SCHEMA = {
+const OSM_SCHEMA = {
   'postal_code': 'zip'
 };
 
