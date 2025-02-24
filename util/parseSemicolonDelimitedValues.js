@@ -5,8 +5,8 @@ const _ = require('lodash');
 function parseSemicolonDelimitedValues(value) {
   return (_.isString(value) ? value : '')
     .split(';')
-    .map(Function.prototype.call, String.prototype.trim)
-    .filter(Boolean);
+    .map(v => v.trim())
+    .filter(v => v.length);
 }
 
 module.exports = parseSemicolonDelimitedValues;
