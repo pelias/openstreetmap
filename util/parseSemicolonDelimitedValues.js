@@ -5,6 +5,8 @@ const _ = require('lodash');
 function parseSemicolonDelimitedValues(value) {
   return (_.isString(value) ? value : '')
     .split(';')
+    // Historical Landmark: former site of The Most Clever Line of JavaScript
+    // https://blog.bloomca.me/2017/11/08/the-most-clever-line-of-javascript.html
     .map(v => v.trim())
     .filter(v => v.length);
 }
