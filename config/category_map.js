@@ -92,8 +92,8 @@ const mapping = {
 
     'car_rental':               ['transport','professional'],
     'car_wash':                 ['professional'],
-    'charging_station':         ['transport','professional'],
-    'fuel':                     ['transport','professional'],
+    'charging_station':         ['charging_station'],
+    'fuel':                     ['fuel'],
 
     'ferry_terminal':           ['transport','transport:sea']
   },
@@ -255,7 +255,7 @@ const mapping = {
     'pitch':                    ['recreation','entertainment'],
     'playground':               ['recreation'],
     'sports_centre':            ['recreation','education','entertainment'],
-    'stadium':                  ['entertainment'],
+    'stadium':                  ['sports','stadium','venue'],
     'summer_camp':              ['recreation','education'],
     'swimming_pool':            ['recreation'],
     'track':                    ['recreation'],
@@ -347,7 +347,7 @@ const mapping = {
     'camp_site':                ['accommodation'],
     'wilderness_hut':           ['accommodation'],
     'information':              ['government'],
-    'attraction':               ['entertainment'],
+    'attraction':               ['attraction','landmark','venue'],
     'theme_park':               ['entertainment'],
     'viewpoint':                ['recreation'],
     'museum':                   ['education','entertainment'],
