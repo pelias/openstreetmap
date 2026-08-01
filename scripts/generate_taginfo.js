@@ -8,14 +8,16 @@
  *   - config/features.js          (venue detection tags, address filter keys)
  *   - config/addendum_whitelist.js (metadata tags stored in the OSM addendum)
  *   - schema/name_osm.js           (name/alias tags)
+ *   - config/localized_name_keys.js (language codes for name:<lang> tags)
  *   - schema/address_*.js          (address tags)
  *
  * Published to npm and served by jsDelivr:
  *   https://cdn.jsdelivr.net/npm/pelias-openstreetmap/taginfo.json
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs      = require('fs');
+const path    = require('path');
+const iso6393 = require('iso-639-3');
 
 const pkg          = require('../package.json');
 const features     = require('../config/features');
@@ -25,6 +27,7 @@ const osmAddr      = require('../schema/address_osm');
 const tiger        = require('../schema/address_tiger');
 const naptan       = require('../schema/address_naptan');
 const addendumKeys = require('../config/addendum_whitelist');
+const localizedKeys = require('../config/localized_name_keys');
 
 const OBJECT_TYPES = ['node', 'way', 'relation'];
 
@@ -97,7 +100,7 @@ const addressTags = [...addressKeys].map(k =>
 
 // ---------------------------------------------------------------------------
 // Name tags — derived from schema/name_osm.js
-// Localized name tags (name:en, name:fr, …) are read dynamically via iso-639-3
+// Localized name tags (name:en, name:fr, …) come from config/localized_name_keys
 // ---------------------------------------------------------------------------
 const nameDescriptions = {
   name:       'Primary display name; the main search term for a record',
@@ -106,10 +109,27 @@ const nameDescriptions = {
   short_name: 'Short name; indexed as an alias',
 };
 
+// taginfo has no wildcard syntax — 'name:*' would be read as a literal asterisk —
+// so every localized key we accept is listed individually. config/localized_name_keys
+// is the same list the tag mapper checks against, so this stays in sync automatically.
+const languageNames = iso6393.reduce((acc, lang) => {
+  if (lang.iso6391) {
+    acc[lang.iso6391] = lang.name;
+  }
+  return acc;
+}, {});
+
+const localizedNameTags = localizedKeys.map(code => {
+  // iso-639-3 qualifies some names, eg 'Occitan (post 1500)', 'Malay (macrolanguage)'
+  const language = (languageNames[code] || code).replace(/\s*\(.*\)\s*$/, '');
+  return entry(`name:${code}`, `Name in ${language}, indexed as a localized alias`);
+});
+
 const nameTags = [
   ...Object.keys(nameSchema).map(k =>
     entry(k, nameDescriptions[k] || 'Name variant indexed as an alias')
   ),
+  ...localizedNameTags,
 ];
 
 // ---------------------------------------------------------------------------
