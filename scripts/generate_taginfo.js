@@ -110,8 +110,6 @@ const nameTags = [
   ...Object.keys(nameSchema).map(k =>
     entry(k, nameDescriptions[k] || 'Name variant indexed as an alias')
   ),
-  // Localised names are resolved at import time from iso-639-3 (e.g. name:en, name:fr)
-  entry('name:*', 'Language-specific names (e.g. name:en, name:fr) are indexed as localized aliases'),
 ];
 
 // ---------------------------------------------------------------------------
