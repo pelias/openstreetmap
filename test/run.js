@@ -8,6 +8,7 @@ var tests = [
   require('./config/category_map'),
   require('./config/features'),
   require('./config/localized_name_keys'),
+  require('./scripts/languages'),
   require('./stream/address_extractor'),
   require('./stream/category_mapper'),
   require('./stream/addendum_mapper'),

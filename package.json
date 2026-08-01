@@ -14,6 +14,7 @@
     "coverage": "node_modules/.bin/istanbul cover test/run.js",
     "end-to-end": "export NODE_ENV=test && node test/end-to-end.js;",
     "lint": "jshint .",
+    "languages": "node scripts/generate_languages.js",
     "start": "./bin/start",
     "taginfo": "node scripts/generate_taginfo.js",
     "prepublishOnly": "npm run taginfo",
