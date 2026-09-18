@@ -50,7 +50,7 @@
     "pelias-dbclient": "^4.0.0",
     "pelias-logger": "^2.0.0",
     "pelias-model": "^11.0.0",
-    "pelias-wof-admin-lookup": "^7.19.0",
+    "pelias-wof-admin-lookup": "^8.0.0",
     "through2": "^3.0.0",
     "through2-sink": "^1.0.0"
   },
