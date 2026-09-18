@@ -60,7 +60,7 @@
     "istanbul": "^0.4.3",
     "jshint": "^2.10.3",
     "naivedb": "^1.0.7",
-    "pelias-mock-logger": "^1.0.1",
+    "pelias-mock-logger": "^2.0.0",
     "precommit-hook": "^3.0.0",
     "proxyquire": "^2.0.0",
     "stream-mock": "^2.0.3",
