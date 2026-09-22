@@ -121,8 +121,13 @@ const addrProps = [ 'name', 'number', 'street', 'zip' ];
 // call document setters and ignore non-fatal errors
 function setProperties( record, doc ){
   addrProps.forEach( function ( prop ){
+    const value = doc.getAddress( prop );
+
+    // skip properties the setter rejects, it throws for absent or blank values
+    if( 'string' !== typeof value || !value.trim().length ){ return; }
+
     try {
-      record.setAddress( prop, doc.getAddress( prop ) );
+      record.setAddress( prop, value );
     } catch ( ex ) {}
   });
 }
