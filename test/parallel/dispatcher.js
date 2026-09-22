@@ -121,6 +121,32 @@ module.exports.tests.fanout = function(test, common) {
   });
 };
 
+module.exports.tests.storedJsonSource = function(test, common) {
+  test('a stored .ndjson file is read directly, without pbf2json', function(t) {
+    const fs = require('fs');
+    const os = require('os');
+    const path = require('path');
+
+    const lines = '{"id":1}\n{"id":2}\n';
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'osm-dispatcher-'));
+    const file = path.join(dir, 'extract.ndjson');
+    fs.writeFileSync(file, lines);
+
+    const received = [];
+    const fake = {
+      attach: (stream) => stream.on('data', (chunk) => received.push(chunk.toString('utf8'))),
+      end: () => {}
+    };
+    const state = { shuttingDown: false, exitCode: 0, workers: [], reader: null };
+
+    dispatcher.readSequentially([{ file: file }], fake, state, () => {
+      t.equal(received.join(''), lines, 'the file is streamed to the dispatcher');
+      t.ok(state.reader && typeof state.reader.destroy === 'function', 'reader is a stream, not a process');
+      t.end();
+    });
+  });
+};
+
 module.exports.all = function (tape, common) {
   function test(name, testFunction) {
     return tape('dispatcher: ' + name, testFunction);

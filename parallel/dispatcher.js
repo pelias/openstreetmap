@@ -22,6 +22,7 @@ const fs = require('fs');
 const logger = require('pelias-logger').get('openstreetmap');
 const settings = require('pelias-config').generate(require('../schema'));
 const pbf = require('../stream/pbf');
+const source = require('../stream/source');
 const generateParams = require('pbf2json/lib/generateParams');
 
 const NEWLINE = 0x0a;
@@ -33,7 +34,7 @@ const PBF2JSON_BIN = path.join(
 );
 
 function run(parallelism) {
-  const configs = pbfConfigs();
+  const configs = sourceConfigs();
   const state = { shuttingDown: false, exitCode: 0, workers: [], reader: null };
 
   state.workers = startWorkers(parallelism, state);
@@ -54,18 +55,23 @@ function run(parallelism) {
   });
 }
 
-// generate one pbf2json config per configured import file
-function pbfConfigs() {
+// one reader config per configured import file. stored pbf2json output needs
+// neither the pbf2json options nor a leveldb cache
+function sourceConfigs() {
   const osm = settings.imports.openstreetmap;
 
   return osm.import.map((entry) => {
-    const conf = pbf.config({
-      file: path.join(osm.datapath, entry.filename),
-      leveldb: osm.leveldbpath,
-      importVenues: entry.importVenues
-    });
+    const file = path.join(osm.datapath, entry.filename);
 
-    [conf.file, conf.leveldb].forEach((target) => {
+    const conf = source.isJsonSource(file) ?
+      { file: file, importVenues: entry.importVenues } :
+      pbf.config({
+        file: file,
+        leveldb: osm.leveldbpath,
+        importVenues: entry.importVenues
+      });
+
+    [conf.file, conf.leveldb].filter(Boolean).forEach((target) => {
       try {
         fs.statSync(target);
       } catch (e) {
@@ -217,6 +223,17 @@ function readSequentially(configs, dispatcher, state, done) {
     const conf = configs[index++];
     logger.info('Creating read stream for: ' + conf.file);
 
+    if (source.isJsonSource(conf.file)) {
+      const stream = source.createByteStream(conf.file);
+
+      stream.on('error', (err) => fatal(state, 'failed to read ' + conf.file + ': ' + err.message));
+      stream.on('end', next);
+
+      state.reader = stream;
+      dispatcher.attach(stream);
+      return;
+    }
+
     const proc = child.spawn(PBF2JSON_BIN, generateParams(conf), {
       stdio: ['ignore', 'pipe', 'pipe']
     });
@@ -242,7 +259,10 @@ function readSequentially(configs, dispatcher, state, done) {
 }
 
 function killChildren(state) {
-  if (state.reader) { state.reader.kill(); }
+  if (state.reader) {
+    if (typeof state.reader.kill === 'function') { state.reader.kill(); }
+    else { state.reader.destroy(); }
+  }
   state.workers.forEach((worker) => {
     if (worker.alive) { worker.proc.kill(); }
   });
@@ -261,3 +281,4 @@ module.exports.run = run;
 module.exports.createDispatcher = createDispatcher;
 module.exports.startWorkers = startWorkers;
 module.exports.readSequentially = readSequentially;
+module.exports.sourceConfigs = sourceConfigs;

@@ -18,6 +18,7 @@ var tests = [
   require('./stream/document_constructor'),
   require('./stream/importPipeline'),
   require('./stream/pbf'),
+  require('./stream/source'),
   require('./stream/stats'),
   require('./stream/tag_mapper'),
   require('./stream/addresses_without_street'),
