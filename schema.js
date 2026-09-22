@@ -9,6 +9,7 @@ const Joi = require('joi');
 // importVenues: boolean (optional)
 // download: array of objects containing sourceURL (optional)
 // deduplicate: boolean (optional)
+// parallelism: integer >= 1 (optional, defaults to 1)
 module.exports = Joi.object().keys({
   imports: Joi.object().keys({
     openstreetmap: Joi.object().keys({
@@ -22,6 +23,7 @@ module.exports = Joi.object().keys({
         sourceURL: Joi.string()
       }).requiredKeys('sourceURL').unknown(true)),
       deduplicate: Joi.boolean(),
+      parallelism: Joi.number().integer().min(1).default(1),
       addressTags: Joi.array().items(Joi.string()),
       layers: Joi.object().pattern(
         Joi.string(),

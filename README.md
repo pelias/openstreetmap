@@ -136,6 +136,16 @@ discarded. In practice, this affects records with tags such as
 
 By default, or if set to any other value besides `true`, these records will be imported.
 
+#### `imports.openstreetmap.parallelism`
+
+The number of import pipelines to run in parallel. Defaults to `1`, which runs
+the importer as a single process.
+
+Reading a PBF file cannot be parallelized, but everything after the parser can
+be. When set above `1`, a single `pbf2json` reader is started and its output is
+distributed across that many worker processes, each running the full import
+pipeline.
+
 ### Administrative Hierarchy Lookup
 
 OSM records often do not contain information about which city, state (or

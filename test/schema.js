@@ -226,6 +226,43 @@ module.exports.tests.import = function(test, common) {
 
 };
 
+module.exports.tests.parallelism = (test, common) => {
+  function configWith(parallelism) {
+    return {
+      imports: {
+        openstreetmap: {
+          datapath: 'datapath value',
+          leveldbpath: 'leveldbpath value',
+          import: [{ filename: 'filename value' }],
+          parallelism: parallelism
+        }
+      }
+    };
+  }
+
+  test('non-integer imports.openstreetmap.parallelism should throw error', (t) => {
+    ['string', [], {}, 1.5].forEach((value) => {
+      t.throws(validate.bind(null, configWith(value)), /"parallelism" must be/);
+    });
+
+    t.end();
+
+  });
+
+  test('imports.openstreetmap.parallelism below 1 should throw error', (t) => {
+    t.throws(validate.bind(null, configWith(0)), /"parallelism" must be larger than or equal to 1/);
+    t.end();
+
+  });
+
+  test('integer imports.openstreetmap.parallelism should not throw error', (t) => {
+    t.doesNotThrow(validate.bind(null, configWith(8)), 'config should be valid');
+    t.end();
+
+  });
+
+};
+
 module.exports.tests.unknowns = function(test, common) {
   test( 'imports.openstreetmap.adminLookup should not throw error', (t) => {
     const config = {

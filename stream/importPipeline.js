@@ -21,8 +21,11 @@ streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
 
 // default import pipeline
-streams.import = function(){
-  streams.pbfParser()
+// source and name are only supplied by the parallel dispatcher's workers, which
+// read pbf2json output from stdin rather than parsing a pbf themselves, and name
+// themselves individually so dbclient stats and output files stay separable
+streams.import = function(source, name){
+  ( source || streams.pbfParser() )
     .pipe( streams.docConstructor() )
     .pipe( streams.addressesWithoutStreet() )
     .pipe( streams.tagMapper() )
@@ -34,7 +37,7 @@ streams.import = function(){
     .pipe( streams.popularityMapper() )
     .pipe( streams.adminLookup() )
     .pipe( streams.dbMapper() )
-    .pipe( streams.elasticsearch({name: 'openstreetmap'}) );
+    .pipe( streams.elasticsearch({name: name || 'openstreetmap'}) );
 };
 
 module.exports = streams;

@@ -9,6 +9,8 @@ var tests = [
   require('./config/features'),
   require('./config/localized_name_keys'),
   require('./scripts/languages'),
+  require('./parallel/ndjson'),
+  require('./parallel/dispatcher'),
   require('./stream/address_extractor'),
   require('./stream/category_mapper'),
   require('./stream/addendum_mapper'),
