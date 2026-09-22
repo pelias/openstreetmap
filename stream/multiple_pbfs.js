@@ -1,5 +1,5 @@
 var combinedStream = require('combined-stream');
-var pbf = require('./pbf');
+var source = require('./source');
 var path = require('path');
 var logger = require('pelias-logger').get('openstreetmap');
 
@@ -15,7 +15,7 @@ function createCombinedStream(){
     };
     fullStream.append(function(next){
       logger.info('Creating read stream for: ' + conf.file);
-      next(pbf.parser(conf));
+      next(source.createRecordStream(conf));
     });
   });
 

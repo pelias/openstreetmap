@@ -9,4 +9,12 @@ if (_.has(peliasConfig, 'imports.openstreetmap.adminLookup')) {
 
 const importPipeline = require('./stream/importPipeline');
 
-importPipeline.import();
+// a parallelism greater than one runs a single pbf2json reader which fans its
+// output out to that many worker processes, each running the full pipeline
+const parallelism = _.get(peliasConfig, 'imports.openstreetmap.parallelism', 1);
+
+if (parallelism > 1) {
+  require('./parallel/dispatcher').run(parallelism);
+} else {
+  importPipeline.import();
+}

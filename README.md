@@ -94,6 +94,27 @@ The OSM importer will look for a file with a name matching this value in the con
 
 If downloading from a remote URL, the filename must match the value in `sourceURL`.
 
+A file ending in `.ndjson`, `.ldjson` or `.jsonl`, optionally `.gz` compressed,
+is read as newline delimited JSON instead of being parsed as a pbf. It is
+assumed to be the stored output of a previous `pbf2json` run over the same
+extract, and importing it produces exactly the same documents.
+
+```javascript
+{
+  "imports": {
+    "openstreetmap": {
+      "datapath": "/data/openstreetmap",
+      "import": [{
+        "filename": "pbf2json.pelias.jsonl.gz"
+      }]
+    }
+  }
+}
+```
+
+The two forms can be mixed in one `import` array, and both work with
+`parallelism`. Compressed files are decompressed as they are read.
+
 #### `imports.openstreetmap.layers`
 
 This is an object you can use to define your own layers based on OSM tags. For example, if you wanted a layer `coffee` for just coffee shops you could set:
@@ -135,6 +156,16 @@ discarded. In practice, this affects records with tags such as
 [`abandoned`](https://wiki.openstreetmap.org/wiki/Key:abandoned:)
 
 By default, or if set to any other value besides `true`, these records will be imported.
+
+#### `imports.openstreetmap.parallelism`
+
+The number of import pipelines to run in parallel. Defaults to `1`, which runs
+the importer as a single process.
+
+Reading a PBF file cannot be parallelized, but everything after the parser can
+be. When set above `1`, a single `pbf2json` reader is started and its output is
+distributed across that many worker processes, each running the full import
+pipeline.
 
 ### Administrative Hierarchy Lookup
 
