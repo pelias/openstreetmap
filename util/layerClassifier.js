@@ -1,25 +1,35 @@
 'use strict';
 
 /**
- * Test a single pbf2json tag condition against an OSM tags object.
- * Supports 'key' (key must exist) or 'key~value' (key must equal value).
+ * Compile a pbf2json pattern string into a predicate for an OSM tags object.
+ * Conditions are separated by '+' and all must match (AND logic), each is
+ * either 'key' (key must exist) or 'key~value' (key must equal value).
  */
-function conditionMatchesTags(condition, tags) {
-  const tildeIdx = condition.indexOf('~');
-  if (tildeIdx === -1) {
-    return Object.prototype.hasOwnProperty.call(tags, condition);
-  }
-  const key = condition.slice(0, tildeIdx);
-  const value = condition.slice(tildeIdx + 1);
-  return tags[key] === value;
+function compilePattern(pattern) {
+  const conditions = pattern.split('+').map(condition => {
+    const tildeIdx = condition.indexOf('~');
+    if (tildeIdx === -1) {
+      return tags => Object.prototype.hasOwnProperty.call(tags, condition);
+    }
+    const key = condition.slice(0, tildeIdx);
+    const value = condition.slice(tildeIdx + 1);
+    return tags => tags[key] === value;
+  });
+  return tags => conditions.every(matches => matches(tags));
 }
 
-/**
- * Test whether a full pbf2json pattern string matches a tags object.
- * Pattern conditions are separated by '+' and all must match (AND logic).
- */
 function patternMatchesTags(pattern, tags) {
-  return pattern.split('+').every(cond => conditionMatchesTags(cond, tags));
+  return compilePattern(pattern)(tags);
+}
+
+// patterns are compiled once per features object, since classify() is called
+// for every record of an import
+const compiledFeatures = new Map();
+
+function compileFeatures(features) {
+  return Object.entries(features)
+    .filter(([, config]) => Array.isArray(config.tags))
+    .map(([layer, config]) => [layer, config.tags.map(compilePattern)]);
 }
 
 /**
@@ -32,9 +42,12 @@ function patternMatchesTags(pattern, tags) {
  * @returns {string} layer name
  */
 function classify(tags, features) {
-  const matchesTags = p => patternMatchesTags(p, tags);
-  for (const [layer, config] of Object.entries(features)) {
-    if (Array.isArray(config.tags) && config.tags.some(matchesTags)) {
+  if (!compiledFeatures.has(features)) {
+    compiledFeatures.set(features, compileFeatures(features));
+  }
+  const matchesTags = matches => matches(tags);
+  for (const [layer, patterns] of compiledFeatures.get(features)) {
+    if (patterns.some(matchesTags)) {
       return layer;
     }
   }
