@@ -1,3 +1,5 @@
+const { pipeline } = require('stream');
+const logger = require('pelias-logger').get('openstreetmap');
 var categoryDefaults = require('../config/category_map');
 
 var streams = {};
@@ -20,24 +22,36 @@ streams.popularityMapper = require('./popularity_mapper');
 streams.dbMapper = require('pelias-model').createDocumentMapperStream;
 streams.elasticsearch = require('pelias-dbclient');
 
+function exitOnError( err ){
+  if( !err ){ return; }
+
+  // exit explicitly, the dbclient timers and admin lookup workers would
+  // otherwise keep a failed import running indefinitely
+  logger.error( `import failed: ${err.message}` );
+  process.exit( 1 );
+}
+
 // default import pipeline
 // source and name are only supplied by the parallel dispatcher's workers, which
 // read pbf2json output from stdin rather than parsing a pbf themselves, and name
 // themselves individually so dbclient stats and output files stay separable
 streams.import = function(source, name){
-  ( source || streams.pbfParser() )
-    .pipe( streams.docConstructor() )
-    .pipe( streams.addressesWithoutStreet() )
-    .pipe( streams.tagMapper() )
-    .pipe( streams.addressExtractor() )
-    .pipe( streams.venueFilter() )
-    .pipe( streams.blacklistStream() )
-    .pipe( streams.categoryMapper( categoryDefaults ) )
-    .pipe( streams.addendumMapper() )
-    .pipe( streams.popularityMapper() )
-    .pipe( streams.adminLookup() )
-    .pipe( streams.dbMapper() )
-    .pipe( streams.elasticsearch({name: name || 'openstreetmap'}) );
+  pipeline(
+    source || streams.pbfParser(),
+    streams.docConstructor(),
+    streams.addressesWithoutStreet(),
+    streams.tagMapper(),
+    streams.addressExtractor(),
+    streams.venueFilter(),
+    streams.blacklistStream(),
+    streams.categoryMapper( categoryDefaults ),
+    streams.addendumMapper(),
+    streams.popularityMapper(),
+    streams.adminLookup(),
+    streams.dbMapper(),
+    streams.elasticsearch({name: name || 'openstreetmap'}),
+    exitOnError
+  );
 };
 
 module.exports = streams;
