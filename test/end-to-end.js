@@ -37,9 +37,9 @@ var fakePeliasConfig = {
   }
 };
 
-var proxiedPbf = proxyquire('../stream/multiple_pbfs', {'pelias-config' : fakePeliasConfig});
+var proxiedSource = proxyquire('../stream/source', {'pelias-config' : fakePeliasConfig});
 
-streams = proxyquire('../stream/importPipeline', {'./multiple_pbfs': proxiedPbf});
+streams = proxyquire('../stream/importPipeline', {'./source': proxiedSource});
 
 var expectedPath = path.resolve(__dirname) + '/fixtures/combined_vancouver_queens.json';
 

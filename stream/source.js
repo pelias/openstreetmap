@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const { pipeline } = require('stream');
+const { pipeline, Readable } = require('stream');
 const pbf = require('./pbf');
 const ndjson = require('../parallel/ndjson');
 const logger = require('pelias-logger').get('openstreetmap');
@@ -85,9 +85,33 @@ function createByteStream(file) {
   return pipeline(raw, zlib.createGunzip(), () => {});
 }
 
+function importConfigs(osm) {
+  return osm.import.map((entry) => ({
+    file: path.join(osm.datapath, entry.filename),
+    leveldb: osm.leveldbpath,
+    importVenues: entry.importVenues
+  }));
+}
+
+// each file is only opened once the previous one has been fully read, so only
+// a single pbf2json process runs at a time
+async function* readSequentially(configs) {
+  for (const conf of configs) {
+    logger.info('Creating read stream for: ' + conf.file);
+    yield* createRecordStream(conf);
+  }
+}
+
+function createImportStream() {
+  const osm = require('pelias-config').generate().imports.openstreetmap;
+  return Readable.from(readSequentially(importConfigs(osm)));
+}
+
 module.exports = {
   isJsonSource: isJsonSource,
   isCompressed: isCompressed,
+  importConfigs: importConfigs,
   createRecordStream: createRecordStream,
-  createByteStream: createByteStream
+  createByteStream: createByteStream,
+  createImportStream: createImportStream
 };

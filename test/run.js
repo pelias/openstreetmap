@@ -17,7 +17,6 @@ var tests = [
   require('./stream/popularity_mapper'),
   require('./stream/document_constructor'),
   require('./stream/importPipeline'),
-  require('./stream/multiple_pbfs'),
   require('./stream/pbf'),
   require('./stream/source'),
   require('./stream/stats'),
