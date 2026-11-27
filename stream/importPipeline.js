@@ -8,7 +8,7 @@ streams.config = {
   categoryDefaults: categoryDefaults
 };
 
-streams.pbfParser = require('./multiple_pbfs').create;
+streams.pbfParser = require('./source').createImportStream;
 streams.docConstructor = require('./document_constructor');
 streams.blacklistStream = require('pelias-blacklist-stream');
 streams.tagMapper = require('./tag_mapper');

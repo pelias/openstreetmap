@@ -58,18 +58,10 @@ function run(parallelism) {
 // one reader config per configured import file. stored pbf2json output needs
 // neither the pbf2json options nor a leveldb cache
 function sourceConfigs() {
-  const osm = settings.imports.openstreetmap;
-
-  return osm.import.map((entry) => {
-    const file = path.join(osm.datapath, entry.filename);
-
-    const conf = source.isJsonSource(file) ?
-      { file: file, importVenues: entry.importVenues } :
-      pbf.config({
-        file: file,
-        leveldb: osm.leveldbpath,
-        importVenues: entry.importVenues
-      });
+  return source.importConfigs(settings.imports.openstreetmap).map((entry) => {
+    const conf = source.isJsonSource(entry.file) ?
+      { file: entry.file, importVenues: entry.importVenues } :
+      pbf.config(entry);
 
     [conf.file, conf.leveldb].filter(Boolean).forEach((target) => {
       try {
